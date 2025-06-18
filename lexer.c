@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/18 13:43:17 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:09:11 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_token	*create_token(t_token **head, t_token **tail, char *str, int type)
 	return (new_token);
 }
 
-void	check_line(char *line)
+void	lexer(char *line)
 {
 	char	*curr_char;
 	t_token	*head;
@@ -51,9 +51,70 @@ void	check_line(char *line)
 	curr_char = line;
 	while (*curr_char)
 	{
-		while (*curr_char && (*curr_char == ' ' || (*curr_char >= '\t'
-					&& *curr_char <= '\r')))
+		while (ft_isspace(*curr_char))
 			curr_char++;
+		if (!*curr_char)
+			break ;
+		if (*curr_char == '|')
+		{
+			if (*(curr_char + 1) == '|')
+			{
+				create_token(&head, &tail, "||", OR_OPERATOR);
+				curr_char += 2;
+			}
+			else
+			{
+				create_token(&head, &tail, "|", PIPE);
+				curr_char++;
+			}
+		}
+		else if (*curr_char == '>')
+		{
+			if (*(curr_char + 1) == '>')
+			{
+				create_token(&head, &tail, ">>", APPEND_OUT);
+				curr_char += 2;
+			}
+			else
+			{
+				create_token(&head, &tail, ">", REDIRECT_OUT);
+				curr_char++;
+			}
+		}
+		else if (*curr_char == '<')
+		{
+			if (*(curr_char + 1) == '<')
+			{
+				create_token(&head, &tail, "<<", HEREDOC);
+				curr_char += 2;
+			}
+			else
+			{
+				create_token(&head, &tail, "<", REDIRECT_IN);
+				curr_char++;
+			}
+		}
+		else if (*curr_char == ';')
+		{
+			create_token(&head, &tail, ";", SEMICOLON);
+			curr_char++;
+		}
+		else if (*curr_char == '(')
+		{
+			create_token(&head, &tail, "(", PARENTHESIS_OPEN);
+			curr_char++;
+		}
+		else if (*curr_char == ')')
+		{
+			create_token(&head, &tail, ")", PARENTHESIS_CLOSE);
+			curr_char++;
+		}
+		else
+		{
+
+		}
 	}
+	print_token(head);
+	free_token(head);
 }
 
