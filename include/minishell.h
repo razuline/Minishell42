@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/17 13:38:44 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/18 12:46:52 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,48 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-typedef enum e_token_type
-{
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_REDIR_IN,
-	TOKEN_REDIR_OUT,
-	TOKEN_REDIR_APPEND,
-	TOKEN_ERROR
-}			t_ttype;
+/******************************************************************************
+*  STRUCTS																		*
+******************************************************************************/
 
 typedef struct s_token
 {
-	char	*value;
-	t_ttype	*type;
-}			t_token;
+	char			*value;
+	int				type;
+	struct s_token	*prev;
+	struct s_token	*next;
+}					t_token;
+
+typedef struct s_command
+{
+}					t_command;
+
+/******************************************************************************
+*  ENUMS																		*
+******************************************************************************/
+enum				e_token_type
+{
+	WORD,
+	PIPE,
+	REDIRECT_IN,
+	REDIRECT_OUT,
+	APPEND_OUT,
+	HEREDOC,
+	OR_OPERATOR,
+	SEMICOLON,
+	PARENTHESIS_OPEN,
+	PARENTHESIS_CLOSE,
+	ENV_VAR
+};
+
+enum				e_quotes_type
+{
+	DEFAULT,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE
+};
 
 //void	handle_sigint(int sig);
-int			is_whitespace(char *str);
+int					is_whitespace(char *str);
 
 #endif
