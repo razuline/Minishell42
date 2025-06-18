@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 13:03:55 by erazumov          #+#    #+#              #
-#    Updated: 2025/06/11 18:02:56 by erazumov         ###   ########.fr        #
+#    Updated: 2025/06/18 11:57:43 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,11 @@ LIBFT_SRC = ft_lib/ft_isalpha.c ft_lib/ft_isdigit.c ft_lib/ft_isalnum.c \
 		ft_lib/ft_strjoin.c ft_lib/ft_strtrim.c ft_lib/ft_split.c \
 		ft_lib/ft_itoa.c ft_lib/ft_strmapi.c ft_lib/ft_striteri.c \
 		ft_lib/ft_putchar_fd.c ft_lib/ft_putstr_fd.c ft_lib/ft_putendl_fd.c \
-		ft_lib/ft_putnbr_fd.c ft_lib/ft_atol.c ft_lib/free_split_result.c
+		ft_lib/ft_putnbr_fd.c ft_lib/ft_atol.c ft_lib/free_split_result.c \
+		ft_lib/ft_lstnew.c ft_lib/ft_lstlast.c ft_lib/ft_lstmap.c \
+		ft_lib/ft_lstadd_front.c ft_lib/ft_lstadd_back.c \
+		ft_lib/ft_lstiter.c ft_lib/ft_lstclear.c ft_lib/ft_lstdelone.c \
+		ft_lib/ft_lstsize.c
 PRINTF_SRC = ft_printf/ft_printf.c ft_printf/ft_formats.c \
 		ft_printf/ft_printstr.c ft_printf/ft_printnbr.c \
 		ft_printf/ft_printchar.c ft_printf/ft_printhex.c ft_printf/ft_printptr.c \
@@ -39,26 +43,35 @@ PRINTF_SRC = ft_printf/ft_printf.c ft_printf/ft_formats.c \
 SRC = $(LIBFT_SRC) $(PRINTF_SRC)
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
+# Colors
+RESET = \033[0m
+RED = \033[0;31m
+GREEN = \033[0;32m
+YELLOW = \033[0;33m
+BLUE = \033[0;34m
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(LIBC) $(NAME) $(OBJ)
-	@echo "Compilation successful ➜ $(NAME)"
+	@echo "$(GREEN)✅ Compilation successful ➜ $(NAME)$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@echo "$(YELLOW)🪄 Compiling:$(RESET) $< -> $@"
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
+	@echo "$(BLUE)📁 Created object directory: $(OBJ_DIR)$(RESET)"
 
 clean:
 	@rm -rf $(OBJ_DIR)
-	@echo "Object files removed"
+	@echo "$(RED)🧹 Object files removed$(RESET)"
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "Executable removed"
+	@echo "$(RED)🗑️ Executables libft removed$(RESET)"
 
 re: fclean all
 

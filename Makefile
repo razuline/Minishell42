@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 17:31:34 by erazumov          #+#    #+#              #
-#    Updated: 2025/06/11 18:01:30 by erazumov         ###   ########.fr        #
+#    Updated: 2025/06/18 11:55:05 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,13 +70,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)%.c
 clean:
 	@$(RM) -r $(OBJ_DIR)
 	@make clean -s -C $(LIBFT_DIR)
-	@echo "$(RED)🧹 Object files removed$(RESET)"
 
 fclean: clean
 	@$(RM) $(NAME)
 	@make fclean -s -C $(LIBFT_DIR)
-	@echo "$(RED)🗑️ Executables removed$(RESET)"
-	@echo "$(RED)🗑️ Libft cleaned$(RESET)"
+	@echo "$(RED)🗑️ Executables minishell removed$(RESET)"
 
 re: fclean all
 
