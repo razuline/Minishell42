@@ -6,11 +6,30 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/18 15:09:11 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:20:07 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	word_handle(t_token **head, t_token **tail, char **curr)
+{
+	int	len;
+	char	*start;
+	char	*end;
+	char	*extract_word;
+	char	*clean_word;
+
+	start = *curr;
+	end = ft_word_end(start);
+	len = end - start;
+	if (len == 0)
+	{
+		*curr = end;
+		return (0);
+	}
+	extract_word = ft_substr(start, 0, len);
+}
 
 t_token	*create_token(t_token **head, t_token **tail, char *str, int type)
 {
@@ -43,11 +62,12 @@ t_token	*create_token(t_token **head, t_token **tail, char *str, int type)
 void	lexer(char *line)
 {
 	char	*curr_char;
-	t_token	*head;
-	t_token	*tail;
+	char	*get_word;
+	t_token	*start;
+	t_token	*end;
 
-	head = NULL;
-	tail = NULL;
+	start = NULL;
+	end = NULL;
 	curr_char = line;
 	while (*curr_char)
 	{
@@ -59,12 +79,12 @@ void	lexer(char *line)
 		{
 			if (*(curr_char + 1) == '|')
 			{
-				create_token(&head, &tail, "||", OR_OPERATOR);
+				create_token(&start, &end, "||", OR_OPERATOR);
 				curr_char += 2;
 			}
 			else
 			{
-				create_token(&head, &tail, "|", PIPE);
+				create_token(&start, &end, "|", PIPE);
 				curr_char++;
 			}
 		}
@@ -72,12 +92,12 @@ void	lexer(char *line)
 		{
 			if (*(curr_char + 1) == '>')
 			{
-				create_token(&head, &tail, ">>", APPEND_OUT);
+				create_token(&start, &end, ">>", APPEND_OUT);
 				curr_char += 2;
 			}
 			else
 			{
-				create_token(&head, &tail, ">", REDIRECT_OUT);
+				create_token(&start, &end, ">", REDIRECT_OUT);
 				curr_char++;
 			}
 		}
@@ -85,36 +105,38 @@ void	lexer(char *line)
 		{
 			if (*(curr_char + 1) == '<')
 			{
-				create_token(&head, &tail, "<<", HEREDOC);
+				create_token(&start, &end, "<<", HEREDOC);
 				curr_char += 2;
 			}
 			else
 			{
-				create_token(&head, &tail, "<", REDIRECT_IN);
+				create_token(&start, &end, "<", REDIRECT_IN);
 				curr_char++;
 			}
 		}
 		else if (*curr_char == ';')
 		{
-			create_token(&head, &tail, ";", SEMICOLON);
+			create_token(&start, &end, ";", SEMICOLON);
 			curr_char++;
 		}
 		else if (*curr_char == '(')
 		{
-			create_token(&head, &tail, "(", PARENTHESIS_OPEN);
+			create_token(&start, &end, "(", PARENTHESIS_OPEN);
 			curr_char++;
 		}
 		else if (*curr_char == ')')
 		{
-			create_token(&head, &tail, ")", PARENTHESIS_CLOSE);
+			create_token(&start, &end, ")", PARENTHESIS_CLOSE);
 			curr_char++;
 		}
 		else
 		{
-
+			start = curr_char;
+			end = ft_word_end(start);
+			ft_delete_quotes(*line);
 		}
 	}
-	print_token(head);
-	free_token(head);
+	print_token(start);
+	free_token(start);
 }
 

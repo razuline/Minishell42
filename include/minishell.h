@@ -6,14 +6,14 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/18 15:06:34 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:56:06 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/include/libft.h"
+# include "libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -21,7 +21,7 @@
 # include <stdlib.h>
 
 /******************************************************************************
-*  STRUCTS																	  *
+*  STRUCTS																		*
 ******************************************************************************/
 
 typedef struct s_token
@@ -36,7 +36,7 @@ typedef struct s_command
 }					t_command;
 
 /******************************************************************************
-*  ENUMS																	  *
+*  ENUMS																		*
 ******************************************************************************/
 enum				e_token_type
 {
@@ -61,14 +61,15 @@ enum				e_quotes_type
 };
 
 /******************************************************************************
-*  FUNCTIONS																  *
+*  FUNCTIONS																	*
 ******************************************************************************/
 
 /* -------------------------- LEXER -----------------------------------------*/
 
-
-
-
+/* utils_lexer.c */
+int					ft_delimiter(char c);
+char				*ft_delete_quotes(char *wd_value);
+char				*ft_word_end(char *word);
 
 //void	handle_sigint(int sig);
 int					is_whitespace(char *str);
