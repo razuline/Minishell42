@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/20 14:38:24 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:54:30 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,12 @@ typedef struct s_command
 ******************************************************************************/
 enum				e_token_type
 {
-	SPACES,
 	WORD,
 	PIPE,
 	REDIRECT_IN,
 	REDIRECT_OUT,
 	APPEND_OUT,
 	HEREDOC,
-	OR_OPERATOR,
-	SEMICOLON,
-	PARENTHESIS_OPEN,
-	PARENTHESIS_CLOSE,
 	ENV_VAR
 };
 
@@ -73,7 +68,7 @@ int					handle_token(t_token **head, t_token **tail, char **ch);
 int					handle_word(t_token **head, t_token **tail, char **ch);
 
 /* lexer_word_utils.c */
-int					ft_token_type(char *word, int i);
+int					ft_delimiter(char c);
 int					ft_quote_type(char *word, int type, int i);
 char				*ft_word_end(char *word);
 char				*ft_delete_quotes(char *word);
@@ -81,8 +76,9 @@ char				*ft_delete_quotes(char *word);
 /* lexer_token_utils.c */
 t_token				*create_token(t_token **head, t_token **tail, char *word,
 						int type);
-t_token				*free_token(t_token *head);
-t_token				*print_token(void);
+void				print_tokens(t_token *head);
+void				free_tokens(t_token *head);
+
 
 //void	handle_sigint(int sig);
 int					is_whitespace(char *str);

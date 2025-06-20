@@ -6,35 +6,15 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:50:08 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/20 14:24:49 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:42:28 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_token_type(char *word, int i)
+int	ft_delimiter(char c)
 {
-	if (ft_isspace(word[i]))
-		return (SPACES);
-	else if (word[i] == '|' && word[i + 1] == '|')
-		return (OR_OPERATOR);
-	else if (word[i] == '|')
-		return (PIPE);
-	else if (word[i] == '<' && word[i + 1] == '<')
-		return (HEREDOC);
-	else if (word[i] == '<')
-		return (REDIRECT_IN);
-	else if (word[i] == '>' && word[i + 1] == '>')
-		return (APPEND_OUT);
-	else if (word[i] == '>')
-		return (REDIRECT_OUT);
-	else if (word[i] == ';')
-		return (SEMICOLON);
-	else if (word[i] == '(')
-		return (PARENTHESIS_OPEN);
-	else if (word[i] == ')')
-		return (PARENTHESIS_CLOSE);
-	return (0);
+	return (ft_isspace(c) || c == '|' || c == '<' || c == '>');
 }
 
 int	ft_quote_type(char *word, int type, int i)
@@ -61,7 +41,7 @@ char	*ft_word_end(char *word)
 	type = DEFAULT;
 	while (word[i])
 	{
-		if (type == DEFAULT && ft_delimiter(word, i))
+		if (type == DEFAULT && ft_delimiter(word[i]))
 			break ;
 		type = ft_quote_type(word, type, i);
 		i++;

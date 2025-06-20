@@ -6,116 +6,91 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/20 14:42:18 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:33:59 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_token(t_token **head, t_token **tail, char **ch);
-int	handle_word(t_token **head, t_token **tail, char **ch);
+int			ft_single_token(t_token **head, t_token **tail, char **c);
+int			ft_double_token(t_token **head, t_token **tail, char **c);
+int			handle_word(t_token **head, t_token **tail, char **ch);
 
 t_token	*lexer(char *line)
 {
-	char	*ch;
-	char	*get_word;
+	char	*c;
 	t_token	*head;
 	t_token	*tail;
 
-	ch = line;
+	c = line;
 	head = NULL;
 	tail = NULL;
 	if (!line)
 		return (NULL);
-	while (*ch)
+	while (*c)
 	{
-		while (*ch && ft_isspace(*ch))
-			ch++;
-		if (!*ch)
+		while (*c && ft_isspace(*c))
+			c++;
+		if (!*c)
 			break ;
-		if (handle_token())
-
+		if (ft_double_token(&head, &tail, &c) == 1)
+			;
+		else if (ft_single_token(&head, &tail, &c) == 1)
+			;
+		else
+			handle_word(&head, &tail, &c);
 	}
 	return (head);
 }
 
-int	handle_token(t_token **head, t_token **tail, char **ch)
+int	ft_single_token(t_token **head, t_token **tail, char **c)
 {
-	if (*ch == '|')
+	if (**c == '|')
 	{
-		if (*(ch + 1) == '|')
-		{
-			create_token(&head, &tail, "||", OR_OPERATOR);
-				ch += 2;
-		}
-		else
-		{
-			create_token(&head, &tail, "|", PIPE);
-			ch++;
-		}
+		create_token(head, tail, "|", PIPE);
+		*c += 1;
+		return (1);
 	}
-	else if (*ch == '>')
+	else if (**c == '<')
 	{
-		if (*(ch + 1) == '>')
-		{
-			create_token(&head, &tail, ">>", APPEND_OUT);
-			ch += 2;
-		}
-		else
-		{
-			create_token(&head, &tail, ">", REDIRECT_OUT);
-			ch++;
-		}
+		create_token(head, tail, "<", REDIRECT_IN);
+		*c += 1;
+		return (1);
 	}
-	else if (*ch == '<')
+	else if (**c == '>')
 	{
-		if (*(ch + 1) == '<')
-		{
-			create_token(&head, &tail, "<<", HEREDOC);
-			ch += 2;
-		}
-		else
-		{
-			create_token(&head, &tail, "<", REDIRECT_IN);
-			ch++;
-		}
+		create_token(head, tail, ">", REDIRECT_OUT);
+		*c += 1;
+		return (1);
 	}
-	else if (*ch == ';')
-	{
-		create_token(&head, &tail, ";", SEMICOLON);
-		ch++;
-	}
-	else if (*ch == '(')
-	{
-		create_token(&head, &tail, "(", PARENTHESIS_OPEN);
-		ch++;
-	}
-	else if (*ch == ')')
-	{
-		create_token(&head, &tail, ")", PARENTHESIS_CLOSE);
-		ch++;
-	}
-	else
-		handle_word(&head, &tail, &ch);
-
+	return (0);
 }
 
-int	handle_word(t_token **head, t_token **tail, char **ch)
+int	ft_double_token(t_token **head, t_token **tail, char **c)
+{
+	if (**c == '<' && *(*c + 1) == '<')
+	{
+		create_token(head, tail, "<<", HEREDOC);
+		*c += 2;
+		return (1);
+	}
+	else if (**c == '>' && *(*c + 1) == '>')
+	{
+		create_token(head, tail, ">>", APPEND_OUT);
+		*c += 2;
+		return (1);
+	}
+	return (0);
+}
+
+static int	ft_word_token(t_token **head, t_token **tail, char *start,
+		char *end)
 {
 	int		len;
-	char	*start;
-	char	*end;
 	char	*extracted;
 	char	*cleaned;
 
-	start = ch;
-	end = ft_word_end(start);
 	len = end - start;
-	if (len == 0)
-	{
-		*ch = end;
-		return (0);
-	}
 	extracted = ft_substr(start, 0, len);
 	if (!extracted)
 		return (1);
@@ -128,6 +103,23 @@ int	handle_word(t_token **head, t_token **tail, char **ch)
 	create_token(head, tail, cleaned, WORD);
 	free(extracted);
 	free(cleaned);
-	*ch = end;
 	return (0);
+}
+
+int	handle_word(t_token **head, t_token **tail, char **c)
+{
+	int		result;
+	char	*wd_start;
+	char	*wd_end;
+
+	wd_start = *c;
+	wd_end = ft_word_end(wd_start);
+	if (wd_start == wd_end)
+	{
+		*c = wd_end;
+		return (0);
+	}
+	result = ft_word_token(head, tail, wd_start, wd_end);
+	*c = wd_end;
+	return (result);
 }
