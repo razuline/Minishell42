@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/20 17:54:30 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/21 12:53:16 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_token
 
 typedef struct s_command
 {
+	char			**argv;
 }					t_command;
 
 /******************************************************************************
@@ -78,6 +79,13 @@ t_token				*create_token(t_token **head, t_token **tail, char *word,
 						int type);
 void				print_tokens(t_token *head);
 void				free_tokens(t_token *head);
+
+/* -------------------------- PARSER -----------------------------------------*/
+
+
+
+
+
 
 
 //void	handle_sigint(int sig);
