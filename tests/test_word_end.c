@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 11:32:06 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/21 12:41:54 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/21 14:59:17 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 #include <string.h>
 
-// cc -g tests/test_word_end.c src/lexer/lexer_word_utils.c -Iinclude
-// -Ilibft/include -Llibft -lft -o test_word_end_runner
+/* cc -g tests/test_word_end.c src/lexer/lexer_word_utils.c -Iinclude
+-Ilibft/include -Llibft -lft -o test_word_end_runner */
+/* valgrind --leak-check=full ./test_word_end_runner */
 
 #define GREEN "\033[32m"
 #define RED "\033[31m"

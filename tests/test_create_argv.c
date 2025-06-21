@@ -6,14 +6,15 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 13:27:00 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/21 13:36:45 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/21 14:58:53 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// cc -g tests/test_create_argv.c src/parser/parser_utils.c -Iinclude
-// -Ilibft/include -Llibft -lft -o test_create_argv
+/* cc -g tests/test_create_argv.c src/parser/parser_utils.c -Iinclude
+-Ilibft/include -Llibft -lft -o test_create_argv */
+/* valgrind --leak-check=full ./test_create_argv */
 
 void	print_argv(char **argv)
 {
