@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/21 12:55:09 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/21 13:01:06 by erazumov         ###   ########.fr       */
+/*   Created: 2025/06/21 13:04:53 by erazumov          #+#    #+#             */
+/*   Updated: 2025/06/21 13:33:26 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_command	*parser(t_token *head)
+char	**create_argv(char **old_argv, char *new_str)
 {
-	t_command	*cmd_lst_head;
-	t_command	*curr_cmd;
-	t_token		*curr_token;
+	int		i;
+	int		count;
+	char	**new_argv;
 
-	cmd_lst_head = NULL;
-	curr_cmd = NULL;
-	curr_token = head;
-	while (curr_token != NULL)
+	count = 0;
+	if (old_argv != NULL)
 	{
-		if (curr_cmd == NULL)
+		while (old_argv[count] != NULL)
+		count++;
 	}
+	new_argv = malloc(sizeof(char *) * (count + 2));
+	if (!new_argv)
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		new_argv[i] = old_argv[i];
+		i++;
+	}
+	new_argv[count] = new_str;
+	new_argv[count + 1] = NULL;
+	free(old_argv);
+	return (new_argv);
 }

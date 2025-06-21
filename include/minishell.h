@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/21 12:53:16 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/21 13:24:57 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ enum				e_quote_type
 
 /* lexer.c */
 t_token				*lexer(char *line);
-int					handle_token(t_token **head, t_token **tail, char **ch);
+int					ft_single_token(t_token **head, t_token **tail, char **c);
+int					ft_double_token(t_token **head, t_token **tail, char **c);
 int					handle_word(t_token **head, t_token **tail, char **ch);
 
 /* lexer_word_utils.c */
@@ -80,13 +81,14 @@ t_token				*create_token(t_token **head, t_token **tail, char *word,
 void				print_tokens(t_token *head);
 void				free_tokens(t_token *head);
 
+
 /* -------------------------- PARSER -----------------------------------------*/
 
+/* lexer.c */
+t_command			*parser(t_token *head);
 
-
-
-
-
+/* lexer_utils.c */
+char				**create_argv(char **old_argv, char *new_str);
 
 //void	handle_sigint(int sig);
 int					is_whitespace(char *str);
