@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/21 18:03:30 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:44:57 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_token
 typedef struct s_redir
 {
 	int					type;
-	char				*filename;
+	char				*file;
 	struct s_redir		*next;
 }						t_redir;
 
@@ -89,18 +89,25 @@ char					*ft_delete_quotes(char *word);
 /* lexer_token_utils.c */
 t_token					*create_token(t_token **head, t_token **tail,
 							char *word, int type);
+char					*get_type_name(int type);
 void					print_tokens(t_token *head);
 void					free_tokens(t_token *head);
 
 /* -------------------------- PARSER -----------------------------------------*/
 
-/* lexer.c */
+/* parser.c */
 t_command				*parser(t_token *head);
 
-/* lexer_utils.c */
+/* parser_utils.c */
+t_command				*create_command(void);
 char					**create_argv(char **old_argv, char *new_str);
+void					add_redir_to_cmd(t_command *cmd, t_redir *new_redir);
 
-//void	handle_sigint(int sig);
-int						is_whitespace(char *str);
+/* parser_print_utils.c */
+int						ft_redirection(int type);
+void					print_commands(t_command *cmd_head);
+
+/* parser_free_utils.c */
+void					free_commands(t_command *cmd_head);
 
 #endif
