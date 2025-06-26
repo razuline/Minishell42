@@ -6,11 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:28:46 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/25 12:57:15 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:48:33 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	free_redir(t_redir *redir_head);
 
 void	free_commands(t_command *cmd_head)
 {

@@ -6,11 +6,14 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:28:18 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/25 13:45:09 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:49:36 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	print_argv(char **argv);
+static void	print_redirections(t_redir *redir_lst);
 
 int	ft_redirection(int type)
 {

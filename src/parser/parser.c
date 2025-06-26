@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:55:09 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/25 13:49:49 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:52:20 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	process_pipe(t_command **cmd_ptr, t_token **tok_ptr)
 		printf("minishell: syntax error near unexpected token '|'\n");
 		return (1);
 	}
-	new_cmd = create_cmd();
+	new_cmd = create_command();
 	if (!new_cmd)
 		return (1);
 	(*cmd_ptr)->next = new_cmd;
