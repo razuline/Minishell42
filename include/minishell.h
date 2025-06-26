@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/26 14:48:17 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/26 17:27:12 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ typedef struct s_command
 	t_redir				*redir;
 	struct s_command	*next;
 }						t_command;
+
+typedef struct s_shell_state
+{
+	char				**envp;
+	int					exit_code;
+}						t_shell;
 
 /******************************************************************************
 *  ENUMS																		*
@@ -92,6 +98,8 @@ t_token					*create_token(t_token **head, t_token **tail,
 char					*get_type_name(int type);
 void					print_tokens(t_token *head);
 void					free_tokens(t_token *head);
+
+/* -------------------------- EXPANSION --------------------------------------*/
 
 /* -------------------------- PARSER -----------------------------------------*/
 
