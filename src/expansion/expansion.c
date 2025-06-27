@@ -6,13 +6,15 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 13:04:28 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/27 14:30:53 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*expand_str(const char *value, t_shell *state);
+static int	process_char(const char *value, int *i_ptr, char **res_ptr,
+				t_shell *state);
 
 int	expand_token(t_token *head, t_shell *state)
 {
@@ -52,18 +54,39 @@ static char	*expand_str(const char *value, t_shell *state)
 	i = 0;
 	while (value[i])
 	{
-		if (value[i] == '$')
-			append_env_var(&result, value, &i);
-		else if (value[i] == '$' && value[i + 1] == '?')
+		if (process_char(value, &i, &result, state) != 0)
 		{
-			append_exit_status(&result, state);
-			i += 2;
-		}
-		else
-		{
-			append_char(&result, value[i]);
-			i++;
+			free(result);
+			return (NULL);
 		}
 	}
 	return (result);
 }
+
+static int	process_char(const char *value, int *i_ptr, char **res_ptr,
+		t_shell *state)
+{
+	if (value[*i_ptr] == '$' && value[*i_ptr + 1] != '\0')
+	{
+		(*i_ptr)++;
+		if (value[*i_ptr] == '?')
+		{
+			(*i_ptr)++;
+			return (append_exit_status(res_ptr, state));
+		}
+		else if (ft_isalnum(value[*i_ptr]) || value[*i_ptr] == '_')
+		{
+			return (append_env_var(res_ptr, value, i_ptr));
+		}
+		else
+			return (append_dollar(res_ptr));
+	}
+	else
+	{
+		append_char(res_ptr, value[*i_ptr]);
+		(*i_ptr)++;
+	}
+	return (0);
+}
+
+

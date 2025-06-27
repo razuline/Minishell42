@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/20 17:33:59 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/27 14:35:33 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,19 @@ int	ft_single_token(t_token **head, t_token **tail, char **c)
 {
 	if (**c == '|')
 	{
-		create_token(head, tail, "|", PIPE);
+		create_token(head, tail, "|", PIPE, DEFAULT);
 		*c += 1;
 		return (1);
 	}
 	else if (**c == '<')
 	{
-		create_token(head, tail, "<", REDIRECT_IN);
+		create_token(head, tail, "<", REDIRECT_IN, DEFAULT);
 		*c += 1;
 		return (1);
 	}
 	else if (**c == '>')
 	{
-		create_token(head, tail, ">", REDIRECT_OUT);
+		create_token(head, tail, ">", REDIRECT_OUT, DEFAULT);
 		*c += 1;
 		return (1);
 	}
@@ -70,13 +70,13 @@ int	ft_double_token(t_token **head, t_token **tail, char **c)
 {
 	if (**c == '<' && *(*c + 1) == '<')
 	{
-		create_token(head, tail, "<<", HEREDOC);
+		create_token(head, tail, "<<", HEREDOC, DEFAULT);
 		*c += 2;
 		return (1);
 	}
 	else if (**c == '>' && *(*c + 1) == '>')
 	{
-		create_token(head, tail, ">>", APPEND_OUT);
+		create_token(head, tail, ">>", APPEND_OUT, DEFAULT);
 		*c += 2;
 		return (1);
 	}
@@ -89,18 +89,25 @@ static int	ft_word_token(t_token **head, t_token **tail, char *start,
 	int		len;
 	char	*extracted;
 	char	*cleaned;
+	int		quote_type;
 
 	len = end - start;
 	extracted = ft_substr(start, 0, len);
 	if (!extracted)
 		return (1);
+	if (*extracted == '\'')
+		quote_type = SINGLE_QUOTE;
+	else if (*extracted == '"')
+		quote_type = DOUBLE_QUOTE;
+	else
+		quote_type = DEFAULT;
 	cleaned = ft_delete_quotes(extracted);
 	if (!cleaned)
 	{
 		free(extracted);
 		return (1);
 	}
-	create_token(head, tail, cleaned, WORD);
+	create_token(head, tail, cleaned, WORD, quote_type);
 	free(extracted);
 	free(cleaned);
 	return (0);
