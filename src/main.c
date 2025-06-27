@@ -6,50 +6,11 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:44:19 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/12 18:19:53 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/27 17:09:34 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-# include <readline/history.h>
-#include <readline/readline.h>
-//#include "../include/minishell.h"
-
-int	main(void)
-{
-	char	*line;
-	// Configure le gestionnaire de signal pour Ctrl+C
-	// signal(SIGINT, handle_sigint);
-	// Ignorer Ctrl+\ (SIGQUIT) pendant la saisie du prompt
-	// signal(SIGQUIT, SIG_IGN);
-	while (1)
-	{
-		// 1. Afficher le prompt et lire la ligne
-		line = readline("minishell> ");
-		// 2. Gérer Ctrl+D (EOF) : readline retourne NULL
-		if (line == NULL)
-		{
-			printf("exit\n"); // Affiche "exit" comme bash
-			break ;
-		}
-		// 3. Gérer les lignes vides ou avec seulement des espaces
-		if (*line == '\0') //|| is_whitespace(line))
-		// is_whitespace est une fonction à implémenter pour vérifier si la ligne est vide ou contient seulement des espaces
-		{
-			free(line);
-			continue ;
-		}
-		// 4. Ajouter la ligne à l'historique (pour les flèches haut/bas)
-		if (line && *line)
-			add_history(line);
-		// --- POINT D'INTÉGRATION AVEC TON PARSER ---
-		// Ici viendront les appels à tes fonctions de lexing/parsing
-		printf("Tu as tapé : '%s'\n", line); // Pour le moment, juste un echo
-		free(line);
-	}
-	rl_clear_history();
-	return (0);
-}
+#include "minishell.h"
 
 int	is_whitespace(char *str)
 {
@@ -61,6 +22,56 @@ int	is_whitespace(char *str)
 	}
 	return (1);
 }
+
+void	init_shell_state(t_shell *state, char **envp)
+{
+	state->envp = envp;
+	state->exit_code = 0;
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	char		*line;
+	t_shell		shell_state;
+	t_token		*tokens;
+	t_command	*commands;
+
+	init_shell_state(&shell_state, envp);
+	while (1)
+	{
+		tokens = NULL;
+		commands = NULL;
+		line = readline("minishell> ");
+		if (line == NULL)
+		{
+			printf("exit\n");
+			break ;
+		}
+		if (line && *line)
+			add_history(line);
+		if (*line != '\0' && !is_whitespace(line))
+		{
+			tokens = lexer(line);
+			if (tokens && expand_token(tokens, &shell_state) != 0)
+			{
+				free_tokens(tokens);
+				tokens = NULL;
+			}
+			if (tokens)
+				commands = parser(tokens);
+		}
+		free(line);
+		free_tokens(tokens);
+		if (commands != NULL)
+		{
+			// shell_state.exit_code = execute(commands, &shell_state);
+		}
+		free_commands(commands);
+	}
+	rl_clear_history();
+	return (shell_state.exit_code);
+}
+
 /*
 void	handle_sigint(int sig)
 {
