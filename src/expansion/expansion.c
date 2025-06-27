@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 12:04:22 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/27 13:04:28 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,23 @@ static char	*expand_str(const char *value, t_shell *state)
 	if (!value)
 		return (NULL);
 	result = ft_strdup("");
+	if (!result)
+		return (NULL);
 	i = 0;
 	while (value[i])
 	{
-		if (value[i] == '$' && value[i + 1] != '\0'
-			&& !ft_isspace(value[i + 1]))
+		if (value[i] == '$')
+			append_env_var(&result, value, &i);
+		else if (value[i] == '$' && value[i + 1] == '?')
 		{
-			i++;
-			if (value[i] == '?')
-			{
-				append_exit_status(&result, state);
-				i++;
-			}
-			else
-				append_env_var(&result, value, &i);
+			append_exit_status(&result, state);
+			i += 2;
 		}
-		append_char(&result, value[i]);
-		i++;
+		else
+		{
+			append_char(&result, value[i]);
+			i++;
+		}
 	}
 	return (result);
 }
