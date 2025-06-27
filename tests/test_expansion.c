@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:06:55 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 14:38:04 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:02:56 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /* cc -g tests/test_expansion.c src/lexer/*.c src/expansion/*.c 
 src/parser/parser_utils.c -Iinclude -Ilibft/include -Llibft -lft -o 
 test_expansion_runner */
+/* leaks --atExit -- ./test_expansion_runner */
 
 int	main(int ac, char **av, char **envp)
 {
