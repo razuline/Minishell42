@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/26 17:27:12 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/27 12:04:53 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_token
 {
 	char				*value;
 	int					type;
+	int					quote_type;
 	struct s_token		*next;
 }						t_token;
 
@@ -94,12 +95,24 @@ char					*ft_delete_quotes(char *word);
 
 /* lexer_token_utils.c */
 t_token					*create_token(t_token **head, t_token **tail,
-							char *word, int type);
+							char *word, int type, int quote_info);
 char					*get_type_name(int type);
 void					print_tokens(t_token *head);
 void					free_tokens(t_token *head);
 
 /* -------------------------- EXPANSION --------------------------------------*/
+
+/* expansion.c */
+int						expand_token(t_token *head, t_shell *state);
+
+/* expansion_var_utils.c */
+int						append_env_var(char **res_ptr, const char *input,
+							int *i_ptr);
+
+/* expansion_append_utils.c */
+int						append_char(char **res_ptr, char c);
+int						append_dollar(char **res_ptr);
+int						append_exit_status(char **res_ptr, t_shell *state);
 
 /* -------------------------- PARSER -----------------------------------------*/
 

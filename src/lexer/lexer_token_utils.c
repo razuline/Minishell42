@@ -6,13 +6,14 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/25 13:44:32 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/27 11:54:15 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*create_token(t_token **head, t_token **tail, char *word, int type)
+t_token	*create_token(t_token **head, t_token **tail, char *word, int type,
+		int quote_info)
 {
 	t_token	*new_token;
 
@@ -26,6 +27,7 @@ t_token	*create_token(t_token **head, t_token **tail, char *word, int type)
 		return (NULL);
 	}
 	new_token->type = type;
+	new_token->quote_type = quote_info;
 	new_token->next = NULL;
 	if (*head == NULL)
 	{
@@ -66,7 +68,7 @@ void	print_tokens(t_token *head)
 	while (curr != NULL)
 	{
 		printf("[TYPE: %s, VALEUR: \"%s\"] -> \n", get_type_name(curr->type),
-			curr->value);
+				curr->value);
 		curr = curr->next;
 	}
 	printf("NULL\n");
