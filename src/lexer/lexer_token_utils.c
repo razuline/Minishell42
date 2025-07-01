@@ -6,14 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 11:54:15 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:26:17 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*create_token(t_token **head, t_token **tail, char *word, int type,
-		int quote_info)
+t_token	*create_token(t_list *lst, char *word, int type, int quote_info)
 {
 	t_token	*new_token;
 
@@ -29,15 +28,15 @@ t_token	*create_token(t_token **head, t_token **tail, char *word, int type,
 	new_token->type = type;
 	new_token->quote_type = quote_info;
 	new_token->next = NULL;
-	if (*head == NULL)
+	if (*(lst->head) == NULL)
 	{
-		*head = new_token;
-		*tail = new_token;
+		*(lst->head) = new_token;
+		*(lst->tail) = new_token;
 	}
 	else
 	{
-		(*tail)->next = new_token;
-		*tail = new_token;
+		(*(lst->tail))->next = new_token;
+		*(lst->tail) = new_token;
 	}
 	return (new_token);
 }
@@ -68,7 +67,7 @@ void	print_tokens(t_token *head)
 	while (curr != NULL)
 	{
 		printf("[TYPE: %s, VALEUR: \"%s\"] -> \n", get_type_name(curr->type),
-				curr->value);
+			curr->value);
 		curr = curr->next;
 	}
 	printf("NULL\n");

@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 12:04:53 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:46:08 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@
 /******************************************************************************
 *  STRUCTS																		*
 ******************************************************************************/
+
+typedef struct s_list
+{
+	t_token				**head;
+	t_token				**tail;
+}						t_list;
 
 typedef struct s_token
 {
@@ -81,21 +87,27 @@ enum					e_quote_type
 
 /* lexer.c */
 t_token					*lexer(char *line);
-int						ft_single_token(t_token **head, t_token **tail,
-							char **c);
-int						ft_double_token(t_token **head, t_token **tail,
-							char **c);
-int						handle_word(t_token **head, t_token **tail, char **ch);
 
-/* lexer_word_utils.c */
+
+/* lexer_word.c */
 int						ft_delimiter(char c);
 int						ft_quote_type(char *word, int type, int i);
 char					*ft_word_end(char *word);
 char					*ft_delete_quotes(char *word);
 
+/* lexer_word_utils.c */
+int						handle_word(t_token **head, t_token **tail, char **ch);
+
+
+/* lexer_ops_utils.c */
+int						ft_single_token(t_token **head, t_token **tail,
+							char **c);
+int						ft_double_token(t_token **head, t_token **tail,
+							char **c);
+
 /* lexer_token_utils.c */
-t_token					*create_token(t_token **head, t_token **tail,
-							char *word, int type, int quote_info);
+t_token					*create_token(t_list *lst, char *word, int type,
+							int quote_info);
 char					*get_type_name(int type);
 void					print_tokens(t_token *head);
 void					free_tokens(t_token *head);
@@ -130,5 +142,10 @@ void					print_commands(t_command *cmd_head);
 
 /* parser_free_utils.c */
 void					free_commands(t_command *cmd_head);
+
+/* -------------------------- EXECUTION --------------------------------------*/
+
+/* execution.c */
+int						execute(t_command *cmd_lst, t_shell *state);
 
 #endif
