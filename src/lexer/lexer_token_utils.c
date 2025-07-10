@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/01 13:26:17 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:26:26 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_token	*create_token(t_list *lst, char *word, int type, int quote_info)
 	return (new_token);
 }
 
-char	*get_type_name(int type)
+static char	*get_type_name(int type)
 {
 	if (type == WORD)
 		return ("WORD");

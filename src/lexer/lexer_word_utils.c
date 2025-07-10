@@ -6,18 +6,18 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:50:08 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/20 17:42:28 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:24:03 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_delimiter(char c)
+static int	ft_delimiter(char c)
 {
 	return (ft_isspace(c) || c == '|' || c == '<' || c == '>');
 }
 
-int	ft_quote_type(char *word, int type, int i)
+static int	ft_quote_type(char *word, int type, int i)
 {
 	if (word[i] == '\'' && type == DEFAULT)
 		type = SINGLE_QUOTE;

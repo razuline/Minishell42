@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 13:46:25 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/01 13:49:54 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:12:39 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	ft_word_token(t_list *lst, char *start,
 		free(extracted);
 		return (1);
 	}
-	create_token(lst, cleaned, WORD, DEFAULT);
+	create_token(lst, cleaned, WORD, quote_type);
 	free(extracted);
 	free(cleaned);
 	return (0);

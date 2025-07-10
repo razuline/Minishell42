@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/01 13:46:08 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:26:31 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ enum					e_quote_type
 /* lexer.c */
 t_token					*lexer(char *line);
 
-
 /* lexer_word.c */
 int						ft_delimiter(char c);
 int						ft_quote_type(char *word, int type, int i);
@@ -96,19 +95,16 @@ char					*ft_word_end(char *word);
 char					*ft_delete_quotes(char *word);
 
 /* lexer_word_utils.c */
-int						handle_word(t_token **head, t_token **tail, char **ch);
-
+char					*ft_word_end(char *word);
+char					*ft_delete_quotes(char *word);
 
 /* lexer_ops_utils.c */
-int						ft_single_token(t_token **head, t_token **tail,
-							char **c);
-int						ft_double_token(t_token **head, t_token **tail,
-							char **c);
+int						ft_single_token(t_list *lst, char **c);
+int						ft_double_token(t_list *lst, char **c);
 
 /* lexer_token_utils.c */
 t_token					*create_token(t_list *lst, char *word, int type,
 							int quote_info);
-char					*get_type_name(int type);
 void					print_tokens(t_token *head);
 void					free_tokens(t_token *head);
 
