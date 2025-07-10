@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/10 13:56:57 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:38:18 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ static void	lexer_loop(t_list *lst, char *line)
 			cursor++;
 		if (!*cursor)
 			break ;
-		if (ft_double_token(lst, &cursor, &line) == 1)
+		if (ft_double_token(lst, &cursor) == 1)
 			;
-		else if (ft_single_token(lst, &cursor, &line) == 1)
+		else if (ft_single_token(lst, &cursor) == 1)
 			;
 		else
-			handle_word(lst, &cursor, &line);
+			handle_word(lst, &cursor);
 	}
 }
