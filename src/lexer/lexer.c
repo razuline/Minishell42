@@ -6,14 +6,12 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 11:45:32 by preltien         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:43:30 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			ft_single_token(t_token **head, t_token **tail, char **c);
-int			ft_double_token(t_token **head, t_token **tail, char **c);
 
 static void	lexer_loop(t_tokenlist *lst, char *line)
 {
@@ -26,13 +24,14 @@ static void	lexer_loop(t_tokenlist *lst, char *line)
 			cursor++;
 		if (!*cursor)
 			break ;
-		if (ft_double_token(lst->head, lst->tail, &cursor) == 1)
+		if (ft_double_token(lst, &cursor) == 1)
 			;
-		else if (ft_single_token(lst->head, lst->tail, &cursor) == 1)
+		else if (ft_single_token(lst, &cursor) == 1)
 			;
 		else
-			handle_word(lst->head, lst->tail, &cursor);
+			handle_word(lst, &cursor);
 	}
+	
 }
 t_token	*lexer(char *line)
 {
