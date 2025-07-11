@@ -3,43 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/01 13:26:17 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:02:17 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*create_token(t_list *lst, char *word, int type, int quote_info)
+t_token *create_token(t_token **head, t_token **tail, char *word, int type, int quote_info)
 {
-	t_token	*new_token;
+    t_token *new_token;
 
-	new_token = malloc(sizeof(t_token));
-	if (!new_token)
-		return (NULL);
-	new_token->value = ft_strdup(word);
-	if (!new_token->value)
-	{
-		free(new_token);
-		return (NULL);
-	}
-	new_token->type = type;
-	new_token->quote_type = quote_info;
-	new_token->next = NULL;
-	if (*(lst->head) == NULL)
-	{
-		*(lst->head) = new_token;
-		*(lst->tail) = new_token;
-	}
-	else
-	{
-		(*(lst->tail))->next = new_token;
-		*(lst->tail) = new_token;
-	}
-	return (new_token);
+    new_token = malloc(sizeof(t_token));
+    if (!new_token)
+        return (NULL);
+    new_token->value = ft_strdup(word);
+    if (!new_token->value)
+    {
+        free(new_token);
+        return (NULL);
+    }
+    new_token->type = type;
+    new_token->quote_type = quote_info;
+    new_token->next = NULL;
+    if (*head == NULL)
+    {
+        *head = new_token;
+        *tail = new_token;
+    }
+    else
+    {
+        (*tail)->next = new_token;
+        *tail = new_token;
+    }
+    return (new_token);
 }
+
 
 char	*get_type_name(int type)
 {

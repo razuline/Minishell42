@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
+#    By: preltien <preltien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 17:31:34 by erazumov          #+#    #+#              #
-#    Updated: 2025/06/18 11:55:05 by erazumov         ###   ########.fr        #
+#    Updated: 2025/07/11 11:19:11 by preltien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ RM = rm -f
 
 # Directories
 SRC_DIR = src/
-OBJ_DIR = obj/
 LIBFT_DIR = libft/
+OBJ_DIR = obj/
 INCLUDES = -I include/
 
 # Libft specifics
@@ -30,8 +30,23 @@ LIBFT_A = $(LIBFT_DIR)/libft.a
 LIBFT_INC = -I $(LIBFT_DIR)/include
 
 # Source Files
-SRC = main.c \
-OBJS = $(addprefix $(OBJ_DIR), $(notdir $(SRC:.c=.o)))
+SRC = src/main.c \
+      src/execution/execution.c \
+      src/execution/execution_utils.c \
+      src/expansion/expansion_append_utils.c \
+      src/expansion/expansion.c \
+      src/expansion/expansion_var_utils.c \
+      src/lexer/lexer.c \
+      src/lexer/lexer_ops_utils.c \
+      src/lexer/lexer_token_utils.c \
+      src/lexer/lexer_word.c \
+      src/lexer/lexer_word_utils.c \
+      src/parser/parser.c \
+      src/parser/parser_free_utils.c \
+      src/parser/parser_print_utils.c \
+      src/parser/parser_utils.c
+OBJS = $(patsubst src/%.c,$(OBJ_DIR)%.o,$(SRC))
+OBJ_DIRS = $(sort $(dir $(OBJS)))
 DEPS = $(OBJS:.o=.d)
 
 # Libraries
@@ -50,19 +65,21 @@ all: $(NAME)
 $(LIBFT_A):
 	@echo "$(BLUE)📘 Building Libft...$(RESET)"
 	@make -s -C $(LIBFT_DIR)
+	
 
 $(NAME): $(OBJS) $(LIBFT_A)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(LDFLAGS) -o $(NAME)
 	@echo "$(GREEN)✅ Compilation successful ➜ $(NAME)$(RESET)"
 
-$(OBJS): | $(OBJ_DIR)
 
 $(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
-	@echo "$(BLUE)📁 Created object directory: $(OBJ_DIR)$(RESET)"
+	@mkdir -p $(OBJ_DIRS)
+	@echo "$(BLUE)📁 Created object directories$(RESET)"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)%.c
-	@$(CC) $(CFLAGS) $(INCLUDES) $(LIBFT_INC) -c $< -o $@
+$(OBJS): | $(OBJ_DIR)
+
+$(OBJ_DIR)%.o: src/%.c
+	$(CC) $(CFLAGS) $(INCLUDES) $(LIBFT_INC) -c $< -o $@
 	@echo "$(YELLOW)🪄 Compiling:$(RESET) $< -> $@"
 
 -include $(DEPS)
