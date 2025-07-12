@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_ops_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 13:40:58 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/10 14:21:55 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:44:45 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_single_token(t_list *lst, char **c)
+int	ft_single_token(t_token_lst *lst, char **c)
 {
 	if (**c == '|')
 	{
@@ -35,7 +35,7 @@ int	ft_single_token(t_list *lst, char **c)
 	return (0);
 }
 
-int	ft_double_token(t_list *lst, char **c)
+int	ft_double_token(t_token_lst *lst, char **c)
 {
 	if (**c == '<' && *(*c + 1) == '<')
 	{

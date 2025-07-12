@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/10 14:39:50 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:38:39 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@
 /******************************************************************************
 *  STRUCTS																		*
 ******************************************************************************/
-
-typedef struct s_list
-{
-	t_token				**head;
-	t_token				**tail;
-}						t_list;
-
 typedef struct s_token
 {
 	char				*value;
@@ -37,6 +30,13 @@ typedef struct s_token
 	int					quote_type;
 	struct s_token		*next;
 }						t_token;
+
+typedef struct s_token_lst
+{
+	t_token				**head;
+	t_token				**tail;
+}						t_token_lst;
+
 
 typedef struct s_redir
 {
@@ -95,16 +95,15 @@ char					*ft_word_end(char *word);
 char					*ft_delete_quotes(char *word);
 
 /* lexer_word_utils.c */
-char					*ft_word_end(char *word);
-char					*ft_delete_quotes(char *word);
+int						handle_word(t_token_lst *lst, char **ch);
 
 /* lexer_ops_utils.c */
-int						ft_single_token(t_list *lst, char **c);
-int						ft_double_token(t_list *lst, char **c);
+int						ft_single_token(t_token_lst *lst, char **c);
+int						ft_double_token(t_token_lst *lst, char **c);
 
 /* lexer_token_utils.c */
-t_token					*create_token(t_list *lst, char *word, int type,
-							int quote_info);
+t_token					*create_token(t_token_lst *lst, char *word, int type, int quote_info);
+char					*get_type_name(int type);
 void					print_tokens(t_token *head);
 void					free_tokens(t_token *head);
 
@@ -143,5 +142,7 @@ void					free_commands(t_command *cmd_head);
 
 /* execution.c */
 int						execute(t_command *cmd_lst, t_shell *state);
+char					*find_cmd_path(char *name, char **envp);
+
 
 #endif

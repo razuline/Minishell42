@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/10 14:38:18 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:43:30 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	lexer_loop(t_token_lst *lst, char *line);
 
 t_token	*lexer(char *line)
 {
@@ -30,7 +32,7 @@ t_token	*lexer(char *line)
 	return (head);
 }
 
-static void	lexer_loop(t_list *lst, char *line)
+static void	lexer_loop(t_token_lst *lst, char *line)
 {
 	char	*cursor;
 

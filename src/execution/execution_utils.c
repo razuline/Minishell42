@@ -3,17 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 10:39:58 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/01 13:15:28 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/11 11:31:22 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*check_dir_path(char *cmd_name);
-static char	*search_in_paths(char *cmd_name, char **path_dir);
+static char	*search_in_path(char *cmd_name, char **path_dir);
+
+static void free_path_dirs(char **paths)
+{
+    int i = 0;
+
+    if (!paths)
+        return;
+    while (paths[i])
+    {
+        free(paths[i]);
+        i++;
+    }
+    free(paths);
+}
 
 char	*find_cmd_path(char *name, char **envp)
 {
@@ -51,7 +65,7 @@ static char	*check_dir_path(char *cmd_name)
 	return (NULL);
 }
 
-static char	*search_in_paths(char *cmd_name, char **path_dirs)
+static char	*search_in_path(char *cmd_name, char **path_dirs)
 {
 	int		i;
 	char	*full_path;

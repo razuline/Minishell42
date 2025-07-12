@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:44:19 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 17:09:34 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/11 11:08:33 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	main(int ac, char **av, char **envp)
 	t_token		*tokens;
 	t_command	*commands;
 
+	(void)ac;
+	(void)av;
 	init_shell_state(&shell_state, envp);
 	while (1)
 	{
