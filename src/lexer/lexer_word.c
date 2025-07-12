@@ -6,16 +6,16 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 13:46:25 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 13:02:19 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/12 15:13:15 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_word_token(t_list *lst, char *start, char *end);
+static int	ft_word_token(t_token_lst *lst, char *start, char *end);
 
 // La détection et la création d'un token de type WORD
-int	handle_word(t_list *lst, char **c)
+int	handle_word(t_token_lst *lst, char **c)
 {
 	int		result;
 	char	*wd_start;
@@ -34,7 +34,7 @@ int	handle_word(t_list *lst, char **c)
 }
 
 // Crée un WORD, détecte son quote_type, et nettoie sa valeur
-static int	ft_word_token(t_list *lst, char *start,
+static int	ft_word_token(t_token_lst *lst, char *start,
 		char *end)
 {
 	int		len;

@@ -1,3 +1,6 @@
 {
-	"codam-norminette-3.highlight-color": "rgba(255, 0, 0, 0.2)"
+	"codam-norminette-3.highlight-color": "rgba(255, 0, 0, 0.2)",
+	"files.associations": {
+		"minishell.h": "c"
+	}
 }

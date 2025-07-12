@@ -6,14 +6,14 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 13:05:12 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/12 15:12:14 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Alloue et initialise un nouveau token, puis l'ajoute à la liste
-t_token	*create_token(t_list *lst, char *word, int type, int quote_info)
+t_token	*create_token(t_token_lst *lst, char *word, int type, int quote_info)
 {
 	t_token	*new_token;
 
@@ -43,7 +43,7 @@ t_token	*create_token(t_list *lst, char *word, int type, int quote_info)
 }
 
 // Utilitaire de débug qui retourne le nom d'un type de token en string
-static char	*get_type_name(int type)
+char	*get_type_name(int type)
 {
 	if (type == WORD)
 		return ("WORD");
