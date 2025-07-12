@@ -12,8 +12,27 @@
 
 #include "minishell.h"
 
+static void	lexer_loop(t_token_lst *lst, char *line);
 
-static void	lexer_loop(t_tokenlist *lst, char *line)
+t_token	*lexer(char *line)
+{
+	t_token	*head;
+	t_token	*tail;
+	t_list	lst;
+
+	if (!line)
+		return (NULL);
+	head = NULL;
+	tail = NULL;
+	lst.head = &head;
+	lst.tail = &tail;
+	if (!line)
+		return (NULL);
+	lexer_loop(&lst, line);
+	return (head);
+}
+
+static void	lexer_loop(t_token_lst *lst, char *line)
 {
 	char	*cursor;
 
@@ -31,23 +50,4 @@ static void	lexer_loop(t_tokenlist *lst, char *line)
 		else
 			handle_word(lst, &cursor);
 	}
-	
 }
-t_token	*lexer(char *line)
-{
-	t_token	*head;
-	t_token	*tail;
-	t_tokenlist	lst;
-
-	if (!line)
-		return (NULL);
-	head = NULL;
-	tail = NULL;
-	lst.head = &head;
-	lst.tail = &tail;
-	if (!line)
-		return (NULL);
-	lexer_loop(&lst, line);
-	return (head);
-}
-

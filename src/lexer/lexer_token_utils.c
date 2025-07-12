@@ -40,7 +40,8 @@ t_token	*create_token(t_tokenlist *lst, char *word, int type, int quote_info)
 	}
 	return (new_token);
 }
- char	*get_type_name(int type)
+
+char	*get_type_name(int type)
 {
 	if (type == WORD)
 		return ("WORD");

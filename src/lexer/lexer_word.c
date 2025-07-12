@@ -56,7 +56,7 @@ static int	ft_word_token(t_tokenlist *lst, char *start,
 		free(extracted);
 		return (1);
 	}
-	create_token(lst, cleaned, WORD, DEFAULT);
+	create_token(lst, cleaned, WORD, quote_type);
 	free(extracted);
 	free(cleaned);
 	return (0);

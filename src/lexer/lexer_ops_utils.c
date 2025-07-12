@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	ft_single_token(t_tokenlist *lst, char **c)
+int	ft_single_token(t_token_lst *lst, char **c)
 {
 	if (**c == '|')
 	{
@@ -35,7 +35,7 @@ int	ft_single_token(t_tokenlist *lst, char **c)
 	return (0);
 }
 
-int	ft_double_token(t_tokenlist *lst, char **c)
+int	ft_double_token(t_token_lst *lst, char **c)
 {
 	if (**c == '<' && *(*c + 1) == '<')
 	{

@@ -31,11 +31,11 @@ typedef struct s_token
 	struct s_token		*next;
 }						t_token;
 
-typedef struct s_tokenlist
+typedef struct s_token_lst
 {
 	t_token				**head;
 	t_token				**tail;
-}						t_tokenlist;
+}						t_token_lst;
 
 
 typedef struct s_redir
@@ -88,7 +88,6 @@ enum					e_quote_type
 /* lexer.c */
 t_token					*lexer(char *line);
 
-
 /* lexer_word.c */
 int						ft_delimiter(char c);
 int						ft_quote_type(char *word, int type, int i);
@@ -96,15 +95,14 @@ char					*ft_word_end(char *word);
 char					*ft_delete_quotes(char *word);
 
 /* lexer_word_utils.c */
-int						handle_word(t_tokenlist *lst, char **ch);
-
+int						handle_word(t_token_lst *lst, char **ch);
 
 /* lexer_ops_utils.c */
-int						ft_single_token(t_tokenlist *lst, char **c);
-int						ft_double_token(t_tokenlist *lst, char **c);
+int						ft_single_token(t_token_lst *lst, char **c);
+int						ft_double_token(t_token_lst *lst, char **c);
 
 /* lexer_token_utils.c */
-t_token					*create_token(t_tokenlist *lst, char *word, int type, int quote_info);
+t_token					*create_token(t_token_lst *lst, char *word, int type, int quote_info);
 char					*get_type_name(int type);
 void					print_tokens(t_token *head);
 void					free_tokens(t_token *head);
