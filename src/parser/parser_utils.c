@@ -6,13 +6,12 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 13:04:53 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 13:13:25 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:30:58 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Alloue et initialise une nouvelle structure t_command
 t_command	*create_command(void)
 {
 	t_command	*new_cmd;
@@ -26,7 +25,6 @@ t_command	*create_command(void)
 	return (new_cmd);
 }
 
-// Gère l'allocation dynamique d'un tableau char **argv
 char	**create_argv(char **old_argv, char *new_str)
 {
 	int		i;
@@ -54,7 +52,6 @@ char	**create_argv(char **old_argv, char *new_str)
 	return (new_argv);
 }
 
-// Ajoute une redirection à la fin de la liste de redirections d'une commande
 void	add_redir_to_cmd(t_command *cmd, t_redir *new_redir)
 {
 	t_redir	*curr;

@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:28:18 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 13:15:20 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:49:36 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 static void	print_argv(char **argv);
 static void	print_redirections(t_redir *redir_lst);
 
-// Vérifie si un type de token est une redirection
 int	ft_redirection(int type)
 {
 	return (type == REDIRECT_IN || type == REDIRECT_OUT || type == APPEND_OUT
 		|| type == HEREDOC);
 }
 
-// Utilitaire de débug qui affiche une liste de commandes structurées
 void	print_commands(t_command *cmd_head)
 {
 	t_command	*curr_cmd;
@@ -40,7 +38,6 @@ void	print_commands(t_command *cmd_head)
 	}
 }
 
-// Utilitaire de débug qui affiche un tableau d'arguments
 static void	print_argv(char **argv)
 {
 	int	i;
@@ -59,7 +56,6 @@ static void	print_argv(char **argv)
 	printf(" argv[%d]: (null)\n", i);
 }
 
-// Utilitaire de débug qui affiche une liste de redirections
 static void	print_redirections(t_redir *redir_lst)
 {
 	t_redir	*curr;

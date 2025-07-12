@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 13:46:25 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 15:13:15 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/12 15:50:20 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	ft_word_token(t_token_lst *lst, char *start, char *end);
 
-// La détection et la création d'un token de type WORD
 int	handle_word(t_token_lst *lst, char **c)
 {
 	int		result;
@@ -33,7 +32,6 @@ int	handle_word(t_token_lst *lst, char **c)
 	return (result);
 }
 
-// Crée un WORD, détecte son quote_type, et nettoie sa valeur
 static int	ft_word_token(t_token_lst *lst, char *start,
 		char *end)
 {

@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 13:07:16 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/27 14:30:53 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static char	*expand_str(const char *value, t_shell *state);
 static int	process_char(const char *value, int *i_ptr, char **res_ptr,
 				t_shell *state);
 
-// Fonction principale, parcourt la liste de tokens, lance l'expansion des WORDs
 int	expand_token(t_token *head, t_shell *state)
 {
 	t_token	*curr;
@@ -42,7 +41,6 @@ int	expand_token(t_token *head, t_shell *state)
 	return (0);
 }
 
-// La reconstruction d'une chaîne en appelant process_char
 static char	*expand_str(const char *value, t_shell *state)
 {
 	char	*result;
@@ -65,7 +63,6 @@ static char	*expand_str(const char *value, t_shell *state)
 	return (result);
 }
 
-// Cœur de la logique, aiguille chaque caractère vers la bonne fonc (append_...)
 static int	process_char(const char *value, int *i_ptr, char **res_ptr,
 		t_shell *state)
 {
@@ -91,3 +88,5 @@ static int	process_char(const char *value, int *i_ptr, char **res_ptr,
 	}
 	return (0);
 }
+
+

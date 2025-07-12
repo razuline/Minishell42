@@ -6,13 +6,12 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 13:40:58 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 15:10:53 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/12 15:49:10 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Crée un token pour un opérateur simple (|, <, >)
 int	ft_single_token(t_token_lst *lst, char **c)
 {
 	if (**c == '|')
@@ -36,7 +35,6 @@ int	ft_single_token(t_token_lst *lst, char **c)
 	return (0);
 }
 
-// Crée un token pour un opérateur double (<<, >>)
 int	ft_double_token(t_token_lst *lst, char **c)
 {
 	if (**c == '<' && *(*c + 1) == '<')

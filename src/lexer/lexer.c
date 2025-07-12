@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 15:15:43 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/12 15:51:01 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	lexer_loop(t_token_lst *lst, char *line);
 
-// Fonction principale, transforme la ligne brute en une liste de tokens
 t_token	*lexer(char *line)
 {
 	t_token		*head;
@@ -33,7 +32,6 @@ t_token	*lexer(char *line)
 	return (head);
 }
 
-// Parcourt la ligne et appelle les autres fonctions
 static void	lexer_loop(t_token_lst *lst, char *line)
 {
 	char	*cursor;

@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:55:09 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 13:20:32 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:52:20 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	process_token(t_command *cmd, t_token **tok_ptr);
 static int	process_pipe(t_command **cmd_ptr, t_token **tok_ptr);
 static int	process_redir(t_command *cmd, t_token **curr_tok);
 
-// Fonction principale, transforme lst de tokens -> lst de commandes structurées
 t_command	*parser(t_token *token_lst)
 {
 	t_command	*cmd_lst_head;
@@ -44,7 +43,6 @@ t_command	*parser(t_token *token_lst)
 	return (cmd_lst_head);
 }
 
-// Aiguille un token vers la bonne fonction (process_token, process_redir...)
 static int	dispatch_token(t_command **cmd_ptr, t_token **tok_ptr)
 {
 	if ((*tok_ptr)->type == WORD)
@@ -57,7 +55,6 @@ static int	dispatch_token(t_command **cmd_ptr, t_token **tok_ptr)
 	return (1);
 }
 
-// Gère un token WORD en l'ajoutant aux arguments
 static int	process_token(t_command *cmd, t_token **tok_ptr)
 {
 	cmd->argv = create_argv(cmd->argv, (*tok_ptr)->value);
@@ -67,7 +64,6 @@ static int	process_token(t_command *cmd, t_token **tok_ptr)
 	return (0);
 }
 
-// Gère un token PIPE en créant une nouvelle commande
 static int	process_pipe(t_command **cmd_ptr, t_token **tok_ptr)
 {
 	t_command	*new_cmd;
@@ -86,7 +82,6 @@ static int	process_pipe(t_command **cmd_ptr, t_token **tok_ptr)
 	return (0);
 }
 
-// Gère un token de redirection en l'ajoutant à la commande
 static int	process_redir(t_command *cmd, t_token **tok_ptr)
 {
 	t_token	*token_file;

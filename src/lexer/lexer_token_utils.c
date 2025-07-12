@@ -6,13 +6,12 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 15:12:14 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/12 15:49:36 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Alloue et initialise un nouveau token, puis l'ajoute à la liste
 t_token	*create_token(t_token_lst *lst, char *word, int type, int quote_info)
 {
 	t_token	*new_token;
@@ -42,7 +41,6 @@ t_token	*create_token(t_token_lst *lst, char *word, int type, int quote_info)
 	return (new_token);
 }
 
-// Utilitaire de débug qui retourne le nom d'un type de token en string
 char	*get_type_name(int type)
 {
 	if (type == WORD)
@@ -61,7 +59,6 @@ char	*get_type_name(int type)
 		return ("UNKNOWN");
 }
 
-// Utilitaire de débug qui affiche le contenu d'une liste de tokens
 void	print_tokens(t_token *head)
 {
 	t_token	*curr;
@@ -76,7 +73,6 @@ void	print_tokens(t_token *head)
 	printf("NULL\n");
 }
 
-// Libère proprement toute la mémoire d'une liste de tokens
 void	free_tokens(t_token *head)
 {
 	t_token	*curr;

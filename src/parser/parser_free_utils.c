@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:28:46 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 13:14:09 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:48:33 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	free_redir(t_redir *redir_head);
 
-// Libère une liste de t_command et tout leur contenu
 void	free_commands(t_command *cmd_head)
 {
 	t_command	*curr;
@@ -31,7 +30,6 @@ void	free_commands(t_command *cmd_head)
 	}
 }
 
-// Libère une liste chaînée de t_redir
 static void	free_redir(t_redir *redir_head)
 {
 	t_redir	*curr;
