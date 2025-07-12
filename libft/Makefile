@@ -6,13 +6,13 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 13:03:55 by erazumov          #+#    #+#              #
-#    Updated: 2025/07/12 15:32:01 by erazumov         ###   ########.fr        #
+#    Updated: 2025/07/12 16:17:34 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 CFLAGS = -Wall -Wextra -Werror
-INCLUDE = -I includes/
+INCLUDE = -I include/
 LIBC = ar rcs
 
 SRC_DIR = src/
@@ -38,30 +38,37 @@ PRINTF_SRC = ft_printf/ft_printf.c ft_printf/ft_formats.c \
 SRC = $(LIBFT_SRC) $(PRINTF_SRC)
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
+# Colors
+RESET = \033[0m
+RED = \033[0;31m
+GREEN = \033[0;32m
+YELLOW = \033[0;33m
+BLUE = \033[0;34m
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(LIBC) $(NAME) $(OBJ)
-	@echo "Compilation successful ➜ $(NAME)"
+	@echo "$(GREEN)✅ Compilation successful ➜ $(NAME)$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@echo "$(YELLOW)🪄 Compiling:$(RESET) $< -> $@"
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 clean:
 	@rm -rf $(OBJ_DIR)
-	@echo "Object files removed"
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "Executable removed"
+	@echo "$(RED)🗑️ Executables libft removed$(RESET)"
 
 re: fclean all
 
 norm:
-	@norminette $(SRC_DIR) includes/ | grep -v "OK" || true
+	@norminette $(SRC_DIR) include/ | grep -v "OK" || true
 
 .PHONY: all clean fclean re norm

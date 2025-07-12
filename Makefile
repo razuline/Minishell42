@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 17:31:34 by erazumov          #+#    #+#              #
-#    Updated: 2025/07/12 15:28:29 by erazumov         ###   ########.fr        #
+#    Updated: 2025/07/12 16:18:43 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,10 @@ CFLAGS += -MMD -MP
 RM = rm -f
 
 # Directories
-SRC_DIR = src/
-LIBFT_DIR = libft/
-OBJ_DIR = obj/
-INCLUDES = -I include/
+SRC_DIR = src
+LIBFT_DIR = libft
+OBJ_DIR = obj
+INCLUDES = -I include
 
 # Libft specifics
 LIBFT_A = $(LIBFT_DIR)/libft.a
@@ -45,7 +45,7 @@ SRC = src/main.c \
       src/parser/parser_free_utils.c \
       src/parser/parser_print_utils.c \
       src/parser/parser_utils.c
-OBJS = $(patsubst src/%.c,$(OBJ_DIR)%.o,$(SRC))
+OBJS = $(patsubst src/%.c,$(OBJ_DIR)/%.o,$(SRC))
 OBJ_DIRS = $(sort $(dir $(OBJS)))
 DEPS = $(OBJS:.o=.d)
 
@@ -71,14 +71,13 @@ $(NAME): $(OBJS) $(LIBFT_A)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(LDFLAGS) -o $(NAME)
 	@echo "$(GREEN)✅ Compilation successful ➜ $(NAME)$(RESET)"
 
-
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIRS)
-	@echo "$(BLUE)📁 Created object directories$(RESET)"
+	@echo "$(BLUE)📁 Created object directories for minishell$(RESET)"
 
 $(OBJS): | $(OBJ_DIR)
 
-$(OBJ_DIR)%.o: src/%.c
+$(OBJ_DIR)/%.o: src/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) $(LIBFT_INC) -c $< -o $@
 	@echo "$(YELLOW)🪄 Compiling:$(RESET) $< -> $@"
 
