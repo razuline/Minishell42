@@ -1,21 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_printchar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 17:01:12 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 15:31:18 by erazumov         ###   ########.fr       */
+/*   Created: 2024/11/25 14:14:43 by erazumov          #+#    #+#             */
+/*   Updated: 2025/04/10 13:49:06 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isspace(int c)
+int	ft_printchar(char c)
 {
-	if (c == ' ' || c == '\f' || c == '\n' || c == '\r'
-		|| c == '\t' || c == '\v')
-		return (1);
+	write(1, &c, 1);
+	return (1);
+}
+/*
+int	main(void)
+{
+	char	c;
+
+	c = 'G';
+	ft_printchar(c);
+	ft_printchar('\n');
 	return (0);
 }
+*/

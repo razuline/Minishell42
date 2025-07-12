@@ -1,33 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   ft_printnbr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 11:14:28 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/18 11:15:55 by erazumov         ###   ########.fr       */
+/*   Created: 2024/11/28 14:46:37 by erazumov          #+#    #+#             */
+/*   Updated: 2025/04/10 13:49:06 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* Adds the node ’new’ at the end of the list.
-lst: The address of a pointer to the first node of a list.
-new: The address of a pointer to the node to be added.*/
-
 #include "libft.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+int	ft_printnbr(int n)
 {
-	t_list	*last;
+	int		len;
+	char	*num;
 
-	if (lst)
-	{
-		if (*lst)
-		{
-			last = ft_lstlast(*lst);
-			last->next = new;
-		}
-		else
-			*lst = new;
-	}
+	len = 0;
+	num = ft_itoa(n);
+	len = ft_printstr(num);
+	free (num);
+	return (len);
 }
+/*
+#include <stdio.h>
+
+int	main(void)
+{
+	int nb;
+	int	len;
+
+	nb = 10;
+	len = ft_printnbr(nb);
+	printf("%d\n", len);
+	return (0);
+}
+*/

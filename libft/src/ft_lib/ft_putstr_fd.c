@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 11:22:08 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/18 11:24:34 by erazumov         ###   ########.fr       */
+/*   Created: 2024/11/14 18:42:12 by erazumov          #+#    #+#             */
+/*   Updated: 2024/11/26 15:16:31 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* Iterates through the list ’lst’ and applies the function ’f’ to the content
-of each node.
-lst: The address of a pointer to a node.
-f: The address of the function to apply to each node’s content. */
+/* Outputs the string ’s’ to the given file descriptor. External functions:
+write. Returns nothing. */
 
 #include "libft.h"
 
-void	ft_lstiter(t_list *lst, void (*f)(void*))
+void	ft_putstr_fd(char *s, int fd)
 {
-	if (!f)
-		return ;
-	while (lst)
-	{
-		(*f)(lst->content);
-		lst = lst->next;
-	}
+	while (*s)
+		write(fd, s++, 1);
 }
+/*
+int	main(void)
+{
+	char	*s;
+
+	s = "Hello!";
+	ft_putstr_fd(s, 2);
+	return (0);
+}
+*/

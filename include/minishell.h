@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 14:38:39 by preltien         ###   ########.fr       */
+/*   Updated: 2025/07/12 15:20:52 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ enum					e_quote_type
 t_token					*lexer(char *line);
 
 /* lexer_word.c */
-int						ft_delimiter(char c);
-int						ft_quote_type(char *word, int type, int i);
 char					*ft_word_end(char *word);
 char					*ft_delete_quotes(char *word);
 

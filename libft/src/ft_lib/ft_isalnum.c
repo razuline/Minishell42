@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 11:07:48 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/18 11:13:07 by erazumov         ###   ########.fr       */
+/*   Created: 2024/11/09 18:13:06 by erazumov          #+#    #+#             */
+/*   Updated: 2024/11/26 14:23:34 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* Counts the number of nodes in the list.
-lst: The beginning of the list.
-Return value: The length of the list. */
+/* Checks for an alphanumeric character;
+it is equivalent to (isalpha(c) || isdigit(c)). */
 
 #include "libft.h"
 
-int	ft_lstsize(t_list *lst)
+int	ft_isalnum(int c)
 {
-	size_t	i;
-
-	i = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
+	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+		|| (c >= '0' && c <= '9'))
+		return (1);
+	return (0);
 }
+/*
+int	main(void)
+{
+	int	c;
+
+	c = '5';
+	if (ft_isalnum(c) == 1)
+		write (1, "Alpha or digit", 14);
+	else
+		write (1, "Another character", 17);
+	return (0);
+}
+*/

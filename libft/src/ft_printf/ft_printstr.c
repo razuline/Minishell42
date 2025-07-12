@@ -1,27 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
+/*   ft_printstr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 11:02:12 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/18 11:09:28 by erazumov         ###   ########.fr       */
+/*   Created: 2024/11/27 13:07:02 by erazumov          #+#    #+#             */
+/*   Updated: 2025/04/10 13:49:06 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* Adds the node ’new’ at the beginning of the list.
-lst: The address of a pointer to the first node of a list.
-new: The address of a pointer to the node to be added. */
-
 #include "libft.h"
 
-void	ft_lstadd_front(t_list **lst, t_list *new)
+static void	ft_putstr(char *str)
 {
-	if (lst)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		if (*lst)
-			new->next = *lst;
-		*lst = new;
+		write(1, &str[i], 1);
+		i++;
 	}
 }
+
+int	ft_printstr(char *str)
+{
+	int		len;
+
+	len = 0;
+	if (str == NULL)
+	{
+		ft_putstr("(null)");
+		return (6);
+	}
+	while (str[len])
+	{
+		write(1, &str[len], 1);
+		len++;
+	}
+	return (len);
+}
+/*
+int	main(void)
+{
+	char	*str;
+
+	str = "Hello";
+	ft_putstr(str);
+	return (0);
+}
+*/

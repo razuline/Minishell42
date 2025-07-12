@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 11:17:00 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/18 11:18:33 by erazumov         ###   ########.fr       */
+/*   Created: 2024/11/14 18:42:46 by erazumov          #+#    #+#             */
+/*   Updated: 2024/11/26 15:18:16 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* Takes a node as parameter and frees its content using the function ’del’.
-Free the node itself but does NOT free the next node.
-lst: The node to free.
-del: The address of the function used to delete the content. */
+/* Outputs the string ’s’ to the given file descriptor followed by a newline.
+External functions: write. Returns nothing. */
 
 #include "libft.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
+void	ft_putendl_fd(char *s, int fd)
 {
-	if (!del)
-		return ;
-	if (lst)
-	{
-		(*del)(lst->content);
-		free(lst);
-	}
+	while (*s)
+		write(fd, s++, 1);
+	write(fd, "\n", 1);
 }
+/*
+int	main(void)
+{
+	char	*s;
+
+	s = "Hello!";
+	ft_putendl_fd(s, 2);
+	return (0);
+}
+*/

@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 13:45:52 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/18 10:57:59 by erazumov         ###   ########.fr       */
+/*   Created: 2024/11/09 18:12:49 by erazumov          #+#    #+#             */
+/*   Updated: 2024/11/26 14:22:50 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* Allocates memory (using malloc(3)) and returns a new node. The ’content’
-member variable is initialized with the given parameter ’content’.
-The variable ’next’ is initialized to NULL. */
+/* Checks for a digit (0 through 9). */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void *content)
+int	ft_isdigit(int c)
 {
-	t_list	*lst;
-
-	lst = (t_list *)malloc(sizeof(*lst));
-	if (!(lst))
-		return (NULL);
-	lst->content = content;
-	lst->next = NULL;
-	return (lst);
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
 }
+/*
+int	main(void)
+{
+	int	c;
+
+	c = '1';
+	if (ft_isdigit(c) == 1)
+		write(1, "Digit", 5);
+	else
+		write(1, "Another character", 17);
+	return (0);
+}
+*/
