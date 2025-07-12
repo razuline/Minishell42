@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 14:38:39 by preltien         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:58:05 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,22 @@ void					free_commands(t_command *cmd_head);
 /* -------------------------- EXECUTION --------------------------------------*/
 
 /* execution.c */
-int						execute(t_command *cmd_lst, t_shell *state);
-char					*find_cmd_path(char *name, char **envp);
+int	execute				(t_command *cmds, t_shell *state);
 
+
+/* execution_utils.c */
+int						is_builtin(char *cmd);
+int						exec_builtin(char **args, t_shell *state);
+void					get_absolute_path(char **cmd, t_shell *state);
+void					ft_free_array(char **array);
+
+/* builtin.c */
+int						builtin_echo(char **argv);
+int						builtin_cd(char **argv);
+int						builtin_pwd(void);
+int						builtin_env(char **envp);
+int						builtin_export(char **argv);
+int						builtin_unset(char **argv);
+int						builtin_exit(char **argv);
 
 #endif

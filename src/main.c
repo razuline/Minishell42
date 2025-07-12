@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:44:19 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 11:08:33 by preltien         ###   ########.fr       */
+/*   Updated: 2025/07/11 18:07:26 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(int ac, char **av, char **envp)
 	t_shell		shell_state;
 	t_token		*tokens;
 	t_command	*commands;
+	t_token		*tmp;
 
 	(void)ac;
 	(void)av;
@@ -54,6 +55,9 @@ int	main(int ac, char **av, char **envp)
 		if (*line != '\0' && !is_whitespace(line))
 		{
 			tokens = lexer(line);
+			tmp = tokens;
+			while (tmp)
+				tmp = tmp->next;
 			if (tokens && expand_token(tokens, &shell_state) != 0)
 			{
 				free_tokens(tokens);
@@ -66,7 +70,7 @@ int	main(int ac, char **av, char **envp)
 		free_tokens(tokens);
 		if (commands != NULL)
 		{
-			// shell_state.exit_code = execute(commands, &shell_state);
+			shell_state.exit_code = execute(commands, &shell_state);
 		}
 		free_commands(commands);
 	}
