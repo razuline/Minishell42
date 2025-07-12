@@ -6,17 +6,19 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:50:08 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/10 14:24:03 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:03:38 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Vérifie si un caractère est un séparateur de mot
 static int	ft_delimiter(char c)
 {
 	return (ft_isspace(c) || c == '|' || c == '<' || c == '>');
 }
 
+// Détermine l'état actuel des guillemets (dedans ou dehors)
 static int	ft_quote_type(char *word, int type, int i)
 {
 	if (word[i] == '\'' && type == DEFAULT)
@@ -30,6 +32,7 @@ static int	ft_quote_type(char *word, int type, int i)
 	return (type);
 }
 
+// Trouve la fin d'un mot en respectant les guillemets
 char	*ft_word_end(char *word)
 {
 	int		i;
@@ -49,6 +52,7 @@ char	*ft_word_end(char *word)
 	return (word + i);
 }
 
+// Retourne une nouvelle chaîne sans les guillemets qui l'entourent
 char	*ft_delete_quotes(char *word)
 {
 	char	*result;

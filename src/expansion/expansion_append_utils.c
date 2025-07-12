@@ -6,12 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:20:05 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 11:38:12 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:08:02 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Ajoute un caractère à la fin d'une chaîne de résultat
 int	append_char(char **res_ptr, char c)
 {
 	char	buffer[2];
@@ -27,11 +28,13 @@ int	append_char(char **res_ptr, char c)
 	return (0);
 }
 
+// Ajoute un $ littéral au résultat
 int	append_dollar(char **res_ptr)
 {
 	return (append_char(res_ptr, '$'));
 }
 
+// Ajoute la valeur de $? au résultat
 int	append_exit_status(char **res_ptr, t_shell *state)
 {
 	char	*exit_code_str;

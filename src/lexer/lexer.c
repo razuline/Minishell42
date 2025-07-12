@@ -6,12 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/10 14:38:18 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:00:50 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Fonction principale, transforme la ligne brute en une liste de tokens
 t_token	*lexer(char *line)
 {
 	t_token	*head;
@@ -30,6 +31,7 @@ t_token	*lexer(char *line)
 	return (head);
 }
 
+// Parcourt la ligne et appelle les autres fonctions
 static void	lexer_loop(t_list *lst, char *line)
 {
 	char	*cursor;

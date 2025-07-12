@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:19:48 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 14:13:32 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:09:04 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static char	*get_var_name(const char *input, int *i_ptr);
 static int	is_valid_var(char c);
 
+// Gère le remplacement d'une variable d'environnement ($VAR)
 int	append_env_var(char **res_ptr, const char *input, int *i_ptr)
 {
 	char	*var_name;
@@ -37,6 +38,7 @@ int	append_env_var(char **res_ptr, const char *input, int *i_ptr)
 	return (0);
 }
 
+// Extrait un nom de variable valide depuis une chaîne et avance le curseur
 static char	*get_var_name(const char *input, int *i_ptr)
 {
 	int		len;
@@ -54,6 +56,7 @@ static char	*get_var_name(const char *input, int *i_ptr)
 	return (var_name);
 }
 
+// Vérifie si un caractère est valide pour un nom de variable
 static int	is_valid_var(char c)
 {
 	return (ft_isalnum(c) || c == '_');
