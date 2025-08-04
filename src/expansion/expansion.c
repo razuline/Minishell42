@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 15:53:49 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:22:14 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,3 @@ static int	process_char(const char *value, int *i_ptr, char **res_ptr,
 	}
 	return (0);
 }
-
-

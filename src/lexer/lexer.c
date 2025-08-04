@@ -6,85 +6,48 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 15:15:33 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:18:08 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			ft_single_token(t_token **head, t_token **tail, char **c);
-int			ft_double_token(t_token **head, t_token **tail, char **c);
-int			handle_word(t_token **head, t_token **tail, char **ch);
+static void	lexer_loop(t_token_lst *lst, char *line);
 
 t_token	*lexer(char *line)
 {
-	char	*c;
-	t_token	*head;
-	t_token	*tail;
+	t_token_lst	lst;
 
-	c = line;
-	head = NULL;
-	tail = NULL;
 	if (!line)
 		return (NULL);
+	lst.head = NULL;
+	lst.tail = NULL;
+	lexer_loop(&lst, line);
+	return (lst.head);
+}
+
+static void	lexer_loop(t_token_lst *lst, char *line)
+{
+	char	*c;
+
+	c = line;
 	while (*c)
 	{
 		while (*c && ft_isspace(*c))
 			c++;
 		if (!*c)
 			break ;
-		if (ft_double_token(&head, &tail, &c) == 1)
+		if (ft_double_token(lst, &c) == 1)
 			;
-		else if (ft_single_token(&head, &tail, &c) == 1)
+		else if (ft_single_token(lst, &c) == 1)
 			;
 		else
-			handle_word(&head, &tail, &c);
-	}
-	return (head);
-}
-
-int	ft_single_token(t_token **head, t_token **tail, char **c)
-{
-	if (**c == '|')
-	{
-		create_token(head, tail, "|", PIPE, DEFAULT);
-		*c += 1;
-		return (1);
-	}
-	else if (**c == '<')
-	{
-		create_token(head, tail, "<", REDIRECT_IN, DEFAULT);
-		*c += 1;
-		return (1);
-	}
-	else if (**c == '>')
-	{
-		create_token(head, tail, ">", REDIRECT_OUT, DEFAULT);
-		*c += 1;
-		return (1);
+			handle_word(lst, &c);
 	}
 	return (0);
 }
 
-int	ft_double_token(t_token **head, t_token **tail, char **c)
-{
-	if (**c == '<' && *(*c + 1) == '<')
-	{
-		create_token(head, tail, "<<", HEREDOC, DEFAULT);
-		*c += 2;
-		return (1);
-	}
-	else if (**c == '>' && *(*c + 1) == '>')
-	{
-		create_token(head, tail, ">>", APPEND_OUT, DEFAULT);
-		*c += 2;
-		return (1);
-	}
-	return (0);
-}
-
-static int	ft_word_token(t_token **head, t_token **tail, char *start,
-		char *end)
+static int	ft_word_token(t_token_lst *lst, char *start, char *end)
 {
 	int		len;
 	char	*extracted;
@@ -96,19 +59,24 @@ static int	ft_word_token(t_token **head, t_token **tail, char *start,
 	if (!extracted)
 		return (1);
 	quote_type = get_quote_type(extracted);
-	cleaned = ft_delete_word_quotes(extracted);
+	cleaned = delete_word_quotes(extracted);
 	if (!cleaned)
 	{
 		free(extracted);
 		return (1);
 	}
-	create_token(head, tail, cleaned, WORD, quote_type);
+	if (create_token(lst, cleaned, WORD, quote_type) == NULL)
+	{
+		free(extracted);
+		free(cleaned);
+		return (0);
+	}
 	free(extracted);
 	free(cleaned);
 	return (0);
 }
 
-int	handle_word(t_token **head, t_token **tail, char **c)
+int	handle_word(t_token_lst *lst, char **c)
 {
 	int		result;
 	char	*wd_start;
@@ -121,7 +89,7 @@ int	handle_word(t_token **head, t_token **tail, char **c)
 		*c = wd_end;
 		return (0);
 	}
-	result = ft_word_token(head, tail, wd_start, wd_end);
+	result = ft_word_token(lst, wd_start, wd_end);
 	*c = wd_end;
 	return (result);
 }

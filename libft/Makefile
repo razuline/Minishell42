@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 13:03:55 by erazumov          #+#    #+#              #
-#    Updated: 2025/06/18 11:57:43 by erazumov         ###   ########.fr        #
+#    Updated: 2025/07/12 16:32:22 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,11 +63,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
-	@echo "$(BLUE)📁 Created object directory: $(OBJ_DIR)$(RESET)"
 
 clean:
 	@rm -rf $(OBJ_DIR)
-	@echo "$(RED)🧹 Object files removed$(RESET)"
 
 fclean: clean
 	@rm -f $(NAME)

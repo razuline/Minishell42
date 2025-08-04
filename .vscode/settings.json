@@ -3,5 +3,10 @@
 	"cSpell.words": [
 		"erazumov",
 		"minishell"
-	]
+	],
+	"files.associations": {
+		"*.c": "c",
+		"minishell.h": "c",
+		"libft.h": "c"
+	}
 }

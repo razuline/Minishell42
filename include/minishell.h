@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 15:34:20 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:20:01 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 /******************************************************************************
 *  STRUCTS																		*
 ******************************************************************************/
-
 typedef struct s_token
 {
 	char				*value;
@@ -31,6 +30,12 @@ typedef struct s_token
 	int					quote_type;
 	struct s_token		*next;
 }						t_token;
+
+typedef struct s_token_lst
+{
+	t_token				**head;
+	t_token				**tail;
+}						t_token_lst;
 
 typedef struct s_redir
 {
@@ -81,22 +86,18 @@ enum					e_quote_type
 
 /* lexer.c */
 t_token					*lexer(char *line);
-int						ft_single_token(t_token **head, t_token **tail,
-							char **c);
-int						ft_double_token(t_token **head, t_token **tail,
-							char **c);
-int						handle_word(t_token **head, t_token **tail, char **ch);
+int						handle_word(t_token_lst *lst, char **c);
 
 /* lexer_word_utils.c */
 int						ft_delimiter(char c);
 int						upd_quote_state(char *word, int type, int i);
 int						get_quote_type(char *word);
 char					*ft_word_end(char *word);
-char					*ft_delete_word_quotes(char *word);
+char					*delete_word_quotes(char *word);
 
 /* lexer_token_utils.c */
-t_token					*create_token(t_token **head, t_token **tail,
-							char *word, int type, int quote_info);
+t_token					*create_token(t_token_lst *lst, char *word, int type,
+							int quote_info);
 char					*get_type_name(int type);
 void					print_tokens(t_token *head);
 void					free_tokens(t_token *head);
@@ -117,7 +118,8 @@ size_t					calcul_expanded_len(const char *value, t_shell *state);
 int						append_char(char **res_ptr, char c);
 int						append_dollar(char **res_ptr);
 int						append_exit_status(char **res_ptr, t_shell *state);
-size_t					append_str_to_res(char *dest, const char *src, size_t j);
+size_t					append_str_to_res(char *dest, const char *src,
+							size_t j);
 
 /* -------------------------- PARSER -----------------------------------------*/
 
@@ -135,5 +137,11 @@ void					print_commands(t_command *cmd_head);
 
 /* parser_free_utils.c */
 void					free_commands(t_command *cmd_head);
+
+/* -------------------------- EXECUTION --------------------------------------*/
+
+/* execution.c */
+int						execute(t_command *cmd_lst, t_shell *state);
+char					*find_cmd_path(char *name, char **envp);
 
 #endif

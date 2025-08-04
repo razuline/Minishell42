@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:50:08 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 15:19:54 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:20:38 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_delimiter(char c)
+static int	ft_delimiter(char c)
 {
 	return (ft_isspace(c) || c == '|' || c == '<' || c == '>');
 }
@@ -63,11 +63,12 @@ char	*ft_word_end(char *word)
 	}
 	return (word + i);
 }
+
 /*
 ** Prend une chaîne brute extraite par le lexer (ex: hello"'world')
 ** et retourne une nouvelle chaîne "propre" (helloworld).
 */
-char	*ft_delete_word_quotes(char *word)
+char	*delete_word_quotes(char *word)
 {
 	int		i;
 	int		j;
