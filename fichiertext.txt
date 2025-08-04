@@ -1,0 +1,3 @@
+du Blabla dans le texte
+[?2004hminishell> c[K
+[?2004l[?2004hminishell> echo "du Blabla dans le texte" >> fichiertext.txt[C[C[C[C[C[C[C[C[C[C[C[C[20Pvalgrind echo fichiertest.txt[C[C[C[C^C[?2004l

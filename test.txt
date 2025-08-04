@@ -1,0 +1,2 @@
+blablablalblbalblablablalblablalb
+[?2004hminishell> echo "blablablalblbalblablablalblablalb" > test.txt[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K"blablablalblbalblablablalblablalb" > test.txt[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K^C[?2004l

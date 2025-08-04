@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:00:00 by preltien          #+#    #+#             */
-/*   Updated: 2025/07/11 16:58:31 by preltien         ###   ########.fr       */
+/*   Updated: 2025/07/19 19:29:23 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,27 +93,6 @@ int	builtin_env(char **envp)
 	}
 	return (0);
 }
-
-/*
- * export : stub
- */
-int	builtin_export(char **argv)
-{
-	(void)argv;
-	printf("minishell: export: not implemented\n");
-	return (0);
-}
-
-/*
- * unset : stub
- */
-int	builtin_unset(char **argv)
-{
-	(void)argv;
-	printf("minishell: unset: not implemented\n");
-	return (0);
-}
-
 /*
  * exit : quitte le shell
  */

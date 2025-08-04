@@ -1,0 +1,10 @@
+echo Hello World
+pwd
+export VAR42=42
+echo $VAR42
+cd /tmp
+pwd
+ls | wc -l
+echo test > testfile
+cat testfile
+exit

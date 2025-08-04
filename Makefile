@@ -6,7 +6,7 @@
 #    By: preltien <preltien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 17:31:34 by erazumov          #+#    #+#              #
-#    Updated: 2025/07/11 17:07:03 by preltien         ###   ########.fr        #
+#    Updated: 2025/07/20 16:06:47 by preltien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,13 @@ SRC = src/main.c \
       src/parser/parser_free_utils.c \
       src/parser/parser_print_utils.c \
       src/parser/parser_utils.c \
-	  src/execution/builtin.c
+	  src/execution/builtin.c \
+	  src/execution/pipex.c \
+	  src/execution/redir.c \
+	  src/execution/unset.c \
+	  src/execution/export.c \
+	  src/execution/get_path.c \
+	  src/execution/env.c
 OBJS = $(patsubst src/%.c,$(OBJ_DIR)%.o,$(SRC))
 OBJ_DIRS = $(sort $(dir $(OBJS)))
 DEPS = $(OBJS:.o=.d)

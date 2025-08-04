@@ -1,0 +1,98 @@
+Testing Minishell...
+minishell> 
+minishell> > echo Hello World
+minishell: No such file or directory
+minishell> exit
+minishell> 
+minishell> > pwd
+[WARNING] Empty command, skipping...
+minishell> exit
+minishell> 
+minishell> > ls -l
+minishell: No such file or directory
+minishell> exit
+minishell> 
+minishell> > env
+[WARNING] Empty command, skipping...
+minishell> exit
+minishell> 
+minishell> > echo Hello | cat
+execve: No such file or directory
+minishell> exit
+minishell> 
+minishell> > ls | grep minishell
+minishell: syntax error near unexpected token '|'
+minishell> exit
+minishell> 
+minishell> > cat Makefile | wc -l
+execve: Permission denied
+0
+minishell> exit
+minishell> 
+minishell> > echo test1 > out.txt
+minishell: No such file or directory
+minishell> exit
+minishell> 
+minishell> > echo test2 >> out.txt
+minishell: No such file or directory
+minishell> exit
+minishell> 
+minishell> > cat < out.txt
+[WARNING] Empty command, skipping...
+minishell> exit
+minishell> 
+minishell> > echo $HOME
+minishell: Permission denied
+minishell> exit
+minishell> 
+minishell> > export VAR42=42
+minishell: No such file or directory
+minishell> exit
+minishell> 
+minishell> > echo $VAR42
+minishell: Permission denied
+minishell> exit
+minishell> 
+minishell> > unset VAR42
+minishell: No such file or directory
+minishell> exit
+minishell> 
+minishell> > echo $VAR42
+minishell: Permission denied
+minishell> exit
+minishell> 
+minishell> > echo $?
+minishell: No such file or directory
+minishell> exit
+minishell> 
+minishell> > cd /tmp && pwd
+minishell: Permission denied
+minishell> exit
+minishell> 
+minishell> > cd -
+minishell: No such file or directory
+minishell> exit
+minishell> 
+minishell> > exit
+[WARNING] Empty command, skipping...
+minishell> exit
+minishell> 
+minishell> > | ls
+minishell: syntax error near unexpected token
+minishell> exit
+minishell> 
+minishell> > ls || echo fail
+minishell: syntax error near unexpected token '|'
+minishell> exit
+minishell> 
+minishell> > cat <
+minishell: syntax error near unexpected token
+minishell> exit
+minishell> 
+minishell> > echo >
+minishell: syntax error near unexpected token
+minishell> exit
+minishell> 
+minishell> > echo hello >>> out.txt
+minishell: syntax error near unexpected token
+minishell> exit

@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 16:58:05 by preltien         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:07:50 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_shell_state
 {
 	char				**envp;
 	int					exit_code;
+	int					envp_allocated;
 }						t_shell;
 
 /******************************************************************************
@@ -63,13 +64,13 @@ typedef struct s_shell_state
 ******************************************************************************/
 enum					e_token_type
 {
-	WORD,
-	PIPE,
-	REDIRECT_IN,
-	REDIRECT_OUT,
-	APPEND_OUT,
-	HEREDOC,
-	ENV_VAR
+	WORD = 0,
+	PIPE = 1,
+	REDIRECT_IN = 2,
+	REDIRECT_OUT = 3,
+	APPEND_OUT = 4,
+	HEREDOC = 5,
+	ENV_VAR = 6
 };
 
 enum					e_quote_type
@@ -149,16 +150,38 @@ int	execute				(t_command *cmds, t_shell *state);
 /* execution_utils.c */
 int						is_builtin(char *cmd);
 int						exec_builtin(char **args, t_shell *state);
-void					get_absolute_path(char **cmd, t_shell *state);
 void					ft_free_array(char **array);
+
 
 /* builtin.c */
 int						builtin_echo(char **argv);
 int						builtin_cd(char **argv);
 int						builtin_pwd(void);
 int						builtin_env(char **envp);
-int						builtin_export(char **argv);
-int						builtin_unset(char **argv);
 int						builtin_exit(char **argv);
 
+/*pipex.c*/
+int						pipex_exec_loop(t_command *cmds, t_shell *state);
+int						has_pipe(t_command *cmds);
+
+/*redir*/
+int						here_document(const char *limiter);
+int 					apply_redirections(t_redir *redir);
+
+/*export*/
+int						builtin_export(t_shell *state, char **argv);
+
+/*unset*/
+int						builtin_unset(char **argv, t_shell *state);
+int						remove_env_var(char ***envp, const char *var);
+
+/*get_path*/
+char					*get_path_env(t_shell *state);
+char					*find_executable_path(char *cmd, char **path_split);
+void					get_absolute_path(char **cmd, t_shell *state);
+
+/*env*/
+void					print_env(t_shell *state);
+int						set_env_var(t_shell *state, const char *key, const char *value);
+char					**duplicate_environ(void);
 #endif

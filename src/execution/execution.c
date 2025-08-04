@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 10:29:38 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 18:26:57 by preltien         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,16 +5,15 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-extern char	**environ;
+extern char **environ;
 
 /*
  * Exécute une commande externe via fork + execve
  */
-static int	exec_cmd(char **cmd, t_shell *state)
+static int exec_cmd(t_command *cmd, t_shell *state)
 {
 	pid_t	pid;
 	int		status;
-
 	pid = fork();
 	if (pid == -1)
 	{
@@ -36,7 +23,22 @@ static int	exec_cmd(char **cmd, t_shell *state)
 	}
 	else if (pid == 0)
 	{
-		execve(cmd[0], cmd, state->envp);
+		if (cmd->redir)
+		{
+			t_redir *r = cmd->redir;
+			while (r)
+			{
+				r = r->next;
+			}
+		}
+		else
+
+		if (apply_redirections(cmd->redir) < 0)
+		{
+			fprintf(stderr, "[ERROR] Failed to apply redirections\n");
+			exit(EXIT_FAILURE);
+		}
+		execve(cmd->argv[0], cmd->argv, state->envp);
 		perror("minishell");
 		exit(EXIT_FAILURE);
 	}
@@ -54,43 +56,57 @@ static int	exec_cmd(char **cmd, t_shell *state)
 /*
  * Parcourt la liste des commandes et les exécute
  */
-int	execute(t_command *cmds, t_shell *state)
+int execute(t_command *cmds, t_shell *state)
 {
-	t_command	*cmd;
-	int			ret;
+    t_command *cmd;
+    int ret = 0;
 
-	cmd = cmds;
-	ret = 0;
-	if (!cmd)
-	{
-		fprintf(stderr, "[ERROR] cmd is NULL in execute\n");
-		return (1);
-	}
-	while (cmd)
-	{
-		if (!cmd->argv || !cmd->argv[0])
-		{
-			fprintf(stderr, "[WARNING] Empty command, skipping...\n");
-			cmd = cmd->next;
-			continue ;
-		}
-		printf("is_builtin ?? %i\n", is_builtin(cmd->argv[0]));
-		if (is_builtin(cmd->argv[0]))
-			ret = exec_builtin(cmd->argv, state);
-		else
-		{
-			get_absolute_path(cmd->argv, state);
-			if (cmd->argv[0])
-				ret = exec_cmd(cmd->argv, state);
-			else
-			{
-				fprintf(stderr, "minishell: command not found: %s\n",
-					cmd->argv[0]);
-				ret = 127;
-				state->exit_code = ret;
-			}
-		}
-		cmd = cmd->next;
-	}
-	return (ret);
+    if (!cmds)
+    {
+        fprintf(stderr, "[ERROR] cmd is NULL in execute\n");
+        return (1);
+    }
+
+    if (has_pipe(cmds))
+        return pipex_exec_loop(cmds, state);
+
+    cmd = cmds;
+
+    if (!cmd->argv || !cmd->argv[0])
+    {
+        fprintf(stderr, "[WARNING] Empty command, skipping...\n");
+        return (0);
+    }
+
+    if (is_builtin(cmd->argv[0]))
+    {
+        // ✅ Exécuter dans le parent pour les builtins
+        if (apply_redirections(cmd->redir) < 0)
+        {
+            fprintf(stderr, "[ERROR] Failed to apply redirections\n");
+            return (1);
+        }
+        ret = exec_builtin(cmd->argv, state);
+        state->exit_code = ret;
+        return ret;
+    }
+    else
+    {
+        get_absolute_path(cmd->argv, state);
+        if (cmd->argv[0])
+        {
+            ret = exec_cmd(cmd, state);
+        }
+        else
+        {
+            fprintf(stderr, "minishell: command not found: %s\n",
+                    cmd->argv[0]);
+            ret = 127;
+        }
+    }
+
+    state->exit_code = ret;
+    return ret;
 }
+
+

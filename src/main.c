@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:44:19 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 18:07:26 by preltien         ###   ########.fr       */
+/*   Updated: 2025/07/20 14:28:24 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,14 @@ int	is_whitespace(char *str)
 	return (1);
 }
 
-void	init_shell_state(t_shell *state, char **envp)
+void	init_shell_state(t_shell *state)
 {
-	state->envp = envp;
+	state->envp = duplicate_environ();
+	if (!state->envp)
+	{
+		perror("Erreur lors de la duplication de l'environnement");
+		exit(EXIT_FAILURE);
+	}
 	state->exit_code = 0;
 }
 
@@ -39,7 +44,8 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	init_shell_state(&shell_state, envp);
+	(void)envp;
+	init_shell_state(&shell_state);
 	while (1)
 	{
 		tokens = NULL;
@@ -75,6 +81,7 @@ int	main(int ac, char **av, char **envp)
 		free_commands(commands);
 	}
 	rl_clear_history();
+	ft_free_array(shell_state.envp);
 	return (shell_state.exit_code);
 }
 
