@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:44:19 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/20 14:28:24 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:30:58 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,17 @@ int	is_whitespace(char *str)
 
 void	init_shell_state(t_shell *state)
 {
-	state->envp = duplicate_environ();
+	extern char	**environ;
+	int			len;
+
+	len = envp_len(environ);
+	state->envp = malloc(sizeof(char *) * (len + 1));
 	if (!state->envp)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+	if (duplicate_env(environ, state->envp, len) != 0)
 	{
 		perror("Erreur lors de la duplication de l'environnement");
 		exit(EXIT_FAILURE);
@@ -34,64 +43,64 @@ void	init_shell_state(t_shell *state)
 	state->exit_code = 0;
 }
 
-int	main(int ac, char **av, char **envp)
+static void	process_line(char *line, t_shell *shell, t_token **tokens,
+		t_command **commands)
+{
+	t_token	*tmp;
+
+	if (*line && !is_whitespace(line))
+	{
+		*tokens = lexer(line);
+		tmp = *tokens;
+		while (tmp)
+			tmp = tmp->next;
+		if (*tokens && expand_token(*tokens, shell) != 0)
+		{
+			free_tokens(*tokens);
+			*tokens = NULL;
+		}
+		if (*tokens)
+			*commands = parser(*tokens);
+	}
+}
+
+static void	shell_loop(t_shell *shell)
 {
 	char		*line;
-	t_shell		shell_state;
 	t_token		*tokens;
 	t_command	*commands;
-	t_token		*tmp;
 
-	(void)ac;
-	(void)av;
-	(void)envp;
-	init_shell_state(&shell_state);
 	while (1)
 	{
 		tokens = NULL;
 		commands = NULL;
 		line = readline("minishell> ");
-		if (line == NULL)
+		if (!line)
 		{
 			printf("exit\n");
 			break ;
 		}
-		if (line && *line)
+		if (*line)
 			add_history(line);
-		if (*line != '\0' && !is_whitespace(line))
-		{
-			tokens = lexer(line);
-			tmp = tokens;
-			while (tmp)
-				tmp = tmp->next;
-			if (tokens && expand_token(tokens, &shell_state) != 0)
-			{
-				free_tokens(tokens);
-				tokens = NULL;
-			}
-			if (tokens)
-				commands = parser(tokens);
-		}
+		process_line(line, shell, &tokens, &commands);
 		free(line);
 		free_tokens(tokens);
-		if (commands != NULL)
-		{
-			shell_state.exit_code = execute(commands, &shell_state);
-		}
+		if (commands)
+			shell->exit_code = execute(commands, shell);
 		free_commands(commands);
 	}
-	rl_clear_history();
-	ft_free_array(shell_state.envp);
-	return (shell_state.exit_code);
 }
 
-/*
-void	handle_sigint(int sig)
+int	main(int ac, char **av, char **envp)
 {
-	(void)sig;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	t_shell	shell;
+
+	(void)ac;
+	(void)av;
+	(void)envp;
+	init_shell_state(&shell);
+	shell_loop(&shell);
+	rl_clear_history();
+	ft_free_array(shell.envp);
+	return (shell.exit_code);
 }
-*/

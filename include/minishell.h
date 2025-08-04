@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/20 16:07:50 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:25:34 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@
 # include <stdlib.h>
 
 /******************************************************************************
-*  STRUCTS																		*
-******************************************************************************/
+
+																			*  STRUCTS																		*
+ ******************************************************************************/
 typedef struct s_token
 {
 	char				*value;
@@ -36,7 +37,6 @@ typedef struct s_tokenlist
 	t_token				**head;
 	t_token				**tail;
 }						t_tokenlist;
-
 
 typedef struct s_redir
 {
@@ -60,8 +60,9 @@ typedef struct s_shell_state
 }						t_shell;
 
 /******************************************************************************
-*  ENUMS																		*
-******************************************************************************/
+
+																			*  ENUMS																		*
+ ******************************************************************************/
 enum					e_token_type
 {
 	WORD = 0,
@@ -81,14 +82,14 @@ enum					e_quote_type
 };
 
 /******************************************************************************
-*  FUNCTIONS																	*
-******************************************************************************/
+
+																		*  FUNCTIONS																	*
+ ******************************************************************************/
 
 /* -------------------------- LEXER -----------------------------------------*/
 
 /* lexer.c */
 t_token					*lexer(char *line);
-
 
 /* lexer_word.c */
 int						ft_delimiter(char c);
@@ -99,13 +100,13 @@ char					*ft_delete_quotes(char *word);
 /* lexer_word_utils.c */
 int						handle_word(t_tokenlist *lst, char **ch);
 
-
 /* lexer_ops_utils.c */
 int						ft_single_token(t_tokenlist *lst, char **c);
 int						ft_double_token(t_tokenlist *lst, char **c);
 
 /* lexer_token_utils.c */
-t_token					*create_token(t_tokenlist *lst, char *word, int type, int quote_info);
+t_token					*create_token(t_tokenlist *lst, char *word, int type,
+							int quote_info);
 char					*get_type_name(int type);
 void					print_tokens(t_token *head);
 void					free_tokens(t_token *head);
@@ -144,14 +145,13 @@ void					free_commands(t_command *cmd_head);
 /* -------------------------- EXECUTION --------------------------------------*/
 
 /* execution.c */
-int	execute				(t_command *cmds, t_shell *state);
-
+int						execute(t_command *cmds, t_shell *state);
 
 /* execution_utils.c */
 int						is_builtin(char *cmd);
 int						exec_builtin(char **args, t_shell *state);
 void					ft_free_array(char **array);
-
+int						is_valid_varname(char *name);
 
 /* builtin.c */
 int						builtin_echo(char **argv);
@@ -166,7 +166,7 @@ int						has_pipe(t_command *cmds);
 
 /*redir*/
 int						here_document(const char *limiter);
-int 					apply_redirections(t_redir *redir);
+int						apply_redirections(t_redir *redir);
 
 /*export*/
 int						builtin_export(t_shell *state, char **argv);
@@ -182,6 +182,9 @@ void					get_absolute_path(char **cmd, t_shell *state);
 
 /*env*/
 void					print_env(t_shell *state);
-int						set_env_var(t_shell *state, const char *key, const char *value);
-char					**duplicate_environ(void);
+int						set_env_var(t_shell *state, const char *key,
+							const char *value);
+int						duplicate_env(char **src, char **dst, int count);
+void					substitute_args(char **argv, char **envp);
+int						envp_len(char **envp);
 #endif

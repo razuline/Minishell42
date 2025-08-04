@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:39:55 by preltien          #+#    #+#             */
-/*   Updated: 2025/07/20 15:42:12 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:18:39 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@
 #include <string.h>
 
 extern char	**environ;
+
+int	envp_len(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp && envp[i])
+		i++;
+	return (i);
+}
 
 void	print_env(t_shell *state)
 {
@@ -35,82 +45,131 @@ void	print_env(t_shell *state)
 	}
 }
 
-int	set_env_var(t_shell *state, const char *key, const char *value)
+static char	*create_env_entry(const char *key, const char *value)
+{
+	char	*entry;
+
+	entry = malloc(strlen(key) + strlen(value) + 2);
+	if (!entry)
+		return (NULL);
+	sprintf(entry, "%s=%s", key, value);
+	return (entry);
+}
+
+static int	replace_env_var(char **envp, const char *key, const char *entry)
 {
 	int		i;
 	size_t	key_len;
-	char	*entry;
-	char	**new_env;
 
+	i = 0;
 	key_len = strlen(key);
-	entry = NULL;
-	entry = malloc(strlen(key) + strlen(value) + 2);
-	if (!entry)
-		return (1);
-	sprintf(entry, "%s=%s", key, value);
-	for (i = 0; state->envp[i]; i++)
+	while (envp[i])
 	{
-		if (strncmp(state->envp[i], key, key_len) == 0
-			&& state->envp[i][key_len] == '=')
+		if (strncmp(envp[i], key, key_len) == 0 && envp[i][key_len] == '=')
 		{
-			free(state->envp[i]);
-			state->envp[i] = strdup(entry);
+			free(envp[i]);
+			envp[i] = strdup(entry);
+			if (!envp[i])
+				return (1);
 			return (0);
 		}
+		i++;
 	}
-	new_env = malloc(sizeof(char *) * (i + 2));
+	return (-1);
+}
+
+int	envp_add_entry(char ***envp, char *entry)
+{
+	int		len;
+	char	**new_env;
+
+	len = envp_len(*envp);
+	new_env = malloc(sizeof(char *) * (len + 2));
 	if (!new_env)
+		return (1);
+	if (duplicate_env(*envp, new_env, len) != 0)
+	{
+		free(new_env);
+		return (1);
+	}
+	new_env[len] = entry;
+	new_env[len + 1] = NULL;
+	ft_free_array(*envp);
+	*envp = new_env;
+	return (0);
+}
+
+int	set_env_var(t_shell *state, const char *key, const char *value)
+{
+	char	*entry;
+
+	entry = create_env_entry(key, value);
+	if (!entry)
+		return (1);
+	if (replace_env_var(state->envp, key, entry) == 0)
+	{
+		free(entry);
+		return (0);
+	}
+	if (envp_add_entry(&state->envp, entry) != 0)
 	{
 		free(entry);
 		return (1);
 	}
-	for (int j = 0; j < i; j++)
-	{
-		new_env[j] = strdup(state->envp[j]);
-		if (!new_env[j])
-		{
-			while (j-- > 0)
-				free(new_env[j]);
-			free(new_env);
-			free(entry);
-			return (1);
-		}
-	}
-	new_env[i] = entry;
-	new_env[i + 1] = NULL;
-	
-	ft_free_array(state->envp);
-	state->envp = NULL;
-	state->envp = new_env;
 	return (0);
 }
 
-
-char	**duplicate_environ(void)
+int	duplicate_env(char **src, char **dst, int count)
 {
-	int		i;
-	int		count;
-	char	**copy;
+	int	i;
 
-	count = 0;
-	while (environ[count])
-		count++;
-	copy = (char **)malloc(sizeof(char *) * (count + 1));
-	if (!copy)
-		return (NULL);
+	if (!src || !dst)
+		return (1);
 	i = 0;
 	while (i < count)
 	{
-		copy[i] = strdup(environ[i]);
-		if (!copy[i])
+		dst[i] = strdup(src[i]);
+		if (!dst[i])
 		{
 			while (--i >= 0)
-				free(copy[i]);
-			free(copy);
-			return (NULL);
+				free(dst[i]);
+			return (1);
 		}
 		i++;
 	}
-	copy[i] = NULL;
-	return (copy);
+	return (0);
+}
+
+static char	*get_env_value(const char *name, char **envp)
+{
+	int	i;
+	int	len;
+
+	len = strlen(name);
+	i = 0;
+	while (envp[i])
+	{
+		if (strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
+			return (strdup(strchr(envp[i], '=') + 1));
+		i++;
+	}
+	return (strdup(""));
+}
+
+void	substitute_args(char **argv, char **envp)
+{
+	int		i;
+	char	*value;
+
+	i = 0;
+	while (argv[i])
+	{
+		if (argv[i][0] == '$' && strlen(argv[i]) > 1)
+		{
+			value = get_env_value(argv[i] + 1, envp);
+			free(argv[i]);
+			argv[i] = value;
+		}
+		i++;
+	}
 }

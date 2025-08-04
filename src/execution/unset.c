@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:32:49 by preltien          #+#    #+#             */
-/*   Updated: 2025/07/20 15:22:50 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:11:15 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,6 @@
 #include <string.h>
 
 extern char **environ;
-
-static int	is_valid_varname(char *name)
-{
-	int	i;
-
-	if (!name || !name[0])
-		return (0);
-	if (name[0] >= '0' && name[0] <= '9')
-		return (0);
-	i = 0;
-	while (name[i])
-	{
-		if (!((name[i] >= 'a' && name[i] <= 'z') ||
-			  (name[i] >= 'A' && name[i] <= 'Z') ||
-			  (name[i] == '_') ||
-			  (i > 0 && name[i] >= '0' && name[i] <= '9')))
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 static int	handle_unset_arg(t_shell *state, char *arg)
 {
@@ -74,38 +53,77 @@ int	builtin_unset(char **argv, t_shell *state)
 }
 
 
+static int	should_keep(const char *entry, const char *var)
+{
+	size_t	len;
+
+	len = strlen(var);
+	return (!(strncmp(entry, var, len) == 0 && entry[len] == '='));
+}
+
+static int	count_kept_vars(char **envp, const char *var)
+{
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (envp[i])
+	{
+		if (should_keep(envp[i], var))
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+static char	**alloc_filtered_env(char **envp, const char *var)
+{
+	int		count;
+	char	**new_env;
+
+	count = count_kept_vars(envp, var);
+	new_env = malloc(sizeof(char *) * (count + 1));
+	if (!new_env)
+		return (NULL);
+	return (new_env);
+}
+
+static void	copy_filtered_env(char **src, char **dest, const char *var)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (src[i])
+	{
+		if (!should_keep(src[i], var))
+		{
+			free(src[i]);
+			i++;
+			continue;
+		}
+		dest[j++] = strdup(src[i]);
+		i++;
+	}
+	dest[j] = NULL;
+}
+
 int	remove_env_var(char ***envp, const char *var)
 {
-	int		i, j, count;
 	char	**new_env;
 
 	if (!envp || !*envp || !var)
 		return (1);
-
-	for (count = 0, i = 0; (*envp)[i]; i++)
-	{
-		if (!(strncmp((*envp)[i], var, strlen(var)) == 0 && (*envp)[i][strlen(var)] == '='))
-			count++;
-	}
-
-	new_env = malloc(sizeof(char *) * (count + 1));
+	new_env = alloc_filtered_env(*envp, var);
 	if (!new_env)
 		return (1);
-
-	for (i = 0, j = 0; (*envp)[i]; i++)
-	{
-		if (strncmp((*envp)[i], var, strlen(var)) == 0 && (*envp)[i][strlen(var)] == '=')
-		{
-			free((*envp)[i]);
-			continue;
-		}
-		new_env[j++] = strdup((*envp)[i]);
-	}
-	new_env[j] = NULL;
-
+	copy_filtered_env(*envp, new_env, var);
 	ft_free_array(*envp);
 	*envp = new_env;
 	return (0);
 }
+
 
 
