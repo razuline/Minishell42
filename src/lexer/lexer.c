@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 14:35:33 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:15:33 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,8 @@ static int	ft_word_token(t_token **head, t_token **tail, char *start,
 	extracted = ft_substr(start, 0, len);
 	if (!extracted)
 		return (1);
-	if (*extracted == '\'')
-		quote_type = SINGLE_QUOTE;
-	else if (*extracted == '"')
-		quote_type = DOUBLE_QUOTE;
-	else
-		quote_type = DEFAULT;
-	cleaned = ft_delete_quotes(extracted);
+	quote_type = get_quote_type(extracted);
+	cleaned = ft_delete_word_quotes(extracted);
 	if (!cleaned)
 	{
 		free(extracted);

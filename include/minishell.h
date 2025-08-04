@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 12:04:53 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:34:20 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,10 @@ int						handle_word(t_token **head, t_token **tail, char **ch);
 
 /* lexer_word_utils.c */
 int						ft_delimiter(char c);
-int						ft_quote_type(char *word, int type, int i);
+int						upd_quote_state(char *word, int type, int i);
+int						get_quote_type(char *word);
 char					*ft_word_end(char *word);
-char					*ft_delete_quotes(char *word);
+char					*ft_delete_word_quotes(char *word);
 
 /* lexer_token_utils.c */
 t_token					*create_token(t_token **head, t_token **tail,
@@ -109,10 +110,14 @@ int						expand_token(t_token *head, t_shell *state);
 int						append_env_var(char **res_ptr, const char *input,
 							int *i_ptr);
 
+/* expansion_len_utils.c */
+size_t					calcul_expanded_len(const char *value, t_shell *state);
+
 /* expansion_append_utils.c */
 int						append_char(char **res_ptr, char c);
 int						append_dollar(char **res_ptr);
 int						append_exit_status(char **res_ptr, t_shell *state);
+size_t					append_str_to_res(char *dest, const char *src, size_t j);
 
 /* -------------------------- PARSER -----------------------------------------*/
 

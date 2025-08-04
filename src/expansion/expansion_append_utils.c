@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:20:05 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 11:38:12 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:32:38 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,17 @@ int	append_exit_status(char **res_ptr, t_shell *state)
 	if (!*res_ptr)
 		return (1);
 	return (0);
+}
+
+size_t	append_str_to_res(char *dest, const char *src, size_t j)
+{
+	int	k;
+
+	k = 0;
+	while (src && src[k])
+	{
+		dest[j + k] = src[k];
+		k++;
+	}
+	return (j + k);
 }

@@ -6,12 +6,14 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 14:30:53 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:53:49 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	process_and_fill(const char *src, char *dest, int *i, size_t *j,
+		t_shell *state);
 static char	*expand_str(const char *value, t_shell *state);
 static int	process_char(const char *value, int *i_ptr, char **res_ptr,
 				t_shell *state);
@@ -41,25 +43,54 @@ int	expand_token(t_token *head, t_shell *state)
 	return (0);
 }
 
+static void	process_and_fill(const char *src, char *dest, int *i, size_t *j,
+		t_shell *state)
+{
+	char	*var_val;
+	char	*var_name_tmp;
+
+	if (src[*i] == '$' && src[*i + 1])
+	{
+		(*i)++;
+		if (src[*i] == '?')
+		{
+			(*i)++;
+			var_val = ft_itoa(state->exit_code);
+			*j = append_str_to_res(dest, var_val, *j);
+			free(var_val);
+		}
+		else if (ft_isalnum(src[*i]) || src[*i] == '_')
+		{
+			var_name_tmp = get_var_name(src, i);
+			var_val = getenv(var_name_tmp);
+			*j = append_str_to_res(dest, var_val, *j);
+			free(var_name_tmp);
+		}
+		else
+			dest[(*j)++] = '$';
+	}
+	else
+		dest[(*j)++] = src[(*i)++];
+}
+
 static char	*expand_str(const char *value, t_shell *state)
 {
 	char	*result;
+	size_t	final_len;
 	int		i;
+	size_t	j;
 
 	if (!value)
 		return (NULL);
-	result = ft_strdup("");
+	final_len = calcul_expanded_len(value, state);
+	result = malloc(sizeof(char) * (final_len + 1));
 	if (!result)
 		return (NULL);
 	i = 0;
+	j = 0;
 	while (value[i])
-	{
-		if (process_char(value, &i, &result, state) != 0)
-		{
-			free(result);
-			return (NULL);
-		}
-	}
+		process_and_fill(value, result, &i, &j, state);
+	result[j] = '\0';
 	return (result);
 }
 
