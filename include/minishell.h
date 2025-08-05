@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 16:20:01 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:16:53 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ typedef struct s_token
 
 typedef struct s_token_lst
 {
-	t_token				**head;
-	t_token				**tail;
+	t_token				*head;
+	t_token				*tail;
 }						t_token_lst;
 
 typedef struct s_redir

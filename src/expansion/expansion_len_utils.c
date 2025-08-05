@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:21:15 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 15:31:23 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:23:26 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ size_t	calcul_expanded_len(const char *value, t_shell *state)
 				i++;
 				len += get_len_exit_status(state);
 			}
-			else if (ft_isalnum(value[i] || value[i] == '_'))
+			else if (ft_isalnum(value[i]) || value[i] == '_')
 				len += get_len_var(value, &i);
 			else
 				len++;

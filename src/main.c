@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:44:19 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 16:02:20 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:22:57 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	parse_and_execute(t_shell *state, char *line)
 	t_token		*tokens;
 	t_command	*commands;
 
-	if (*line != '\0' && !is_whitespace(line))
+	if (*line == '\0' || is_whitespace(line))
 		return ;
 	add_history(line);
 	tokens = NULL;

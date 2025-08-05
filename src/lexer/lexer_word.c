@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 13:46:25 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 15:50:20 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:22:15 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ int	handle_word(t_token_lst *lst, char **c)
 	return (result);
 }
 
-static int	ft_word_token(t_token_lst *lst, char *start,
-		char *end)
+static int	ft_word_token(t_token_lst *lst, char *start, char *end)
 {
 	int		len;
 	char	*extracted;
@@ -44,19 +43,19 @@ static int	ft_word_token(t_token_lst *lst, char *start,
 	extracted = ft_substr(start, 0, len);
 	if (!extracted)
 		return (1);
-	if (*extracted == '\'')
-		quote_type = SINGLE_QUOTE;
-	else if (*extracted == '"')
-		quote_type = DOUBLE_QUOTE;
-	else
-		quote_type = DEFAULT;
-	cleaned = ft_delete_quotes(extracted);
+	quote_type = get_quote_type(extracted);
+	cleaned = delete_word_quotes(extracted);
 	if (!cleaned)
 	{
 		free(extracted);
 		return (1);
 	}
-	create_token(lst, cleaned, WORD, quote_type);
+	if (create_token(lst, cleaned, WORD, quote_type) == NULL)
+	{
+		free(extracted);
+		free(cleaned);
+		return (1);
+	}
 	free(extracted);
 	free(cleaned);
 	return (0);

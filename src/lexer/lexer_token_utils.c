@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 15:49:36 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:21:02 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ t_token	*create_token(t_token_lst *lst, char *word, int type, int quote_info)
 	new_token->type = type;
 	new_token->quote_type = quote_info;
 	new_token->next = NULL;
-	if (*(lst->head) == NULL)
+	if (lst->head == NULL)
 	{
-		*(lst->head) = new_token;
-		*(lst->tail) = new_token;
+		lst->head = new_token;
+		lst->tail = new_token;
 	}
 	else
 	{
-		(*(lst->tail))->next = new_token;
-		*(lst->tail) = new_token;
+		lst->tail->next = new_token;
+		lst->tail = new_token;
 	}
 	return (new_token);
 }

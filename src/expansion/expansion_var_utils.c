@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:19:48 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 14:13:32 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:42:56 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,6 @@
 
 static char	*get_var_name(const char *input, int *i_ptr);
 static int	is_valid_var(char c);
-
-int	append_env_var(char **res_ptr, const char *input, int *i_ptr)
-{
-	char	*var_name;
-	char	*value;
-	char	*tmp;
-
-	var_name = get_var_name(input, i_ptr);
-	if (!var_name)
-		return (append_dollar(res_ptr));
-	value = getenv(var_name);
-	free(var_name);
-	if (value != NULL)
-	{
-		tmp = *res_ptr;
-		*res_ptr = ft_strjoin(tmp, value);
-		free(tmp);
-		if (!*res_ptr)
-			return (1);
-	}
-	return (0);
-}
 
 static char	*get_var_name(const char *input, int *i_ptr)
 {

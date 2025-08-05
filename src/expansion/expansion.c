@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 16:22:14 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:41:33 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,30 +92,4 @@ static char	*expand_str(const char *value, t_shell *state)
 		process_and_fill(value, result, &i, &j, state);
 	result[j] = '\0';
 	return (result);
-}
-
-static int	process_char(const char *value, int *i_ptr, char **res_ptr,
-		t_shell *state)
-{
-	if (value[*i_ptr] == '$' && value[*i_ptr + 1] != '\0')
-	{
-		(*i_ptr)++;
-		if (value[*i_ptr] == '?')
-		{
-			(*i_ptr)++;
-			return (append_exit_status(res_ptr, state));
-		}
-		else if (ft_isalnum(value[*i_ptr]) || value[*i_ptr] == '_')
-		{
-			return (append_env_var(res_ptr, value, i_ptr));
-		}
-		else
-			return (append_dollar(res_ptr));
-	}
-	else
-	{
-		append_char(res_ptr, value[*i_ptr]);
-		(*i_ptr)++;
-	}
-	return (0);
 }
