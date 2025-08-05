@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_len_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:21:15 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 15:31:23 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:00:23 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static size_t	get_len_exit_status(t_shell *state);
 /*
 ** Calcule la longueur finale de la chaîne après expansion.
 */
-size_t	calcul_expanded_len(const char *value, t_shell *state)
+size_t	calcul_expanded_len(const char *value, t_shell state)
 {
 	int		i;
 	size_t	len;
@@ -33,9 +33,9 @@ size_t	calcul_expanded_len(const char *value, t_shell *state)
 			if (value[i] == '?')
 			{
 				i++;
-				len += get_len_exit_status(state);
+				len += get_len_exit_status(&state);
 			}
-			else if (ft_isalnum(value[i] || value[i] == '_'))
+			else if (ft_isalnum(value[i]) || value[i] == ' ')
 				len += get_len_var(value, &i);
 			else
 				len++;

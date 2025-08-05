@@ -3,85 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 10:39:58 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 17:31:00 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:45:52 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <linux/limits.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
-static char	*check_dir_path(char *cmd_name);
-static char	*search_in_path(char *cmd_name, char **path_dir);
+extern char	**environ;
 
-static void	free_path_dirs(char **paths)
+/*
+ * Vérifie si cmd est une builtin connue
+ */
+int	is_builtin(char *cmd)
+{
+	if (!cmd)
+		return (0);
+	return (strcmp(cmd, "echo") == 0 || strcmp(cmd, "cd") == 0 || strcmp(cmd,
+			"pwd") == 0 || strcmp(cmd, "env") == 0 || strcmp(cmd, "export") == 0
+		|| strcmp(cmd, "unset") == 0 || strcmp(cmd, "exit") == 0);
+}
+
+/*
+ * Exécute la commande builtin et met à jour l’état
+ */
+int	exec_builtin(char **argv, t_shell *state)
+{
+	if (!argv || !argv[0])
+		return (1);
+	if (strcmp(argv[0], "echo") == 0)
+		state->exit_code = builtin_echo(argv);
+	else if (strcmp(argv[0], "cd") == 0)
+		state->exit_code = builtin_cd(argv);
+	else if (strcmp(argv[0], "pwd") == 0)
+		state->exit_code = builtin_pwd();
+	else if (strcmp(argv[0], "env") == 0)
+		state->exit_code = builtin_env(state->envp);
+	else if (strcmp(argv[0], "export") == 0)
+		state->exit_code = builtin_export(state, argv);
+	else if (strcmp(argv[0], "unset") == 0)
+		state->exit_code = builtin_unset(argv, state);
+	else if (strcmp(argv[0], "exit") == 0)
+		state->exit_code = builtin_exit(argv);
+	else
+		state->exit_code = 1;
+	return (state->exit_code);
+}
+
+void	ft_free_array(char **array)
 {
 	int	i;
 
-	i = 0;
-	if (!paths)
+	if (!array)
 		return ;
-	while (paths[i])
-	{
-		free(paths[i]);
-		i++;
-	}
-	free(paths);
-}
-
-char	*find_cmd_path(char *name, char **envp)
-{
-	int		i;
-	char	*path;
-	char	**path_dirs;
-
-	path = check_dir_path(name);
-	if (path)
-		return (path);
 	i = 0;
-	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
-		i++;
-	if (envp[i] == NULL)
-		return (NULL);
-	path_dirs = ft_split(envp[i] + 5, ':');
-	if (!path_dirs)
-		return (NULL);
-	path = search_in_path(name, path_dirs);
-	free_path_dirs(path_dirs);
-	if (path == NULL)
-		printf("minishell: %s: command not found\n", name);
-	return (path);
-}
-
-static char	*check_dir_path(char *cmd_name)
-{
-	if (ft_strchr(cmd_name, '/') != NULL)
+	while (array[i])
 	{
-		if (access(cmd_name, X_OK) == 0)
-			return (ft_strdup(cmd_name));
-		perror(cmd_name);
-		return (NULL);
+		free(array[i]);
+		i++;
 	}
-	return (NULL);
+	free(array);
 }
 
-static char	*search_in_path(char *cmd_name, char **path_dirs)
+int	is_valid_varname(char *name)
 {
-	int		i;
-	char	*full_path;
-	char	*tmp_path;
+	int	i;
 
+	if (!name || !name[0])
+		return (0);
+	if (name[0] >= '0' && name[0] <= '9')
+		return (0);
 	i = 0;
-	while (path_dirs[i] != NULL)
+	while (name[i])
 	{
-		tmp_path = ft_strjoin(path_dirs[i], "/");
-		full_path = ft_strjoin(tmp_path, cmd_name);
-		free(tmp_path);
-		if (access(full_path, X_OK) == 0)
-			return (full_path);
-		free(full_path);
+		if (!((name[i] >= 'a' && name[i] <= 'z') || (name[i] >= 'A'
+					&& name[i] <= 'Z') || (name[i] == '_') || (i > 0
+					&& name[i] >= '0' && name[i] <= '9')))
+			return (0);
 		i++;
 	}
-	return (NULL);
+	return (1);
 }

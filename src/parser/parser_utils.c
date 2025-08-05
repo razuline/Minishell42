@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 13:04:53 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/25 12:30:58 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/07/11 18:05:43 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,12 @@ char	**create_argv(char **old_argv, char *new_str)
 		new_argv[i] = old_argv[i];
 		i++;
 	}
-	new_argv[count] = new_str;
+	new_argv[count] = strdup(new_str);
+	if (!new_argv[count])
+	{
+		free(new_argv);
+		return (NULL);
+	}
 	new_argv[count + 1] = NULL;
 	free(old_argv);
 	return (new_argv);

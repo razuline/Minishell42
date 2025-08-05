@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_word.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 13:46:25 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/12 15:50:20 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:23:52 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	ft_word_token(t_token_lst *lst, char *start,
 		quote_type = DOUBLE_QUOTE;
 	else
 		quote_type = DEFAULT;
-	cleaned = ft_delete_quotes(extracted);
+	cleaned = delete_word_quotes(extracted);
 	if (!cleaned)
 	{
 		free(extracted);

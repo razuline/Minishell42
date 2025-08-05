@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/11 17:44:19 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 16:02:20 by erazumov         ###   ########.fr       */
+/*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
+/*   Updated: 2025/08/05 15:51:17 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,3 @@ static void	init_shell_state(t_shell *state, char **envp)
 	state->envp = envp;
 	state->exit_code = 0;
 }
-
-/*
-void	handle_sigint(int sig)
-{
-	(void)sig;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-*/
