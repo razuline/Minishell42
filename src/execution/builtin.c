@@ -6,11 +6,13 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:00:00 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:40:50 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:33:13 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <ctype.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -45,12 +47,17 @@ int	builtin_cd(char **argv)
 	char	*dir;
 	int		ret;
 
+	if (argv[2])
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		return (1);
+	}
 	dir = argv[1];
 	if (!dir)
 		dir = getenv("HOME");
 	if (!dir)
 	{
-		fprintf(stderr, "minishell: cd: HOME not set\n");
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		return (1);
 	}
 	ret = chdir(dir);
@@ -102,10 +109,23 @@ int	builtin_env(char **envp)
 
 int	builtin_exit(char **argv)
 {
-	int	code;
+	int	error;
+	int	exit_code;
 
-	code = 0;
-	if (argv[1])
-		code = atoi(argv[1]);
-	exit(code);
+	write(1, "exit\n", 5);
+	if (!argv[1])
+		exit(0);
+	exit_code = ft_atoi_strict(argv[1], &error);
+	if (error)
+	{
+		fprintf(stderr, "minishell: exit: %s: numeric argument required\n",
+			argv[1]);
+		exit(2);
+	}
+	if (argv[2])
+	{
+		fprintf(stderr, "minishell: exit: too many arguments\n");
+		return (1);
+	}
+	exit(exit_code);
 }

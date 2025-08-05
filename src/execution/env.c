@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:39:55 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:46:41 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:41:45 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,16 @@ extern char	**environ;
 static char	*create_env_entry(const char *key, const char *value)
 {
 	char	*entry;
+	size_t	key_len;
+	size_t	val_len;
 
-	entry = malloc(strlen(key) + strlen(value) + 2);
+	if (!key)
+		return (NULL);
+	if (!value)
+		value = "";
+	key_len = strlen(key);
+	val_len = strlen(value);
+	entry = malloc(key_len + val_len + 2);
 	if (!entry)
 		return (NULL);
 	sprintf(entry, "%s=%s", key, value);

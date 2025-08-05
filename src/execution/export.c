@@ -5,53 +5,53 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/13 15:32:52 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:43:07 by preltien         ###   ########.fr       */
+/*   Created: 2025/08/05 13:17:58 by preltien          #+#    #+#             */
+/*   Updated: 2025/08/05 13:35:01 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-extern char	**environ;
-
-static int	print_export_error(const char *msg, const char *arg)
+static int	print_export_error(char *arg)
 {
-	fprintf(stderr, "minishell: export: `%s`: %s\n", arg, msg);
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
 	return (1);
 }
 
-static int	extract_varname(char *arg, char *varname, int size)
+static int	handle_export_with_value(t_shell *state, char *arg, char *eq)
 {
-	char	*eq;
-	int		len;
+	char	varname[256];
+	size_t	var_len;
 
-	eq = strchr(arg, '=');
 	if (!eq)
-		return (print_export_error("invalid format", arg));
-	len = eq - arg;
-	if (len >= size)
-		return (print_export_error("name too long", arg));
-	strncpy(varname, arg, len);
-	varname[len] = '\0';
+		return (print_export_error(arg));
+	var_len = eq - arg;
+	if (var_len >= sizeof(varname))
+		return (print_export_error(arg));
+	ft_strlcpy(varname, arg, var_len + 1);
 	if (!is_valid_varname(varname))
-		return (print_export_error("not a valid id", varname));
+		return (print_export_error(arg));
+	if (set_env_var(state, varname, eq + 1) != 0)
+	{
+		ft_putstr_fd("minishell: export: failed to update env\n", 2);
+		return (1);
+	}
 	return (0);
 }
 
-static int	set_env_var_from_arg(t_shell *state, char *arg)
+static int	handle_export_without_value(t_shell *state, char *arg)
 {
-	char	varname[256];
-	char	*eq;
-
-	eq = strchr(arg, '=');
-	if (extract_varname(arg, varname, sizeof(varname)) != 0)
-		return (1);
-	if (set_env_var(state, varname, eq + 1) != 0)
+	if (!is_valid_varname(arg))
+		return (print_export_error(arg));
+	if (set_env_var(state, arg, NULL) != 0)
 	{
-		fprintf(stderr, "minishell: export: failed to update env\n");
+		ft_putstr_fd("minishell: export: failed to update env\n", 2);
 		return (1);
 	}
 	return (0);
@@ -59,7 +59,13 @@ static int	set_env_var_from_arg(t_shell *state, char *arg)
 
 static int	handle_export_arg(t_shell *state, char *arg)
 {
-	return (set_env_var_from_arg(state, arg));
+	char	*eq;
+
+	eq = ft_strchr(arg, '=');
+	if (eq)
+		return (handle_export_with_value(state, arg, eq));
+	else
+		return (handle_export_without_value(state, arg));
 }
 
 int	builtin_export(t_shell *state, char **argv)

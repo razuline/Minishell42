@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:32:49 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:38:30 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:45:35 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static void	copy_filtered_env(char **src, char **dest, const char *var)
 	{
 		if (!should_keep(src[i], var))
 		{
-			free(src[i]);
 			i++;
 			continue ;
 		}
