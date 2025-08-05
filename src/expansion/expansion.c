@@ -6,17 +6,17 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/05 16:41:33 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:30:10 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static void	process_and_fill(const char *src, char *dest, int *i, size_t *j,
-		t_shell *state);
-static char	*expand_str(const char *value, t_shell *state);
-static int	process_char(const char *value, int *i_ptr, char **res_ptr,
 				t_shell *state);
+static char	*expand_str(const char *value, t_shell *state);
+// static int	process_char(const char *value, int *i_ptr, char **res_ptr,
+// 				t_shell *state);
 
 int	expand_token(t_token *head, t_shell *state)
 {
@@ -82,7 +82,7 @@ static char	*expand_str(const char *value, t_shell *state)
 
 	if (!value)
 		return (NULL);
-	final_len = calcul_expanded_len(value, state);
+	final_len = calcul_expanded_len(value, *state);
 	result = malloc(sizeof(char) * (final_len + 1));
 	if (!result)
 		return (NULL);

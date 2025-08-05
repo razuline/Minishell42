@@ -1,0 +1,144 @@
+ 1. Fonctionnalités de base à valider
+
+Tu dois t’assurer que ton shell respecte toutes ces fonctionnalités :
+Exécution de commandes
+
+Lancement de commandes simples : ls, echo, pwd, cat, etc.
+
+Chemin relatif/absolu : ./a.out, /bin/ls
+
+    Gestion du PATH
+
+Builtins (obligatoires)
+
+echo (gérer -n)
+
+cd (gérer cd, cd .., cd ~/, erreurs, etc.)
+
+pwd
+
+export
+
+unset
+
+env
+
+    exit (avec et sans code de sortie)
+
+Redirections
+
+> : redirection de sortie
+
+< : redirection d’entrée
+
+>> : append
+
+    << : heredoc (ne pas oublier de gérer CTRL+C)
+
+Pipes
+
+    Commandes chaînées par | (ex. ls | grep .c | wc -l)
+
+Variables d’environnement
+
+$USER, $?, ${}...
+
+    Expansions dans les quotes
+
+Quotes
+
+' (single quotes ne doivent pas être interprétées)
+
+    " (double quotes doivent interpréter les variables)
+
+Signaux
+
+CTRL+C (SIGINT) : le shell ne doit pas quitter
+
+CTRL+\ (SIGQUIT) : doit être ignoré
+
+    Heredoc : CTRL+C doit interrompre proprement
+
+🧪 2. Tests automatiques & scripts
+
+Voici des tests/scripts recommandés :
+🔧 Outils existants
+
+    minishell_tester (très bon outil automatisé)
+
+    moudni/minishell-tester
+
+    paulloz/42sh-tester
+
+📦 Installation rapide (exemple)
+
+git clone https://github.com/posborne/minishell_tester
+cd minishell_tester
+./tester.sh /path/to/your/minishell
+
+    ⚠️ Lis bien le README de chaque repo pour l’adapter à ton minishell (par exemple, nom du binaire, nom du prompt, etc.)
+
+🔍 3. Tests manuels (non exhaustif mais utile)
+
+Essaye tous ces cas :
+
+# Redirection
+echo Hello > file.txt
+cat < file.txt
+echo Again >> file.txt
+cat file.txt
+
+# Pipe
+cat Makefile | grep all | wc -l
+
+# Heredoc
+cat << EOF
+Bonjour
+EOF
+
+# Export / Variables
+export VAR=test
+echo $VAR
+unset VAR
+echo $VAR
+
+# Quotes
+echo "$USER"
+echo '$USER'
+echo "$HOME/$USER"
+
+# Exit
+exit 42
+echo $? # Doit afficher 42
+
+🧹 4. Norme et mémoire
+
+Vérifie ta norme avec norminette
+
+    Utilise valgrind sur ton minishell pour détecter les leaks :
+
+valgrind --leak-check=full ./minishell
+
+Ferme bien tous tes descripteurs de fichiers
+
+    Vérifie que chaque processus enfant est bien wait() ou waitpid()
+
+📄 5. Check sujets et fichiers obligatoires
+
+Respect du Makefile (make, make clean, make fclean, make re)
+
+Pas d’utilisation interdite (voir sujet : system(), fork() dans certains cas, etc.)
+
+    Utilise seulement les fonctions autorisées (fork, dup, execve, etc.)
+
+🧠 6. Conseil final
+
+Teste également ton shell avec des scripts POSIX comme ceux de bash :
+
+sh -c "echo Hello World" # Comporte-toi comme sh
+./minishell -c "echo Hello World"
+
+Et compare les résultats avec bash :
+
+bash -c "echo \$USER"
+./minishell -c "echo \$USER"

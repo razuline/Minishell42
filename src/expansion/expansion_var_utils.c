@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:19:48 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/05 16:42:56 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:30:46 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_var_name(const char *input, int *i_ptr);
+char	*get_var_name(const char *input, int *i_ptr);
 static int	is_valid_var(char c);
 
 static char	*get_var_name(const char *input, int *i_ptr)

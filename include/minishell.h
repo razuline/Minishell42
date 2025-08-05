@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/05 17:16:53 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:31:00 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-/******************************************************************************
-*  STRUCTS																		*
-******************************************************************************/
+/*STRUCTS*/
 typedef struct s_token
 {
 	char				*value;
@@ -57,18 +55,25 @@ typedef struct s_shell_state
 	int					exit_code;
 }						t_shell;
 
-/******************************************************************************
-*  ENUMS																		*
-******************************************************************************/
+typedef struct s_pipex_ctx
+{
+	t_command			*cmd;
+	t_shell				*state;
+	int					prev_fd;
+	int					pipe_fd[2];
+	int					is_last;
+}						t_pipex_ctx;
+
+/*ENUMS*/
 enum					e_token_type
 {
-	WORD,
-	PIPE,
-	REDIRECT_IN,
-	REDIRECT_OUT,
-	APPEND_OUT,
-	HEREDOC,
-	ENV_VAR
+	WORD = 0,
+	PIPE = 1,
+	REDIRECT_IN = 2,
+	REDIRECT_OUT = 3,
+	APPEND_OUT = 4,
+	HEREDOC = 5,
+	ENV_VAR = 6
 };
 
 enum					e_quote_type
@@ -78,18 +83,17 @@ enum					e_quote_type
 	DOUBLE_QUOTE
 };
 
-/******************************************************************************
-*  FUNCTIONS																	*
-******************************************************************************/
+/*FUNCTIONS*/
 
 /* -------------------------- LEXER -----------------------------------------*/
 
 /* lexer.c */
 t_token					*lexer(char *line);
 int						handle_word(t_token_lst *lst, char **c);
+int						ft_double_token(t_token_lst *lst, char **c);
+int						ft_single_token(t_token_lst *lst, char **c);
 
 /* lexer_word_utils.c */
-int						ft_delimiter(char c);
 int						upd_quote_state(char *word, int type, int i);
 int						get_quote_type(char *word);
 char					*ft_word_end(char *word);
@@ -108,11 +112,10 @@ void					free_tokens(t_token *head);
 int						expand_token(t_token *head, t_shell *state);
 
 /* expansion_var_utils.c */
-int						append_env_var(char **res_ptr, const char *input,
-							int *i_ptr);
+char					*get_var_name(const char *input, int *i_ptr);
 
 /* expansion_len_utils.c */
-size_t					calcul_expanded_len(const char *value, t_shell *state);
+size_t					calcul_expanded_len(const char *value, t_shell state);
 
 /* expansion_append_utils.c */
 int						append_char(char **res_ptr, char c);
@@ -138,10 +141,57 @@ void					print_commands(t_command *cmd_head);
 /* parser_free_utils.c */
 void					free_commands(t_command *cmd_head);
 
-/* -------------------------- EXECUTION --------------------------------------*/
+//* execution.c */
+int						exec_cmd(t_command *cmd, t_shell *state);
+int						execute(t_command *cmds, t_shell *state);
 
-/* execution.c */
-int						execute(t_command *cmd_lst, t_shell *state);
-char					*find_cmd_path(char *name, char **envp);
+/* execution_utils.c */
+int						is_builtin(char *cmd);
+int						exec_builtin(char **args, t_shell *state);
+void					ft_free_array(char **array);
+int						is_valid_varname(char *name);
+
+/* builtin.c */
+int						builtin_echo(char **argv);
+int						builtin_cd(char **argv);
+int						builtin_pwd(void);
+int						builtin_env(char **envp);
+int						builtin_exit(char **argv);
+
+/*pipex.c*/
+void					pipex_close_fds(int *prev_fd, int pipe_fd[2],
+							int is_last);
+int						pipex_exec_loop(t_command *cmds, t_shell *state);
+int						has_pipe(t_command *cmds);
+int						create_pipe_if_needed(int pipe_fd[2], int is_last);
+void					pipex_fork_and_exec(t_pipex_ctx *ctx);
+int						fork_and_handle_child(t_pipex_ctx *ctx);
+void					wait_for_child(pid_t pid, t_shell *state);
+
+/*redir*/
+int						here_document(const char *limiter);
+int						apply_redirections(t_redir *redir);
+
+/*export*/
+int						builtin_export(t_shell *state, char **argv);
+
+/*unset*/
+int						handle_unset_arg(t_shell *state, char *arg);
+int						builtin_unset(char **argv, t_shell *state);
+int						remove_env_var(char ***envp, const char *var);
+
+/*get_path*/
+char					*get_path_env(t_shell *state);
+char					*find_executable_path(char *cmd, char **path_split);
+void					get_absolute_path(char **cmd, t_shell *state);
+
+/*env*/
+int						envp_add_entry(char ***envp, char *entry);
+void					print_env(t_shell *state);
+int						set_env_var(t_shell *state, const char *key,
+							const char *value);
+int						duplicate_env(char **src, char **dst, int count);
+void					substitute_args(char **argv, char **envp);
+int						envp_len(char **envp);
 
 #endif

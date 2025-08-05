@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
+#    By: preltien <preltien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 17:31:34 by erazumov          #+#    #+#              #
-#    Updated: 2025/07/12 16:18:43 by erazumov         ###   ########.fr        #
+#    Updated: 2025/08/05 16:59:44 by preltien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,10 +32,12 @@ LIBFT_INC = -I $(LIBFT_DIR)/include
 # Source Files
 SRC = src/main.c \
       src/execution/execution.c \
+	  src/execution/execution2.c \
       src/execution/execution_utils.c \
       src/expansion/expansion_append_utils.c \
       src/expansion/expansion.c \
       src/expansion/expansion_var_utils.c \
+	  src/expansion/expansion_len_utils.c \
       src/lexer/lexer.c \
       src/lexer/lexer_ops_utils.c \
       src/lexer/lexer_token_utils.c \
@@ -44,7 +46,19 @@ SRC = src/main.c \
       src/parser/parser.c \
       src/parser/parser_free_utils.c \
       src/parser/parser_print_utils.c \
-      src/parser/parser_utils.c
+      src/parser/parser_utils.c \
+	  src/execution/builtin.c \
+	  src/execution/pipex.c \
+	  src/execution/pipex2.c \
+	  src/execution/pipex3.c \
+	  src/execution/redir.c \
+	  src/execution/redir2.c \
+	  src/execution/unset.c \
+	  src/execution/unset2.c \
+	  src/execution/export.c \
+	  src/execution/get_path.c \
+	  src/execution/env.c \
+	  src/execution/env2.c
 OBJS = $(patsubst src/%.c,$(OBJ_DIR)/%.o,$(SRC))
 OBJ_DIRS = $(sort $(dir $(OBJS)))
 DEPS = $(OBJS:.o=.d)

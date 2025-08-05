@@ -5,49 +5,59 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 10:29:38 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 11:26:16 by preltien         ###   ########.fr       */
+/*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
+/*   Updated: 2025/08/04 16:15:48 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	execute(t_command *cmd_lst, t_shell *state)
+extern char	**environ;
+
+/*
+ * Exécute une commande externe via fork + execve
+ */
+static void	child_process(t_command *cmd, t_shell *state)
+{
+	if (apply_redirections(cmd->redir) < 0)
+	{
+		fprintf(stderr, "[ERROR] Failed to apply redirections\n");
+		exit(EXIT_FAILURE);
+	}
+	execve(cmd->argv[0], cmd->argv, state->envp);
+	perror("minishell");
+	exit(EXIT_FAILURE);
+}
+
+static int	parent_process(pid_t pid, t_shell *state)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		state->exit_code = WEXITSTATUS(status);
+	else
+		state->exit_code = 1;
+	return (state->exit_code);
+}
+
+int	exec_cmd(t_command *cmd, t_shell *state)
 {
 	pid_t	pid;
-	int		status;
-	char	*cmd_path;
-
-	if (!cmd_lst || !cmd_lst->argv || !cmd_lst->argv[0])
-		return (1);
-
-	cmd_path = find_cmd_path(cmd_lst->argv[0], state->envp);
-	if (!cmd_path)
-		return (127); // Command not found
 
 	pid = fork();
-	if (pid < 0)
+	if (pid == -1)
 	{
 		perror("fork");
-		free(cmd_path);
+		state->exit_code = 1;
 		return (1);
 	}
 	if (pid == 0)
-	{
-		// Enfant : on remplace le processus par la commande
-		execve(cmd_path, cmd_lst->argv, state->envp);
-		perror("execve");
-		free(cmd_path);
-		exit(1);
-	}
-	// Parent : on attend la fin du fils
-	waitpid(pid, &status, 0);
-	free(cmd_path);
-
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (status);
+		child_process(cmd, state);
+	return (parent_process(pid, state));
 }
