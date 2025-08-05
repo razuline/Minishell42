@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:28:17 by preltien          #+#    #+#             */
-/*   Updated: 2025/07/20 15:29:05 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:53:39 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ char	*get_path_env(t_shell *state)
 			return (strdup(state->envp[i] + 5));
 		i++;
 	}
-	path_env = strdup("/home/preltien/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
+	path_env = strdup(
+			"/home/preltien/bin:/usr/local/sbin:/usr/local/bin:"
+			"/usr/sbin:/usr/bin:/sbin:/bin");
 	return (path_env);
 }
 

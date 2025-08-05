@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 17:30:22 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:55:44 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,3 @@ t_token	*lexer(char *line)
 	lexer_loop(&lst, line);
 	return (head);
 }
-

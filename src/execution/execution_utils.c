@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 10:39:58 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 12:37:01 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:39:26 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_free_array(char **array)
 
 int	is_valid_varname(char *name)
 {
-	int i;
+	int	i;
 
 	if (!name || !name[0])
 		return (0);

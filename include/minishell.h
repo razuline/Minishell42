@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 14:25:34 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/05 12:52:38 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-/******************************************************************************
-
-																			*  STRUCTS																		*
- ******************************************************************************/
+/*STRUCTS*/
 typedef struct s_token
 {
 	char				*value;
@@ -59,10 +56,16 @@ typedef struct s_shell_state
 	int					envp_allocated;
 }						t_shell;
 
-/******************************************************************************
+typedef struct s_pipex_ctx
+{
+	t_command			*cmd;
+	t_shell				*state;
+	int					prev_fd;
+	int					pipe_fd[2];
+	int					is_last;
+}						t_pipex_ctx;
 
-																			*  ENUMS																		*
- ******************************************************************************/
+/*ENUMS*/
 enum					e_token_type
 {
 	WORD = 0,
@@ -81,10 +84,7 @@ enum					e_quote_type
 	DOUBLE_QUOTE
 };
 
-/******************************************************************************
-
-																		*  FUNCTIONS																	*
- ******************************************************************************/
+/*FUNCTIONS*/
 
 /* -------------------------- LEXER -----------------------------------------*/
 
@@ -145,6 +145,7 @@ void					free_commands(t_command *cmd_head);
 /* -------------------------- EXECUTION --------------------------------------*/
 
 /* execution.c */
+int						exec_cmd(t_command *cmd, t_shell *state);
 int						execute(t_command *cmds, t_shell *state);
 
 /* execution_utils.c */
@@ -161,8 +162,14 @@ int						builtin_env(char **envp);
 int						builtin_exit(char **argv);
 
 /*pipex.c*/
+void					pipex_close_fds(int *prev_fd, int pipe_fd[2],
+							int is_last);
 int						pipex_exec_loop(t_command *cmds, t_shell *state);
 int						has_pipe(t_command *cmds);
+int						create_pipe_if_needed(int pipe_fd[2], int is_last);
+void					pipex_fork_and_exec(t_pipex_ctx *ctx);
+int						fork_and_handle_child(t_pipex_ctx *ctx);
+void					wait_for_child(pid_t pid, t_shell *state);
 
 /*redir*/
 int						here_document(const char *limiter);
@@ -172,6 +179,7 @@ int						apply_redirections(t_redir *redir);
 int						builtin_export(t_shell *state, char **argv);
 
 /*unset*/
+int						handle_unset_arg(t_shell *state, char *arg);
 int						builtin_unset(char **argv, t_shell *state);
 int						remove_env_var(char ***envp, const char *var);
 
@@ -181,6 +189,7 @@ char					*find_executable_path(char *cmd, char **path_split);
 void					get_absolute_path(char **cmd, t_shell *state);
 
 /*env*/
+int						envp_add_entry(char ***envp, char *entry);
 void					print_env(t_shell *state);
 int						set_env_var(t_shell *state, const char *key,
 							const char *value);

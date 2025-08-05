@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 17:30:38 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:55:33 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,3 @@ static int	process_char(const char *value, int *i_ptr, char **res_ptr,
 	}
 	return (0);
 }
-
-

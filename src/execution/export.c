@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:32:52 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 14:07:28 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:43:07 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,8 @@ static int	set_env_var_from_arg(t_shell *state, char *arg)
 
 static int	handle_export_arg(t_shell *state, char *arg)
 {
-	return set_env_var_from_arg(state, arg);
+	return (set_env_var_from_arg(state, arg));
 }
-
 
 int	builtin_export(t_shell *state, char **argv)
 {
@@ -83,4 +82,3 @@ int	builtin_export(t_shell *state, char **argv)
 	}
 	return (ret);
 }
-

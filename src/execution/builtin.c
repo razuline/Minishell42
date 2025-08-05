@@ -6,25 +6,26 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:00:00 by preltien          #+#    #+#             */
-/*   Updated: 2025/07/19 19:29:23 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:40:50 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
-extern char **environ;
+extern char	**environ;
 
 /*
  * echo : affiche les arguments, gestion simplifiée
  */
 int	builtin_echo(char **argv)
 {
-	int i = 1;
+	int	i;
 
+	i = 1;
 	while (argv[i])
 	{
 		printf("%s", argv[i]);
@@ -66,7 +67,7 @@ int	builtin_cd(char **argv)
  */
 int	builtin_pwd(void)
 {
-	char cwd[4096];
+	char	cwd[4096];
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
@@ -80,10 +81,12 @@ int	builtin_pwd(void)
 /*
  * env : affiche les variables d'environnement
  */
+
 int	builtin_env(char **envp)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (!envp)
 		return (1);
 	while (envp[i])
@@ -96,10 +99,12 @@ int	builtin_env(char **envp)
 /*
  * exit : quitte le shell
  */
+
 int	builtin_exit(char **argv)
 {
-	int	code = 0;
+	int	code;
 
+	code = 0;
 	if (argv[1])
 		code = atoi(argv[1]);
 	exit(code);
