@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/05 17:14:10 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:56:48 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	parse_and_execute(t_shell *state, char *line)
 	t_token		*tokens;
 	t_command	*commands;
 
-	if (*line != '\0' && !is_whitespace(line))
+	if (*line == '\0' || is_whitespace(line))
 		return ;
 	add_history(line);
 	tokens = NULL;
