@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:39:55 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:55:21 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:06:03 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	envp_len(char **envp)
 	return (i);
 }
 
-static char	*get_env_value(const char *name, char **envp)
+char	*get_env_value(const char *name, char **envp)
 {
 	int	i;
 	int	len;
@@ -43,23 +43,23 @@ static char	*get_env_value(const char *name, char **envp)
 	return (strdup(""));
 }
 
-void	substitute_args(char **argv, char **envp)
-{
-	int		i;
-	char	*value;
+// void	substitute_args(char **argv, char **envp)
+// {
+// 	int		i;
+// 	char	*value;
 
-	i = 0;
-	while (argv[i])
-	{
-		if (argv[i][0] == '$' && strlen(argv[i]) > 1)
-		{
-			value = get_env_value(argv[i] + 1, envp);
-			free(argv[i]);
-			argv[i] = value;
-		}
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (argv[i])
+// 	{
+// 		if (argv[i][0] == '$' && strlen(argv[i]) > 1)
+// 		{
+// 			value = get_env_value(argv[i] + 1, envp);
+// 			free(argv[i]);
+// 			argv[i] = value;
+// 		}
+// 		i++;
+// 	}
+// }
 
 void	print_env(t_shell *state)
 {

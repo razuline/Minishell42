@@ -6,58 +6,62 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 13:46:25 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 11:52:25 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:19:08 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_word_token(t_tokenlist *lst, char *start, char *end);
+// static int	ft_word_token(t_tokenlist *lst, char *start, char *end);
 
-int	handle_word(t_tokenlist *lst, char **c)
+char	*strjoin_and_free(char *s1, char *s2)
 {
-	int		result;
-	char	*wd_start;
-	char	*wd_end;
+	char	*result;
 
-	wd_start = *c;
-	wd_end = ft_word_end(wd_start);
-	if (wd_start == wd_end)
-	{
-		*c = wd_end;
-		return (0);
-	}
-	result = ft_word_token(lst, wd_start, wd_end);
-	*c = wd_end;
+	result = ft_strjoin(s1, s2);
+	free(s1);
 	return (result);
 }
 
-static int	ft_word_token(t_tokenlist *lst, char *start,
-		char *end)
+int	handle_word(t_tokenlist *lst, char **c)
 {
-	int		len;
-	char	*extracted;
-	char	*cleaned;
-	int		quote_type;
+	char	*start;
+	char	*tmp;
+	char	quote;
 
-	len = end - start;
-	extracted = ft_substr(start, 0, len);
-	if (!extracted)
+	char *final = ft_strdup(""); // initialise une string vide
+	if (!final)
 		return (1);
-	if (*extracted == '\'')
-		quote_type = SINGLE_QUOTE;
-	else if (*extracted == '"')
-		quote_type = DOUBLE_QUOTE;
-	else
-		quote_type = DEFAULT;
-	cleaned = ft_delete_quotes(extracted);
-	if (!cleaned)
+	while (**c && !ft_delimiter(**c))
 	{
-		free(extracted);
-		return (1);
+		if (**c == '\'' || **c == '"')
+		{
+			quote = **c;
+			(*c)++; // skip opening quote
+			start = *c;
+			while (**c && **c != quote)
+				(*c)++;
+			tmp = ft_substr(start, 0, *c - start);
+			if (!tmp)
+				return (free(final), 1);
+			final = strjoin_and_free(final, tmp);
+			free(tmp);
+			if (**c == quote)
+				(*c)++; // skip closing quote
+		}
+		else
+		{
+			start = *c;
+			while (**c && !ft_delimiter(**c) && **c != '\'' && **c != '"')
+				(*c)++;
+			tmp = ft_substr(start, 0, *c - start);
+			if (!tmp)
+				return (free(final), 1);
+			final = strjoin_and_free(final, tmp);
+			free(tmp);
+		}
 	}
-	create_token(lst, cleaned, WORD, DEFAULT);
-	free(extracted);
-	free(cleaned);
+	create_token(lst, final, WORD, DEFAULT);
+	free(final);
 	return (0);
 }

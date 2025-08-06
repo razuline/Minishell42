@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:53:53 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:08:19 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	execute(t_command *cmds, t_shell *state)
 		fprintf(stderr, "[WARNING] Empty command, skipping...\n");
 		return (0);
 	}
-	substitute_args(cmd->argv, state->envp);
+	// substitute_args(cmd->argv, state->envp);
 	if (is_builtin(cmd->argv[0]))
 		ret = execute_builtin_cmd(cmd, state);
 	else

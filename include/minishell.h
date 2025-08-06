@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/05 12:52:38 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 13:21:04 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ int						expand_token(t_token *head, t_shell *state);
 
 /* expansion_var_utils.c */
 int						append_env_var(char **res_ptr, const char *input,
-							int *i_ptr);
+							int *i_ptr, t_shell *state);
+char					*get_env_value(const char *name, char **envp);
 
 /* expansion_append_utils.c */
 int						append_char(char **res_ptr, char c);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_var_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:19:48 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/27 14:13:32 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/06 13:02:17 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static char	*get_var_name(const char *input, int *i_ptr);
 static int	is_valid_var(char c);
 
-int	append_env_var(char **res_ptr, const char *input, int *i_ptr)
+int	append_env_var(char **res_ptr, const char *input, int *i_ptr, t_shell *state)
 {
 	char	*var_name;
 	char	*value;
@@ -24,18 +24,20 @@ int	append_env_var(char **res_ptr, const char *input, int *i_ptr)
 	var_name = get_var_name(input, i_ptr);
 	if (!var_name)
 		return (append_dollar(res_ptr));
-	value = getenv(var_name);
+	value = get_env_value(var_name, state->envp); // <-- utilise ta fonction ici
 	free(var_name);
 	if (value != NULL)
 	{
 		tmp = *res_ptr;
 		*res_ptr = ft_strjoin(tmp, value);
 		free(tmp);
+		free(value);
 		if (!*res_ptr)
 			return (1);
 	}
 	return (0);
 }
+
 
 static char	*get_var_name(const char *input, int *i_ptr)
 {

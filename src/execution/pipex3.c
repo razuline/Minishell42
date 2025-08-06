@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:14:46 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 17:08:39 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 12:50:42 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,39 @@ static int	setup_ctx_and_pipe(t_command *cmd, t_pipex_ctx *ctx, t_shell *state,
 	return (0);
 }
 
-static int	execute_and_update(t_pipex_ctx *ctx, pid_t *pid, int *prev_fd,
-		t_shell *state)
-{
-	*pid = fork_and_handle_child(ctx);
-	if (*pid == -1)
-		return (1);
-	pipex_close_fds(prev_fd, ctx->pipe_fd, ctx->is_last);
-	if (!ctx->is_last)
-		*prev_fd = ctx->pipe_fd[0];
-	wait_for_child(*pid, state);
-	return (0);
-}
-
 int	pipex_exec_loop(t_command *cmds, t_shell *state)
 {
 	t_pipex_ctx	ctx;
-	pid_t		pid;
+	int			pid_count;
 	int			prev_fd;
+	int			ret;
+	pid_t		pid;
+	int			status;
+	pid_t		pids[100];
 
+	pid_count = 0;
 	prev_fd = -1;
 	while (cmds)
 	{
-		if (setup_ctx_and_pipe(cmds, &ctx, state, prev_fd))
+		ret = setup_ctx_and_pipe(cmds, &ctx, state, prev_fd);
+		if (ret)
 			return (1);
-		if (execute_and_update(&ctx, &pid, &prev_fd, state))
+		pid = fork_and_handle_child(&ctx);
+		if (pid == -1)
 			return (1);
+		pipex_close_fds(&prev_fd, ctx.pipe_fd, ctx.is_last);
+		if (!ctx.is_last)
+			prev_fd = ctx.pipe_fd[0];
+		pids[pid_count++] = pid;
 		cmds = cmds->next;
+	}
+	for (int i = 0; i < pid_count; i++)
+	{
+		waitpid(pids[i], &status, 0);
+		if (WIFEXITED(status))
+			state->exit_code = WEXITSTATUS(status);
+		else
+			state->exit_code = 1;
 	}
 	return (state->exit_code);
 }

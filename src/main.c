@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:44:19 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 14:30:58 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:08:04 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ static void	process_line(char *line, t_shell *shell, t_token **tokens,
 		*tokens = lexer(line);
 		tmp = *tokens;
 		while (tmp)
+		{	
 			tmp = tmp->next;
+		}
 		if (*tokens && expand_token(*tokens, shell) != 0)
 		{
 			free_tokens(*tokens);
