@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:53:53 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:20:14 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,6 @@ int	execute(t_command *cmds, t_shell *state)
 		ret = execute_builtin_cmd(cmd, state);
 	else
 		ret = execute_external_cmd(cmd, state);
+	fflush(stdout);
 	return (ret);
 }
