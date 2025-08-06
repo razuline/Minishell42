@@ -6,16 +6,18 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 10:39:58 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/06 14:06:21 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:31:07 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <errno.h>
 #include <linux/limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 extern char	**environ;
@@ -91,4 +93,12 @@ int	is_valid_varname(char *name)
 		i++;
 	}
 	return (1);
+}
+int	is_directory(const char *path)
+{
+	struct stat	sb;
+
+	if (stat(path, &sb) == 0)
+		return (S_ISDIR(sb.st_mode));
+	return (0);
 }

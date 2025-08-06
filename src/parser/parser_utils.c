@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 13:04:53 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 18:05:43 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:57:26 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ t_command	*create_command(void)
 	return (new_cmd);
 }
 
+#include <stdio.h>  // pour printf
+
 char	**create_argv(char **old_argv, char *new_str)
 {
 	int		i;
@@ -39,7 +41,10 @@ char	**create_argv(char **old_argv, char *new_str)
 	}
 	new_argv = malloc(sizeof(char *) * (count + 2));
 	if (!new_argv)
+	{
+		printf("[ERROR] create_argv: malloc failed\n");
 		return (NULL);
+	}
 	i = 0;
 	while (i < count)
 	{
@@ -49,6 +54,7 @@ char	**create_argv(char **old_argv, char *new_str)
 	new_argv[count] = strdup(new_str);
 	if (!new_argv[count])
 	{
+		printf("[ERROR] create_argv: strdup failed for '%s'\n", new_str);
 		free(new_argv);
 		return (NULL);
 	}
@@ -56,6 +62,7 @@ char	**create_argv(char **old_argv, char *new_str)
 	free(old_argv);
 	return (new_argv);
 }
+
 
 void	add_redir_to_cmd(t_command *cmd, t_redir *new_redir)
 {

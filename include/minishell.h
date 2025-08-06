@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/06 13:21:04 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:38:09 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ enum					e_token_type
 	ENV_VAR = 6
 };
 
-enum					e_quote_type
+typedef enum e_quote_type
 {
 	DEFAULT,
 	SINGLE_QUOTE,
 	DOUBLE_QUOTE
-};
+}						t_quote_type;
 
 /*FUNCTIONS*/
 
@@ -154,6 +154,7 @@ int						is_builtin(char *cmd);
 int						exec_builtin(char **args, t_shell *state);
 void					ft_free_array(char **array);
 int						is_valid_varname(char *name);
+int						is_directory(const char *path);
 
 /* builtin.c */
 int						builtin_echo(char **argv);

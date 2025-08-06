@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:15:48 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:37:23 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,25 @@ static void	child_process(t_command *cmd, t_shell *state)
 		fprintf(stderr, "[ERROR] Failed to apply redirections\n");
 		exit(EXIT_FAILURE);
 	}
+	if (is_directory(cmd->argv[0]))
+	{
+		fprintf(stderr, "minishell: %s: Is a directory\n", cmd->argv[0]);
+		exit(126);
+	}
+	if (access(cmd->argv[0], F_OK) != 0)
+	{
+		fprintf(stderr, "minishell: %s: No such file or directory\n",
+			cmd->argv[0]);
+		exit(127);
+	}
+	if (access(cmd->argv[0], X_OK) != 0)
+	{
+		fprintf(stderr, "minishell: %s: Permission denied\n", cmd->argv[0]);
+		exit(126);
+	}
 	execve(cmd->argv[0], cmd->argv, state->envp);
 	perror("minishell");
-	exit(EXIT_FAILURE);
+	exit(1);
 }
 
 static int	parent_process(pid_t pid, t_shell *state)
