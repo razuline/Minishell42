@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:15:48 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:22:45 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static void	child_process(t_command *cmd, t_shell *state)
 		exit(EXIT_FAILURE);
 	}
 	execve(cmd->argv[0], cmd->argv, state->envp);
-	perror("minishell");
-	exit(EXIT_FAILURE);
+	fprintf(stderr, "minishell: %s: command not found\n", cmd->argv[0]);
+	exit(127);
 }
 
 static int	parent_process(pid_t pid, t_shell *state)

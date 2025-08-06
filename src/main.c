@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/06 11:56:48 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:16:14 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	main(int ac, char **av, char **envp)
 			break ;
 	}
 	rl_clear_history();
+	ft_free_array(shell_state.envp);
 	return (shell_state.exit_code);
 }
 
@@ -86,6 +87,21 @@ static int	is_whitespace(char *str)
 // Initialise la structure principale du shell (t_shell)
 static void	init_shell_state(t_shell *state, char **envp)
 {
-	state->envp = envp;
+	int	len;
+
+	len = envp_len(envp);
+	state->envp = malloc(sizeof(char *) * (len + 1));
+	if (!state->envp)
+	{
+		perror("minishell: malloc error");
+		exit(EXIT_FAILURE);
+	}
+	if (duplicate_env(envp, state->envp, len) != 0)
+	{
+		free(state->envp);
+		perror("minishell: malloc error during env copy");
+		exit(EXIT_FAILURE);
+	}
+	state->envp[len] = NULL;
 	state->exit_code = 0;
 }

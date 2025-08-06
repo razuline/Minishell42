@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/05 17:30:10 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:43:37 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	process_and_fill(const char *src, char *dest, int *i, size_t *j,
 				t_shell *state);
 static char	*expand_str(const char *value, t_shell *state);
-// static int	process_char(const char *value, int *i_ptr, char **res_ptr,
-// 				t_shell *state);
 
+/* Parcours les tokens et expand les variables ($VAR, $?)
+		pour ceux de type WORD. */
 int	expand_token(t_token *head, t_shell *state)
 {
 	t_token	*curr;
@@ -43,6 +43,8 @@ int	expand_token(t_token *head, t_shell *state)
 	return (0);
 }
 
+/* (2ème passe) Gère un segment (caractère, $VAR, $?)
+		et l'ajoute au résultat. */
 static void	process_and_fill(const char *src, char *dest, int *i, size_t *j,
 		t_shell *state)
 {
@@ -56,14 +58,14 @@ static void	process_and_fill(const char *src, char *dest, int *i, size_t *j,
 		{
 			(*i)++;
 			var_val = ft_itoa(state->exit_code);
-			*j = append_str_to_res(dest, var_val, *j);
+			*j = append_str_to_result(dest, var_val, *j);
 			free(var_val);
 		}
 		else if (ft_isalnum(src[*i]) || src[*i] == '_')
 		{
 			var_name_tmp = get_var_name(src, i);
 			var_val = getenv(var_name_tmp);
-			*j = append_str_to_res(dest, var_val, *j);
+			*j = append_str_to_result(dest, var_val, *j);
 			free(var_name_tmp);
 		}
 		else
@@ -73,6 +75,7 @@ static void	process_and_fill(const char *src, char *dest, int *i, size_t *j,
 		dest[(*j)++] = src[(*i)++];
 }
 
+/* Orchestre l'expansion d'une chaîne en deux passes (calcul puis remplissage). */
 static char	*expand_str(const char *value, t_shell *state)
 {
 	char	*result;
@@ -82,7 +85,7 @@ static char	*expand_str(const char *value, t_shell *state)
 
 	if (!value)
 		return (NULL);
-	final_len = calcul_expanded_len(value, *state);
+	final_len = calculate_expanded_len(value, state);
 	result = malloc(sizeof(char) * (final_len + 1));
 	if (!result)
 		return (NULL);

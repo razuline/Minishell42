@@ -6,16 +6,16 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:19:48 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/05 17:30:46 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:41:49 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_var_name(const char *input, int *i_ptr);
-static int	is_valid_var(char c);
+static int	is_valid_char(char c);
 
-static char	*get_var_name(const char *input, int *i_ptr)
+/* Extrait un nom de variable valide (ex: "USER" depuis "$USER_PATH"). */
+char	*get_var_name(const char *input, int *i_ptr)
 {
 	int		len;
 	int		start_pos;
@@ -23,7 +23,7 @@ static char	*get_var_name(const char *input, int *i_ptr)
 
 	len = 0;
 	start_pos = *i_ptr;
-	while (input[start_pos + len] && is_valid_var(input[start_pos + len]))
+	while (input[start_pos + len] && is_valid_char(input[start_pos + len]))
 		len++;
 	if (len == 0)
 		return (NULL);
@@ -32,7 +32,9 @@ static char	*get_var_name(const char *input, int *i_ptr)
 	return (var_name);
 }
 
-static int	is_valid_var(char c)
+/* Vérifie si un caractère est valide dans un nom de variable
+		(alphanumérique ou '_'). */
+static int	is_valid_char(char c)
 {
 	return (ft_isalnum(c) || c == '_');
 }

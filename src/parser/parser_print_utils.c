@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:28:18 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/26 14:49:36 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:24:29 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 static void	print_argv(char **argv);
 static void	print_redirections(t_redir *redir_lst);
 
-int	ft_redirection(int type)
+/* Vérifie si un type de token est une redirection. */
+int	is_redir_token(int type)
 {
 	return (type == REDIRECT_IN || type == REDIRECT_OUT || type == APPEND_OUT
 		|| type == HEREDOC);
 }
 
+/* Affiche le contenu d'une liste de commandes (pour le debug). */
 void	print_commands(t_command *cmd_head)
 {
 	t_command	*curr_cmd;
@@ -38,6 +40,7 @@ void	print_commands(t_command *cmd_head)
 	}
 }
 
+/* Affiche le contenu d'un tableau d'arguments (pour le debug). */
 static void	print_argv(char **argv)
 {
 	int	i;
@@ -56,6 +59,7 @@ static void	print_argv(char **argv)
 	printf(" argv[%d]: (null)\n", i);
 }
 
+/* Affiche le contenu d'une liste de redirections (pour le debug). */
 static void	print_redirections(t_redir *redir_lst)
 {
 	t_redir	*curr;
@@ -70,7 +74,7 @@ static void	print_redirections(t_redir *redir_lst)
 	while (curr != NULL)
 	{
 		printf("    -> TYPE: %s, FILE: \"%s\"\n", get_type_name(curr->type),
-			curr->file);
+				curr->file);
 		curr = curr->next;
 	}
 }

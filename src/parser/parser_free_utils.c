@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:28:46 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 15:03:20 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:22:38 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	free_argv(char **argv);
 static void	free_redir(t_redir *redir_head);
 
+/* Libère la mémoire d'une liste chaînée de commandes et de leur contenu. */
 void	free_commands(t_command *cmd_head)
 {
 	t_command	*curr;
@@ -31,11 +32,12 @@ void	free_commands(t_command *cmd_head)
 	}
 }
 
+/* Libère un tableau d'arguments (argv) et toutes ses chaînes. */
 static void	free_argv(char **argv)
 {
 	int	i;
 
-	if(!argv)
+	if (!argv)
 		return ;
 	i = 0;
 	while (argv[i])
@@ -46,6 +48,7 @@ static void	free_argv(char **argv)
 	free(argv);
 }
 
+/* Libère la mémoire d'une liste chaînée de redirections. */
 static void	free_redir(t_redir *redir_head)
 {
 	t_redir	*curr;
@@ -60,10 +63,3 @@ static void	free_redir(t_redir *redir_head)
 		curr = next;
 	}
 }
-
-/*
-** CHANGEMENTS
-** 4 août :
-** free_argv() : Nouvelle fonction qui crée des copies et les libere.
-** free_commands() : Ajoute free_argv() pour éviter les fuites de mémoire.
-*/

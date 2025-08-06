@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:50:08 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/04 16:20:38 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:55:58 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static int	ft_delimiter(char c)
 	return (ft_isspace(c) || c == '|' || c == '<' || c == '>');
 }
 
-int	upd_quote_state(char *word, int type, int i)
+/* Bascule l'état des guillemets (dans/hors de ' ou "). */
+int	update_quote_state(char *word, int type, int i)
 {
 	if (word[i] == '\'' && type == DEFAULT)
 		type = SINGLE_QUOTE;
@@ -30,9 +31,7 @@ int	upd_quote_state(char *word, int type, int i)
 	return (type);
 }
 
-/*
-** Obtenir le type de guillemet.
-*/
+/* Vérifie si un mot est entièrement entre guillemets. */
 int	get_quote_type(char *word)
 {
 	int	len;
@@ -45,7 +44,8 @@ int	get_quote_type(char *word)
 	return (DEFAULT);
 }
 
-char	*ft_word_end(char *word)
+/* Trouve la fin d'un mot, en ignorant les délimiteurs entre guillemets. */
+char	*find_word_end(char *word)
 {
 	int		i;
 	int		type;
@@ -58,17 +58,14 @@ char	*ft_word_end(char *word)
 	{
 		if (type == DEFAULT && ft_delimiter(word[i]))
 			break ;
-		type = upd_quote_state(word, type, i);
+		type = update_quote_state(word, type, i);
 		i++;
 	}
 	return (word + i);
 }
 
-/*
-** Prend une chaîne brute extraite par le lexer (ex: hello"'world')
-** et retourne une nouvelle chaîne "propre" (helloworld).
-*/
-char	*delete_word_quotes(char *word)
+/* Nettoie une chaîne de ses guillemets (ex: "salut" -> salut). */
+char	*remove_quotes_from_word(char *word)
 {
 	int		i;
 	int		j;
@@ -87,7 +84,7 @@ char	*delete_word_quotes(char *word)
 	while (word[i])
 	{
 		tmp_state = quote_state;
-		quote_state = upd_quote_state(word, quote_state, i);
+		quote_state = update_quote_state(word, quote_state, i);
 		if (quote_state == tmp_state)
 			dest[j++] = word[i];
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/05 17:20:14 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:49:19 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int	execute(t_command *cmds, t_shell *state)
 		fprintf(stderr, "[WARNING] Empty command, skipping...\n");
 		return (0);
 	}
-	substitute_args(cmd->argv, state->envp);
 	if (is_builtin(cmd->argv[0]))
 		ret = execute_builtin_cmd(cmd, state);
 	else

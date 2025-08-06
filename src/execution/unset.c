@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:32:49 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:50:40 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:35:55 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 extern char	**environ;
 
-int	handle_unset_arg(t_shell *state, char *arg)
+int	process_unset_arg(t_shell *state, char *arg)
 {
 	if (!is_valid_varname(arg))
 	{
@@ -44,7 +44,7 @@ int	builtin_unset(char **argv, t_shell *state)
 	ret = 0;
 	while (argv[i])
 	{
-		if (handle_unset_arg(state, argv[i]) != 0)
+		if (process_unset_arg(state, argv[i]) != 0)
 			ret = 1;
 		i++;
 	}

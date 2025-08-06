@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:55:09 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/05 15:46:48 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:13:59 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	process_token(t_command *cmd, t_token **tok_ptr);
 static int	process_pipe(t_command **cmd_ptr, t_token **tok_ptr);
 static int	process_redir(t_command *cmd, t_token **curr_tok);
 
+/* Point d'entrée du parseur,
+	transforme la liste de tokens en liste de commandes. */
 t_command	*parser(t_token *token_lst)
 {
 	t_command	*cmd_lst_head;
@@ -43,11 +45,12 @@ t_command	*parser(t_token *token_lst)
 	return (cmd_lst_head);
 }
 
+/* Aiguille un token vers la fonction de traitement appropriée. */
 static int	dispatch_token(t_command **cmd_ptr, t_token **tok_ptr)
 {
 	if ((*tok_ptr)->type == WORD)
 		return (process_token(*cmd_ptr, tok_ptr));
-	else if (ft_redirection((*tok_ptr)->type))
+	else if (is_redir_token((*tok_ptr)->type))
 		return (process_redir(*cmd_ptr, tok_ptr));
 	else if ((*tok_ptr)->type == PIPE)
 		return (process_pipe(cmd_ptr, tok_ptr));
@@ -55,23 +58,17 @@ static int	dispatch_token(t_command **cmd_ptr, t_token **tok_ptr)
 	return (1);
 }
 
+/* Ajoute la valeur d'un token WORD aux arguments (argv) de la commande. */
 static int	process_token(t_command *cmd, t_token **tok_ptr)
 {
-	char	*val_cp;
-
-	val_cp = ft_strdup((*tok_ptr)->value);
-	if (!val_cp)
-		return (1);
-	cmd->argv = create_argv(cmd->argv, val_cp);
+	cmd->argv = create_argv(cmd->argv, (*tok_ptr)->value);
 	if (!cmd->argv)
-	{
-		free(val_cp);
 		return (1);
-	}
 	*tok_ptr = (*tok_ptr)->next;
 	return (0);
 }
 
+/* Gère un token PIPE en créant une nouvelle commande dans la liste. */
 static int	process_pipe(t_command **cmd_ptr, t_token **tok_ptr)
 {
 	t_command	*new_cmd;
@@ -90,6 +87,7 @@ static int	process_pipe(t_command **cmd_ptr, t_token **tok_ptr)
 	return (0);
 }
 
+/* Gère un token de redirection en créant une structure de redirection. */
 static int	process_redir(t_command *cmd, t_token **tok_ptr)
 {
 	t_token	*token_file;
@@ -116,15 +114,3 @@ static int	process_redir(t_command *cmd, t_token **tok_ptr)
 	*tok_ptr = (*tok_ptr)->next->next;
 	return (0);
 }
-
-/*
-** CHANGEMENTS
-**
-** 4 août :
-** process_token() : Utilisation ft_strdup pour créer une copie de la valeur 
-** 					du token. C'est cette copie qui est maintenant stockée
-**					dans argv.
-** process_pipe() : La condition if vérifie maintenant qu'une commande est
-**					totalement vide (ni arguments, ni redirections) avant de
-**					déclarer une erreur de syntaxe.
-*/

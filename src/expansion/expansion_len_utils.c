@@ -6,19 +6,19 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:21:15 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/05 17:28:56 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:38:09 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void		update_len_for_segment(const char *value, int *i, size_t *len,
+					t_shell *state);
 static size_t	get_len_var(const char *input, int *i_ptr);
 static size_t	get_len_exit_status(t_shell *state);
 
-/*
-** Calcule la longueur finale de la chaîne après expansion.
-*/
-size_t	calcul_expanded_len(const char *value, t_shell state)
+/* (1ère passe) Calcule la longueur finale de la chaîne après expansion. */
+size_t	calculate_expanded_len(const char *value, t_shell *state)
 {
 	int		i;
 	size_t	len;
@@ -27,31 +27,36 @@ size_t	calcul_expanded_len(const char *value, t_shell state)
 	len = 0;
 	while (value[i])
 	{
-		if (value[i] == '$' && value[i + 1] != '\0')
-		{
-			i++;
-			if (value[i] == '?')
-			{
-				i++;
-				len += get_len_exit_status(&state);
-			}
-			else if (ft_isalnum(value[i]) || value[i] == '_')
-				len += get_len_var(value, &i);
-			else
-				len++;
-		}
-		else
-		{
-			len++;
-			i++;
-		}
+		update_len_for_segment(value, &i, &len, state);
 	}
 	return (len);
 }
 
-/*
-** Calcule la longueur d'une variable d'environnement.
-*/
+/* Analyse un segment ($VAR, $?, char) et met à jour la longueur totale. */
+static void	update_len_for_segment(const char *value, int *i, size_t *len,
+		t_shell *state)
+{
+	if (value[*i] == '$' && value[*i + 1] != '\0')
+	{
+		(*i)++;
+		if (value[*i] == '?')
+		{
+			(*i)++;
+			*len += get_len_exit_status(state);
+		}
+		else if (ft_isalnum(value[*i]) || value[*i] == '_')
+			*len += get_len_var(value, i);
+		else
+			(*len)++;
+	}
+	else
+	{
+		(*len)++;
+		(*i)++;
+	}
+}
+
+/* Calcule la longueur de la valeur d'une variable d'environnement. */
 static size_t	get_len_var(const char *input, int *i_ptr)
 {
 	char	*var_name;
@@ -79,9 +84,7 @@ static size_t	get_len_var(const char *input, int *i_ptr)
 	return (len);
 }
 
-/*
-** Calcule la longueur du code de sortie (converti en chaîne).
-*/
+/* Calcule la longueur du code de sortie ($?) converti en chaîne. */
 static size_t	get_len_exit_status(t_shell *state)
 {
 	char	*exit_code_str;
