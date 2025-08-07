@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:28:17 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/04 16:53:39 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:32:29 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 extern char	**environ;
 
 // 🔹 Récupère la valeur de PATH depuis envp, ou retourne une valeur par défaut
-char	*get_path_env(t_shell *state)
+char	*get_path_from_env(t_shell *state)
 {
 	int		i;
 	char	*path_env;
@@ -75,7 +75,7 @@ void	get_absolute_path(char **cmd, t_shell *state)
 		return ;
 	if (cmd[0][0] == '/' || strncmp(cmd[0], "./", 2) == 0)
 		return ;
-	path_env = get_path_env(state);
+	path_env = get_path_from_env(state);
 	if (!path_env)
 		return ;
 	path_split = ft_split(path_env, ':');

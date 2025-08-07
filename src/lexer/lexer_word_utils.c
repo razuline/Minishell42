@@ -6,18 +6,19 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:50:08 by erazumov          #+#    #+#             */
-/*   Updated: 2025/06/20 17:42:28 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:55:58 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_delimiter(char c)
+static int	ft_delimiter(char c)
 {
 	return (ft_isspace(c) || c == '|' || c == '<' || c == '>');
 }
 
-int	ft_quote_type(char *word, int type, int i)
+/* Bascule l'état des guillemets (dans/hors de ' ou "). */
+int	update_quote_state(char *word, int type, int i)
 {
 	if (word[i] == '\'' && type == DEFAULT)
 		type = SINGLE_QUOTE;
@@ -30,7 +31,21 @@ int	ft_quote_type(char *word, int type, int i)
 	return (type);
 }
 
-char	*ft_word_end(char *word)
+/* Vérifie si un mot est entièrement entre guillemets. */
+int	get_quote_type(char *word)
+{
+	int	len;
+
+	len = ft_strlen(word);
+	if (len >= 2 && word[0] == '\'' && word[len - 1] == '\'')
+		return (SINGLE_QUOTE);
+	else if (len >= 2 && word[0] == '"' && word[len - 1] == '"')
+		return (DOUBLE_QUOTE);
+	return (DEFAULT);
+}
+
+/* Trouve la fin d'un mot, en ignorant les délimiteurs entre guillemets. */
+char	*find_word_end(char *word)
 {
 	int		i;
 	int		type;
@@ -43,36 +58,37 @@ char	*ft_word_end(char *word)
 	{
 		if (type == DEFAULT && ft_delimiter(word[i]))
 			break ;
-		type = ft_quote_type(word, type, i);
+		type = update_quote_state(word, type, i);
 		i++;
 	}
 	return (word + i);
 }
 
-char	*ft_delete_quotes(char *word)
+/* Nettoie une chaîne de ses guillemets (ex: "salut" -> salut). */
+char	*remove_quotes_from_word(char *word)
 {
-	char	*result;
-	char	*start;
-	char	*end;
-	int		len;
+	int		i;
+	int		j;
+	int		quote_state;
+	int		tmp_state;
+	char	*dest;
 
-	if (word == NULL)
+	if (!word)
 		return (NULL);
-	start = word;
-	end = word;
-	while (*end)
-		end++;
-	end--;
-	len = ft_strlen(word);
-	if (len >= 2 && (*start == '\'' || *start == '"') && *start == *end)
+	dest = malloc(ft_strlen(word) + 1);
+	if (!dest)
+		return (NULL);
+	i = 0;
+	j = 0;
+	quote_state = DEFAULT;
+	while (word[i])
 	{
-		result = malloc(len - 2 + 1);
-		if (!result)
-			return (NULL);
-		ft_memcpy(result, start + 1, len - 2);
-		result[len - 2] = '\0';
-		return (result);
+		tmp_state = quote_state;
+		quote_state = update_quote_state(word, quote_state, i);
+		if (quote_state == tmp_state)
+			dest[j++] = word[i];
+		i++;
 	}
-	else
-		return (ft_strdup(word));
+	dest[j] = '\0';
+	return (dest);
 }

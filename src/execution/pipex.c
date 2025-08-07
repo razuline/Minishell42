@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:14:46 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/05 12:50:15 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:23:21 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ static void	exec_command_or_builtin(t_command *cmd, t_shell *state)
 		exit(127);
 	}
 	execve(cmd->argv[0], cmd->argv, state->envp);
-	perror("execve");
-	exit(1);
+	fprintf(stderr, "minishell: %s: command not found\n", cmd->argv[0]);
+	exit(127);
 }
 
 void	pipex_fork_and_exec(t_pipex_ctx *ctx)

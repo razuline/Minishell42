@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:10:42 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/05 15:07:48 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:43:51 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <ctype.h>
 # include <fcntl.h>
-# include <limits.h>
 # include <stdarg.h>
 # include <stdlib.h>
 # include <string.h>
@@ -27,8 +26,8 @@ int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);
 int					ft_isascii(int c);
-int					ft_isprint(int c);
 int					ft_isspace(int c);
+int					ft_isprint(int c);
 size_t				ft_strlen(const char *str);
 void				*ft_memset(void *dest, int c, size_t len);
 void				ft_bzero(void *dest, size_t len);
@@ -46,7 +45,6 @@ int					ft_memcmp(const void *s1, const void *s2, size_t len);
 char				*ft_strnstr(const char *str, const char *to_find,
 						size_t len);
 int					ft_atoi(const char *str);
-long				ft_atol(const char *str);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strdup(const char *src);
 
@@ -58,7 +56,6 @@ char				*ft_strtrim(char const *s1, char const *s2);
 char				**ft_split(char const *str, char sep);
 char				*ft_itoa(int num);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-void				free_split_result(char **split_array);
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);

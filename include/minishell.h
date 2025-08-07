@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/06 16:38:09 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/07 10:31:00 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-/*STRUCTS*/
+// ************************************************************************** //
+//                                 Structures                                 //
+// ************************************************************************** //
+
 typedef struct s_token
 {
 	char				*value;
@@ -29,11 +32,11 @@ typedef struct s_token
 	struct s_token		*next;
 }						t_token;
 
-typedef struct s_tokenlist
+typedef struct s_token_lst
 {
-	t_token				**head;
-	t_token				**tail;
-}						t_tokenlist;
+	t_token				*head;
+	t_token				*tail;
+}						t_token_lst;
 
 typedef struct s_redir
 {
@@ -53,7 +56,6 @@ typedef struct s_shell_state
 {
 	char				**envp;
 	int					exit_code;
-	int					envp_allocated;
 }						t_shell;
 
 typedef struct s_pipex_ctx
@@ -65,7 +67,10 @@ typedef struct s_pipex_ctx
 	int					is_last;
 }						t_pipex_ctx;
 
-/*ENUMS*/
+// ************************************************************************** //
+//                                Enumerations                                //
+// ************************************************************************** //
+
 enum					e_token_type
 {
 	WORD = 0,
@@ -84,49 +89,50 @@ typedef enum e_quote_type
 	DOUBLE_QUOTE
 }						t_quote_type;
 
-/*FUNCTIONS*/
+// ************************************************************************** //
+//                                 Functions                                  //
+// ************************************************************************** //
 
-/* -------------------------- LEXER -----------------------------------------*/
+/* LEXER -------------------------------------------------------------------- */
 
 /* lexer.c */
 t_token					*lexer(char *line);
 
-/* lexer_word.c */
-int						ft_delimiter(char c);
-int						ft_quote_type(char *word, int type, int i);
-char					*ft_word_end(char *word);
-char					*ft_delete_quotes(char *word);
+/* lexer_handlers.c */
+int						handle_word(t_token_lst *lst, char **c);
+int						handle_single_op(t_token_lst *lst, char **c);
+int						handle_double_op(t_token_lst *lst, char **c);
 
 /* lexer_word_utils.c */
-int						handle_word(t_tokenlist *lst, char **ch);
-
-/* lexer_ops_utils.c */
-int						ft_single_token(t_tokenlist *lst, char **c);
-int						ft_double_token(t_tokenlist *lst, char **c);
+int						update_quote_state(char *word, int type, int i);
+int						get_quote_type(char *word);
+char					*find_word_end(char *word);
+char					*remove_quotes_from_word(char *word);
 
 /* lexer_token_utils.c */
-t_token					*create_token(t_tokenlist *lst, char *word, int type,
+t_token					*create_token(t_token_lst *lst, char *word, int type,
 							int quote_info);
 char					*get_type_name(int type);
 void					print_tokens(t_token *head);
 void					free_tokens(t_token *head);
 
-/* -------------------------- EXPANSION --------------------------------------*/
+/* EXPANSION ---------------------------------------------------------------- */
 
 /* expansion.c */
 int						expand_token(t_token *head, t_shell *state);
 
+/* expansion_len_utils.c */
+size_t					calculate_expanded_len(const char *value,
+							t_shell *state);
+
 /* expansion_var_utils.c */
-int						append_env_var(char **res_ptr, const char *input,
-							int *i_ptr, t_shell *state);
-char					*get_env_value(const char *name, char **envp);
+char					*get_var_name(const char *input, int *i_ptr);
 
 /* expansion_append_utils.c */
-int						append_char(char **res_ptr, char c);
-int						append_dollar(char **res_ptr);
-int						append_exit_status(char **res_ptr, t_shell *state);
+size_t					append_str_to_result(char *dest, const char *src,
+							size_t j);
 
-/* -------------------------- PARSER -----------------------------------------*/
+/* PARSER --------------------------------------------------------------------*/
 
 /* parser.c */
 t_command				*parser(t_token *head);
@@ -136,14 +142,14 @@ t_command				*create_command(void);
 char					**create_argv(char **old_argv, char *new_str);
 void					add_redir_to_cmd(t_command *cmd, t_redir *new_redir);
 
-/* parser_print_utils.c */
-int						ft_redirection(int type);
-void					print_commands(t_command *cmd_head);
-
 /* parser_free_utils.c */
 void					free_commands(t_command *cmd_head);
 
-/* -------------------------- EXECUTION --------------------------------------*/
+/* parser_print_utils.c */
+int						is_redir_token(int type);
+void					print_commands(t_command *cmd_head);
+
+/* EXECUTION ---------------------------------------------------------------- */
 
 /* execution.c */
 int						exec_cmd(t_command *cmd, t_shell *state);
@@ -181,12 +187,12 @@ int						apply_redirections(t_redir *redir);
 int						builtin_export(t_shell *state, char **argv);
 
 /*unset*/
-int						handle_unset_arg(t_shell *state, char *arg);
+int						process_unset_arg(t_shell *state, char *arg);
 int						builtin_unset(char **argv, t_shell *state);
 int						remove_env_var(char ***envp, const char *var);
 
 /*get_path*/
-char					*get_path_env(t_shell *state);
+char					*get_path_from_env(t_shell *state);
 char					*find_executable_path(char *cmd, char **path_split);
 void					get_absolute_path(char **cmd, t_shell *state);
 
@@ -196,6 +202,6 @@ void					print_env(t_shell *state);
 int						set_env_var(t_shell *state, const char *key,
 							const char *value);
 int						duplicate_env(char **src, char **dst, int count);
-void					substitute_args(char **argv, char **envp);
 int						envp_len(char **envp);
+
 #endif

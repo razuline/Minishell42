@@ -5,14 +5,75 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/11 17:44:19 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/06 14:08:04 by preltien         ###   ########.fr       */
+/*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
+/*   Updated: 2025/08/07 10:31:22 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_whitespace(char *str)
+static int	process_line(t_shell *state);
+static void	parse_and_execute(t_shell *state, char *line);
+static int	is_whitespace(char *str);
+static void	init_shell_state(t_shell *state, char **envp);
+
+// Juste initialiser le shell et lancer la boucle qui appelle l'autre fonction
+int	main(int ac, char **av, char **envp)
+{
+	t_shell		shell_state;
+
+	(void)ac;
+	(void)av;
+	init_shell_state(&shell_state, envp);
+	while (1)
+	{
+		if (process_line(&shell_state) != 0)
+			break ;
+	}
+	rl_clear_history();
+	ft_free_array(shell_state.envp);
+	return (shell_state.exit_code);
+}
+
+// La lire, l'analyser, l'exécuter, et la nettoyer
+static int	process_line(t_shell *state)
+{
+	char		*line;
+
+	line = readline("minishell> ");
+	if (line == NULL)
+	{
+		printf("exit\n");
+		return (1);
+	}
+	if (*line)
+	parse_and_execute(state, line);
+	free(line);
+	return (0);
+}
+
+// Analyse et exécute une ligne de commande donnée
+static void	parse_and_execute(t_shell *state, char *line)
+{
+	t_token		*tokens;
+	t_command	*commands;
+
+	if (*line == '\0' || is_whitespace(line))
+		return ;
+	add_history(line);
+	tokens = NULL;
+	commands = NULL;
+	tokens = lexer(line);
+	if (tokens && expand_token(tokens, state) == 0)
+		commands = parser(tokens);
+	if (commands != NULL)
+		state->exit_code = execute(commands, state);
+	free_tokens(tokens);
+	free_commands(commands);
+}
+
+// Vérifie si une chaîne de caractères est composée d'espaces et de tabs
+static int	is_whitespace(char *str)
 {
 	while (*str)
 	{
@@ -23,86 +84,24 @@ int	is_whitespace(char *str)
 	return (1);
 }
 
-void	init_shell_state(t_shell *state)
+// Initialise la structure principale du shell (t_shell)
+static void	init_shell_state(t_shell *state, char **envp)
 {
-	extern char	**environ;
-	int			len;
+	int	len;
 
-	len = envp_len(environ);
+	len = envp_len(envp);
 	state->envp = malloc(sizeof(char *) * (len + 1));
 	if (!state->envp)
 	{
-		perror("malloc");
+		perror("minishell: malloc error");
 		exit(EXIT_FAILURE);
 	}
-	if (duplicate_env(environ, state->envp, len) != 0)
+	if (duplicate_env(envp, state->envp, len) != 0)
 	{
-		perror("Erreur lors de la duplication de l'environnement");
+		free(state->envp);
+		perror("minishell: malloc error during env copy");
 		exit(EXIT_FAILURE);
 	}
+	state->envp[len] = NULL;
 	state->exit_code = 0;
-}
-
-static void	process_line(char *line, t_shell *shell, t_token **tokens,
-		t_command **commands)
-{
-	t_token	*tmp;
-
-	if (*line && !is_whitespace(line))
-	{
-		*tokens = lexer(line);
-		tmp = *tokens;
-		while (tmp)
-		{	
-			tmp = tmp->next;
-		}
-		if (*tokens && expand_token(*tokens, shell) != 0)
-		{
-			free_tokens(*tokens);
-			*tokens = NULL;
-		}
-		if (*tokens)
-			*commands = parser(*tokens);
-	}
-}
-
-static void	shell_loop(t_shell *shell)
-{
-	char		*line;
-	t_token		*tokens;
-	t_command	*commands;
-
-	while (1)
-	{
-		tokens = NULL;
-		commands = NULL;
-		line = readline("minishell> ");
-		if (!line)
-		{
-			printf("exit\n");
-			break ;
-		}
-		if (*line)
-			add_history(line);
-		process_line(line, shell, &tokens, &commands);
-		free(line);
-		free_tokens(tokens);
-		if (commands)
-			shell->exit_code = execute(commands, shell);
-		free_commands(commands);
-	}
-}
-
-int	main(int ac, char **av, char **envp)
-{
-	t_shell	shell;
-
-	(void)ac;
-	(void)av;
-	(void)envp;
-	init_shell_state(&shell);
-	shell_loop(&shell);
-	rl_clear_history();
-	ft_free_array(shell.envp);
-	return (shell.exit_code);
 }

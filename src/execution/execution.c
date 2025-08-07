@@ -6,7 +6,7 @@
 /*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/06 16:37:23 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/07 10:32:07 by preltien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static void	child_process(t_command *cmd, t_shell *state)
 		exit(126);
 	}
 	execve(cmd->argv[0], cmd->argv, state->envp);
-	perror("minishell");
-	exit(1);
+	fprintf(stderr, "minishell: %s: command not found\n", cmd->argv[0]);
+	exit(127);
 }
 
 static int	parent_process(pid_t pid, t_shell *state)

@@ -5,7 +5,9 @@
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/libft/include",
-                "${workspaceFolder}/include"
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/libft/src",
+                "${workspaceFolder}/libft/include"
             ],
             "defines": [],
             "cStandard": "c17",

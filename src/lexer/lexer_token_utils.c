@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/07/11 14:48:04 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:57:23 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*create_token(t_tokenlist *lst, char *word, int type, int quote_info)
+/* Alloue un nouveau token et l'ajoute à la fin de la liste. */
+t_token	*create_token(t_token_lst *lst, char *word, int type, int quote_info)
 {
 	t_token	*new_token;
 
@@ -28,19 +29,21 @@ t_token	*create_token(t_tokenlist *lst, char *word, int type, int quote_info)
 	new_token->type = type;
 	new_token->quote_type = quote_info;
 	new_token->next = NULL;
-	if (*(lst->head) == NULL)
+	if (lst->head == NULL)
 	{
-		*(lst->head) = new_token;
-		*(lst->tail) = new_token;
+		lst->head = new_token;
+		lst->tail = new_token;
 	}
 	else
 	{
-		(*(lst->tail))->next = new_token;
-		*(lst->tail) = new_token;
+		lst->tail->next = new_token;
+		lst->tail = new_token;
 	}
 	return (new_token);
 }
- char	*get_type_name(int type)
+
+/* Retourne le nom d'un type de token (pour le debug). */
+char	*get_type_name(int type)
 {
 	if (type == WORD)
 		return ("WORD");
@@ -58,6 +61,7 @@ t_token	*create_token(t_tokenlist *lst, char *word, int type, int quote_info)
 		return ("UNKNOWN");
 }
 
+/* Affiche une liste de tokens (pour le debug). */
 void	print_tokens(t_token *head)
 {
 	t_token	*curr;
@@ -72,6 +76,7 @@ void	print_tokens(t_token *head)
 	printf("NULL\n");
 }
 
+/* Libère la mémoire d'une liste de tokens. */
 void	free_tokens(t_token *head)
 {
 	t_token	*curr;
