@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   unset2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:32:49 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/05 13:45:35 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/09 14:14:41 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-extern char	**environ;
 
 static int	should_keep(const char *entry, const char *var)
 {

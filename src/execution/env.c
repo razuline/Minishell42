@@ -6,14 +6,11 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:39:55 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/06 19:19:54 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/09 14:11:40 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 static char	*create_env_entry(const char *key, const char *value)
 {

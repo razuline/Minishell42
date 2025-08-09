@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/07 10:31:00 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/09 15:01:51 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,21 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <ctype.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 // ************************************************************************** //
 //                                 Structures                                 //
@@ -52,20 +62,20 @@ typedef struct s_command
 	struct s_command	*next;
 }						t_command;
 
-typedef struct s_shell_state
+typedef struct s_shell
 {
 	char				**envp;
 	int					exit_code;
 }						t_shell;
 
-typedef struct s_pipex_ctx
+typedef struct s_exec_context
 {
 	t_command			*cmd;
 	t_shell				*state;
 	int					prev_fd;
 	int					pipe_fd[2];
 	int					is_last;
-}						t_pipex_ctx;
+}						t_exec_context;
 
 // ************************************************************************** //
 //                                Enumerations                                //
@@ -122,8 +132,8 @@ void					free_tokens(t_token *head);
 int						expand_token(t_token *head, t_shell *state);
 
 /* expansion_len_utils.c */
-size_t					calculate_expanded_len(const char *value,
-							t_shell *state);
+size_t	calculate_expanded_len(const char *value,
+								t_shell *state);
 
 /* expansion_var_utils.c */
 char					*get_var_name(const char *input, int *i_ptr);
@@ -152,8 +162,22 @@ void					print_commands(t_command *cmd_head);
 /* EXECUTION ---------------------------------------------------------------- */
 
 /* execution.c */
-int						exec_cmd(t_command *cmd, t_shell *state);
 int						execute(t_command *cmds, t_shell *state);
+int						execute_builtin(char **argv, t_shell *state);
+
+/* pipeline.c */
+int						execute_pipeline(t_command *cmds, t_shell *state);
+
+/* pipeline_utils.c */
+void					setup_pipe_context(t_exec_context *ctx, t_command *cmd,
+							t_shell *state, int prev_fd);
+void					close_pipe_fds(int *prev_fd, int pipe_fd[2],
+							int is_last);
+int						create_pipe_if_needed(int pipe_fd[2], int is_last);
+int						count_commands(t_command *cmds);
+
+/* redirections.c */
+int						apply_redirections(t_redir *redir_list);
 
 /* execution_utils.c */
 int						is_builtin(char *cmd);

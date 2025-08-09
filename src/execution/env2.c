@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:39:55 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/07 10:31:39 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/09 14:11:35 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-extern char	**environ;
 
 int	envp_len(char **envp)
 {

@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:14:46 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/05 12:51:36 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/09 14:14:01 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 int	has_pipe(t_command *cmds)
 {

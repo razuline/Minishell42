@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/07 10:31:22 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/09 14:22:17 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int ac, char **av, char **envp)
 // La lire, l'analyser, l'exécuter, et la nettoyer
 static int	process_line(t_shell *state)
 {
-	char		*line;
+	char	*line;
 
 	line = readline("minishell> ");
 	if (line == NULL)
@@ -46,8 +46,11 @@ static int	process_line(t_shell *state)
 		printf("exit\n");
 		return (1);
 	}
-	if (*line)
-	parse_and_execute(state, line);
+	if (line[0] != '\0' && !is_whitespace(line))
+	{
+		add_history(line);
+		parse_and_execute(state, line);
+	}
 	free(line);
 	return (0);
 }
@@ -58,12 +61,8 @@ static void	parse_and_execute(t_shell *state, char *line)
 	t_token		*tokens;
 	t_command	*commands;
 
-	if (*line == '\0' || is_whitespace(line))
-		return ;
-	add_history(line);
-	tokens = NULL;
-	commands = NULL;
 	tokens = lexer(line);
+	commands = NULL;
 	if (tokens && expand_token(tokens, state) == 0)
 		commands = parser(tokens);
 	if (commands != NULL)

@@ -6,16 +6,11 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:32:49 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/06 19:35:55 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/09 14:14:36 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-extern char	**environ;
 
 int	process_unset_arg(t_shell *state, char *arg)
 {

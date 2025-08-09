@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:14:46 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/07 10:32:33 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/09 14:14:07 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 static int	setup_pipe_context(t_command *cmd, t_pipex_ctx *ctx, t_shell *state,
 		int prev_fd)

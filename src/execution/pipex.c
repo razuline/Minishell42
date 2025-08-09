@@ -6,15 +6,11 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:14:46 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/06 19:23:21 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/09 14:13:52 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 void	pipex_close_fds(int *prev_fd, int pipe_fd[2], int is_last)
 {
