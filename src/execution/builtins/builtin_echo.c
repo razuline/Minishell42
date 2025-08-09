@@ -1,47 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/13 15:32:49 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/09 14:14:36 by erazumov         ###   ########.fr       */
+/*   Created: 2025/08/09 16:57:28 by erazumov          #+#    #+#             */
+/*   Updated: 2025/08/09 17:19:27 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	process_unset_arg(t_shell *state, char *arg)
-{
-	if (!is_valid_varname(arg))
-	{
-		fprintf(stderr, "minishell: unset: `%s`: not a valid identifier\n",
-			arg);
-		return (1);
-	}
-	if (remove_env_var(&state->envp, arg) != 0)
-	{
-		perror("unset");
-		return (1);
-	}
-	return (0);
-}
-
-int	builtin_unset(char **argv, t_shell *state)
+/* Affiche les arguments passés à la commande, avec gestion de l'option -n. */
+int	builtin_echo(char **argv)
 {
 	int	i;
-	int	ret;
+	int	newline_flag;
 
-	if (!argv[1])
-		return (0);
 	i = 1;
-	ret = 0;
-	while (argv[i])
+	newline_flag = 1;
+	if (argv[i] && ft_strcmp(argv[i], "-n") == 0)
 	{
-		if (process_unset_arg(state, argv[i]) != 0)
-			ret = 1;
+		newline_flag = 0;
 		i++;
 	}
-	return (ret);
+	while (argv[i])
+	{
+		ft_putstr_fd(argv[i], 1);
+		if (argv[i + 1])
+			ft_putstr_fd(" ", 1);
+		i++;
+	}
+	if (newline_flag)
+		ft_putstr_fd("\n", 1);
+	return (0);
 }

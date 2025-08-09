@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:28:18 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/06 20:24:29 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/09 16:47:10 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	print_argv(char **argv);
 static void	print_redirections(t_redir *redir_lst);
 
 /* Vérifie si un type de token est une redirection. */
-int	is_redir_token(int type)
+int	is_redirection(int type)
 {
 	return (type == REDIRECT_IN || type == REDIRECT_OUT || type == APPEND_OUT
 		|| type == HEREDOC);

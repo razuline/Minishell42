@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 15:01:51 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:20:05 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void					add_redir_to_cmd(t_command *cmd, t_redir *new_redir);
 void					free_commands(t_command *cmd_head);
 
 /* parser_print_utils.c */
-int						is_redir_token(int type);
+int						is_redirection(int type);
 void					print_commands(t_command *cmd_head);
 
 /* EXECUTION ---------------------------------------------------------------- */
@@ -179,53 +179,42 @@ int						count_commands(t_command *cmds);
 /* redirections.c */
 int						apply_redirections(t_redir *redir_list);
 
-/* execution_utils.c */
-int						is_builtin(char *cmd);
-int						exec_builtin(char **args, t_shell *state);
-void					ft_free_array(char **array);
-int						is_valid_varname(char *name);
-int						is_directory(const char *path);
+/* path.c */
+void					get_absolute_path(char **argv, t_shell *state);
 
-/* builtin.c */
-int						builtin_echo(char **argv);
-int						builtin_cd(char **argv);
-int						builtin_pwd(void);
-int						builtin_env(char **envp);
-int						builtin_exit(char **argv);
+/* env_utils.c */
+int						get_env_len(char **envp);
+char					**create_env_copy(char **envp);
+char					**find_env_var(char **envp, const char *key);
 
-/*pipex.c*/
-void					pipex_close_fds(int *prev_fd, int pipe_fd[2],
-							int is_last);
-int						pipex_exec_loop(t_command *cmds, t_shell *state);
-int						has_pipe(t_command *cmds);
-int						create_pipe_if_needed(int pipe_fd[2], int is_last);
-void					pipex_fork_and_exec(t_pipex_ctx *ctx);
-int						fork_and_handle_child(t_pipex_ctx *ctx);
-void					wait_for_child(pid_t pid, t_shell *state);
-
-/*redir*/
-int						here_document(const char *limiter);
-int						apply_redirections(t_redir *redir);
-
-/*export*/
-int						builtin_export(t_shell *state, char **argv);
-
-/*unset*/
-int						process_unset_arg(t_shell *state, char *arg);
-int						builtin_unset(char **argv, t_shell *state);
-int						remove_env_var(char ***envp, const char *var);
-
-/*get_path*/
-char					*get_path_from_env(t_shell *state);
-char					*find_executable_path(char *cmd, char **path_split);
-void					get_absolute_path(char **cmd, t_shell *state);
-
-/*env*/
-int						envp_add_entry(char ***envp, char *entry);
-void					print_env(t_shell *state);
-int						set_env_var(t_shell *state, const char *key,
+/* env_set.c */
+int						set_env_variable(t_shell *state, const char *key,
 							const char *value);
-int						duplicate_env(char **src, char **dst, int count);
-int						envp_len(char **envp);
+
+/* env_unset.c */
+int						unset_env_var(t_shell *state, const char *key);
+
+/* BUILTINS ----------------------------------------------------------------- */
+
+/* builtin_cd.c */
+int						builtin_cd(char **argv, t_shell *state);
+
+/* builtin_echo.c */
+int						builtin_echo(char **argv);
+
+/* builtin_env.c */
+int						builtin_env(t_shell *state);
+
+/* builtin_export.c */
+int						builtin_export(char **argv, t_shell *state);
+
+/* builtin_exit.c */
+int						builtin_exit(char **argv, t_shell *state);
+
+/* builtin_pwd.c */
+int						builtin_pwd(void);
+
+/* builtin_unset.c */
+int						builtin_unset(char **argv, t_shell *state);
 
 #endif
