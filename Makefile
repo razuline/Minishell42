@@ -3,97 +3,85 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: preltien <preltien@student.42.fr>          +#+  +:+       +#+         #
+#    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 17:31:34 by erazumov          #+#    #+#              #
-#    Updated: 2025/08/05 16:59:44 by preltien         ###   ########.fr        #
+#    Updated: 2025/08/09 17:31:44 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Project Name
+# ============================================================================ #
+#                                 Informations                                 #
+# ============================================================================ #
 NAME = minishell
-
-# Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-CFLAGS += -MMD -MP
 RM = rm -f
 
-# Directories
+# ============================================================================ #
+#                                   Flags                                      #
+# ============================================================================ #
+CFLAGS = -Wall -Wextra -Werror -g -MMD -MP
+
+# ============================================================================ #
+#                                 Dossiers                                     #
+# ============================================================================ #
 SRC_DIR = src
-LIBFT_DIR = libft
 OBJ_DIR = obj
-INCLUDES = -I include
+LIBFT_DIR = libft
+INCLUDE_DIR = include
 
-# Libft specifics
-LIBFT_A = $(LIBFT_DIR)/libft.a
-LIBFT_INC = -I $(LIBFT_DIR)/include
+# ============================================================================ #
+#                         Listes des fichiers sources (manuel)                 #
+# ============================================================================ #
+LEXER_FILES = lexer.c lexer_handlers.c lexer_token_utils.c lexer_word_utils.c
+PARSER_FILES = parser.c parser_utils.c parser_free_utils.c parser_print_utils.c
+EXPANSION_FILES = expansion.c expansion_len_utils.c expansion_var_utils.c \
+				  expansion_append_utils.c
+EXEC_FILES = execution.c pipeline.c pipeline_utils.c redirections.c path.c \
+			 env_utils.c env_set.c env_unset.c
+BUILTINS_FILES = builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c \
+				 builtin_exit.c builtin_pwd.c builtin_unset.c
 
-# Source Files
-SRC = src/main.c \
-      src/execution/execution.c \
-	  src/execution/execution2.c \
-      src/execution/execution_utils.c \
-      src/expansion/expansion_append_utils.c \
-      src/expansion/expansion.c \
-      src/expansion/expansion_var_utils.c \
-	  src/expansion/expansion_len_utils.c \
-      src/lexer/lexer.c \
-      src/lexer/lexer_ops_utils.c \
-      src/lexer/lexer_token_utils.c \
-      src/lexer/lexer_word.c \
-      src/lexer/lexer_word_utils.c \
-      src/parser/parser.c \
-      src/parser/parser_free_utils.c \
-      src/parser/parser_print_utils.c \
-      src/parser/parser_utils.c \
-	  src/execution/builtin.c \
-	  src/execution/pipex.c \
-	  src/execution/pipex2.c \
-	  src/execution/pipex3.c \
-	  src/execution/redir.c \
-	  src/execution/redir2.c \
-	  src/execution/unset.c \
-	  src/execution/unset2.c \
-	  src/execution/export.c \
-	  src/execution/get_path.c \
-	  src/execution/env.c \
-	  src/execution/env2.c
-OBJS = $(patsubst src/%.c,$(OBJ_DIR)/%.o,$(SRC))
-OBJ_DIRS = $(sort $(dir $(OBJS)))
+# ============================================================================ #
+#                  Construction des chemins et des objets                      #
+# ============================================================================ #
+MAIN_SRC = $(SRC_DIR)/main.c
+LEXER_SRC = $(addprefix $(SRC_DIR)/lexer/, $(LEXER_FILES))
+PARSER_SRC = $(addprefix $(SRC_DIR)/parser/, $(PARSER_FILES))
+EXPANSION_SRC = $(addprefix $(SRC_DIR)/expansion/, $(EXPANSION_FILES))
+EXEC_SRC = $(addprefix $(SRC_DIR)/execution/, $(EXEC_FILES))
+BUILTINS_SRC = $(addprefix $(SRC_DIR)/execution/builtins/, $(BUILTINS_FILES))
+
+SRC = $(MAIN_SRC) $(LEXER_SRC) $(PARSER_SRC) $(EXPANSION_SRC) $(EXEC_SRC) \
+	  $(BUILTINS_SRC)
+
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
+
 DEPS = $(OBJS:.o=.d)
 
-# Libraries
-LDFLAGS = -lreadline -lhistory
+# ============================================================================ #
+#                                Bibliothèques                                 #
+# ============================================================================ #
+INCLUDES = -I $(INCLUDE_DIR) -I $(LIBFT_DIR)/include
+LDFLAGS = -L $(LIBFT_DIR) -lft -lreadline
+LIBFT = $(LIBFT_DIR)/libft.a
 
-# Colors
-RESET = \033[0m
-RED = \033[0;31m
-GREEN = \033[0;32m
-YELLOW = \033[0;33m
-BLUE = \033[0;34m
-
-# Rules
+# ============================================================================ #
+#                                    Règles                                    #
+# ============================================================================ #
 all: $(NAME)
 
-$(LIBFT_A):
-	@echo "$(BLUE)📘 Building Libft...$(RESET)"
+$(LIBFT):
 	@make -s -C $(LIBFT_DIR)
-	
 
-$(NAME): $(OBJS) $(LIBFT_A)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(LDFLAGS) -o $(NAME)
-	@echo "$(GREEN)✅ Compilation successful ➜ $(NAME)$(RESET)"
+$(NAME): $(LIBFT) $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+	@echo "\033[0;32m✅ Minishell est prêt !\033[0m"
 
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIRS)
-	@echo "$(BLUE)📁 Created object directories for minishell$(RESET)"
-
-$(OBJS): | $(OBJ_DIR)
-
-$(OBJ_DIR)/%.o: src/%.c
-	$(CC) $(CFLAGS) $(INCLUDES) $(LIBFT_INC) -c $< -o $@
-	@echo "$(YELLOW)🪄 Compiling:$(RESET) $< -> $@"
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@echo "\033[0;33m✨ Compiling:\033[0m $<"
 
 -include $(DEPS)
 
@@ -104,11 +92,10 @@ clean:
 fclean: clean
 	@$(RM) $(NAME)
 	@make fclean -s -C $(LIBFT_DIR)
-	@echo "$(RED)🗑️ Executables minishell removed$(RESET)"
 
 re: fclean all
 
 norm:
-	@norminette $(SRC_DIR) $(INCLUDES) $(LIBFT_DIR) | grep -v "OK" || true
+	@norminette $(SRC_DIR) include
 
 .PHONY: all clean fclean re norm

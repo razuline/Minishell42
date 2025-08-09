@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:55:09 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/07 10:33:50 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:42:07 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	dispatch_token(t_command **cmd_ptr, t_token **tok_ptr)
 {
 	if ((*tok_ptr)->type == WORD)
 		return (process_token(*cmd_ptr, tok_ptr));
-	else if (is_redir_token((*tok_ptr)->type))
+	else if (is_redirection((*tok_ptr)->type))
 		return (process_redir(*cmd_ptr, tok_ptr));
 	else if ((*tok_ptr)->type == PIPE)
 		return (process_pipe(cmd_ptr, tok_ptr));

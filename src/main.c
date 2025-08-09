@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/09 14:22:17 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:37:24 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,11 @@ static int	is_whitespace(char *str)
 // Initialise la structure principale du shell (t_shell)
 static void	init_shell_state(t_shell *state, char **envp)
 {
-	int	len;
-
-	len = envp_len(envp);
-	state->envp = malloc(sizeof(char *) * (len + 1));
+	state->envp = create_env_copy(envp);
 	if (!state->envp)
 	{
-		perror("minishell: malloc error");
-		exit(EXIT_FAILURE);
-	}
-	if (duplicate_env(envp, state->envp, len) != 0)
-	{
-		free(state->envp);
 		perror("minishell: malloc error during env copy");
 		exit(EXIT_FAILURE);
 	}
-	state->envp[len] = NULL;
 	state->exit_code = 0;
 }

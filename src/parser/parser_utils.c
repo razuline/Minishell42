@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 13:04:53 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 17:24:45 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:44:53 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,33 @@ t_command	*create_command(void)
 	new_cmd->redir = NULL;
 	new_cmd->next = NULL;
 	return (new_cmd);
+}
+
+/* Copie les pointeurs de l'ancien tableau vers le nouveau. */
+static void	copy_old_argv(char **new_argv, char **old_argv, int count)
+{
+	int	i;
+
+	i = 0;
+	while (i < count)
+	{
+		new_argv[i] = old_argv[i];
+		i++;
+	}
+}
+
+/* Compte le nombre d'éléments dans un tableau argv. */
+static int	count_argv_elements(char **argv)
+{
+	int	count;
+
+	count = 0;
+	if (argv != NULL)
+	{
+		while (argv[count] != NULL)
+			count++;
+	}
+	return (count);
 }
 
 /* Ajoute une nouvelle chaîne à un tableau d'arguments (argv),
@@ -51,33 +78,6 @@ char	**create_argv(char **old_argv, char *new_str)
 	new_argv[count + 1] = NULL;
 	free(old_argv);
 	return (new_argv);
-}
-
-/* Compte le nombre d'éléments dans un tableau argv. */
-static int	count_argv_elements(char **argv)
-{
-	int	count;
-
-	count = 0;
-	if (argv != NULL)
-	{
-		while (argv[count] != NULL)
-			count++;
-	}
-	return (count);
-}
-
-/* Copie les pointeurs de l'ancien tableau vers le nouveau. */
-static void	copy_old_argv(char **new_argv, char **old_argv, int count)
-{
-	int	i;
-
-	i = 0;
-	while (i < count)
-	{
-		new_argv[i] = old_argv[i];
-		i++;
-	}
 }
 
 /* Ajoute une structure de redirection à la liste d'une commande. */
