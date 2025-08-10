@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_var_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:19:48 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/07 10:32:56 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:05:55 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,25 @@ char	*get_var_name(const char *input, int *i_ptr)
 	var_name = ft_substr(input, start_pos, len);
 	*i_ptr += len;
 	return (var_name);
+}
+
+/* Vérifie si une chaîne est un nom de variable valide pour le shell.
+		(Doit commencer par une lettre ou '_', puis peut contenir des lettres,
+		chiffres ou '_'). */
+int	is_valid_varname(char *name)
+{
+	int	i;
+
+	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
+		return (0);
+	i = 1;
+	while (name[i])
+	{
+		if (!is_valid_char(name[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 /* Vérifie si un caractère est valide dans un nom de variable

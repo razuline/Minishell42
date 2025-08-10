@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 13:03:55 by erazumov          #+#    #+#              #
-#    Updated: 2025/08/09 17:40:23 by erazumov         ###   ########.fr        #
+#    Updated: 2025/08/10 16:13:16 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ LIBFT_SRC = ft_lib/ft_isalpha.c ft_lib/ft_isdigit.c ft_lib/ft_isalnum.c \
 		ft_lib/ft_strjoin.c ft_lib/ft_strtrim.c ft_lib/ft_split.c \
 		ft_lib/ft_itoa.c ft_lib/ft_strmapi.c ft_lib/ft_striteri.c \
 		ft_lib/ft_putchar_fd.c ft_lib/ft_putstr_fd.c ft_lib/ft_putendl_fd.c \
-		ft_lib/ft_putnbr_fd.c \
+		ft_lib/ft_putnbr_fd.c ft_lib/ft_strcmp.c ft_lib/ft_str_is_numeric.c \
 		ft_lib/ft_lstnew.c ft_lib/ft_lstlast.c ft_lib/ft_lstmap.c \
 		ft_lib/ft_lstadd_front.c ft_lib/ft_lstadd_back.c \
 		ft_lib/ft_lstiter.c ft_lib/ft_lstclear.c ft_lib/ft_lstdelone.c \

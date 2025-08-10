@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:39:55 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/09 16:42:42 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:56:13 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,26 @@ char	**find_env_var(char **envp, const char *key)
 		i++;
 	}
 	return (NULL);
+}
+
+/* Trouve une variable d'environnement par son nom et retourne une copie
+		de sa valeur. */
+char	*get_env_value(const char *name, char **envp)
+{
+	int		i;
+	size_t	len;
+
+	if (!name || !envp)
+		return (ft_strdup(""));
+	len = ft_strlen(name);
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
+		{
+			return (ft_strdup(envp[i] + len + 1));
+		}
+		i++;
+	}
+	return (ft_strdup(""));
 }

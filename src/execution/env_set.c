@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:17:58 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/09 16:44:57 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:57:21 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static char	*create_env_entry(const char *key, const char *value);
 
 /* Ajoute ou modifie une variable dans l'environnement copié (pour export). */
-int	set_env_variable(t_shell *state, const char *key, const char *value)
+int	set_env_var(t_shell *state, const char *key, const char *value)
 {
 	char	**entry_ptr;
 	char	*new_entry;
@@ -36,7 +36,7 @@ int	set_env_variable(t_shell *state, const char *key, const char *value)
 	new_envp = malloc(sizeof(char *) * (len + 2));
 	if (!new_envp)
 		return (free(new_entry), 1);
-	ft_memcpy(sizeof(char *) * len, new_envp, state->envp);
+	ft_memcpy(new_envp, state->envp, sizeof(char *) * len);
 	new_envp[len] = new_entry;
 	new_envp[len + 1] = NULL;
 	free(state->envp);

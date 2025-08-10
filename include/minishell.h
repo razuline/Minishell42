@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 17:25:24 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:10:37 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ size_t	calculate_expanded_len(const char *value,
 
 /* expansion_var_utils.c */
 char					*get_var_name(const char *input, int *i_ptr);
+int						is_valid_varname(char *name);
 
 /* expansion_append_utils.c */
 size_t					append_str_to_result(char *dest, const char *src,
@@ -147,10 +148,14 @@ size_t					append_str_to_result(char *dest, const char *src,
 /* parser.c */
 t_command				*parser(t_token *head);
 
-/* parser_utils.c */
-t_command				*create_command(void);
+/* parser_argv_utils.c */
 char					**create_argv(char **old_argv, char *new_str);
+
+/* parser_list_utils.c */
+t_command				*create_command(void);
 void					add_redir_to_cmd(t_command *cmd, t_redir *new_redir);
+int						count_commands(t_command *cmds);
+int						has_pipe(t_command *cmds);
 
 /* parser_free_utils.c */
 void					free_commands(t_command *cmd_head);
@@ -163,10 +168,16 @@ void					print_commands(t_command *cmd_head);
 
 /* execution.c */
 int						execute(t_command *cmds, t_shell *state);
+void					run_child_process(t_command *cmd, t_shell *state);
+
+/* execution_utils.c */
+int						is_builtin(char *cmd);
+int						is_directory(const char *path);
 int						execute_builtin(char **argv, t_shell *state);
 
 /* pipeline.c */
 int						execute_pipeline(t_command *cmds, t_shell *state);
+void					run_pipeline_child(t_exec_context *ctx);
 
 /* pipeline_utils.c */
 void					setup_pipe_context(t_exec_context *ctx, t_command *cmd,
@@ -174,7 +185,12 @@ void					setup_pipe_context(t_exec_context *ctx, t_command *cmd,
 void					close_pipe_fds(int *prev_fd, int pipe_fd[2],
 							int is_last);
 int						create_pipe_if_needed(int pipe_fd[2], int is_last);
-int						count_commands(t_command *cmds);
+void					setup_input_output(int prev_fd, int pipe_fd[2],
+							int is_last);
+
+/* process_utils.c */
+int						fork_and_handle_child(t_exec_context *ctx);
+void					wait_for_child(pid_t pid, t_shell *state);
 
 /* redirections.c */
 int						apply_redirections(t_redir *redir_list);
@@ -186,9 +202,10 @@ void					get_absolute_path(char **argv, t_shell *state);
 int						get_env_len(char **envp);
 char					**create_env_copy(char **envp);
 char					**find_env_var(char **envp, const char *key);
+char					*get_env_value(const char *name, char **envp);
 
 /* env_set.c */
-int						set_env_variable(t_shell *state, const char *key,
+int						set_env_var(t_shell *state, const char *key,
 							const char *value);
 
 /* env_unset.c */
@@ -207,6 +224,9 @@ int						builtin_env(t_shell *state);
 
 /* builtin_export.c */
 int						builtin_export(char **argv, t_shell *state);
+
+/* builtin_export_utils.c */
+void					print_env_sorted(t_shell *state);
 
 /* builtin_exit.c */
 int						builtin_exit(char **argv, t_shell *state);

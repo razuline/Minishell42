@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:10:42 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 17:40:45 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:14:49 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int					ft_isalnum(int c);
 int					ft_isascii(int c);
 int					ft_isspace(int c);
 int					ft_isprint(int c);
+int					ft_str_is_numeric(char *str);
 size_t				ft_strlen(const char *str);
 void				*ft_memset(void *dest, int c, size_t len);
 void				ft_bzero(void *dest, size_t len);
@@ -39,6 +40,7 @@ int					ft_toupper(int c);
 int					ft_tolower(int c);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
+int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 void				*ft_memchr(const void *s, int c, size_t len);
 int					ft_memcmp(const void *s1, const void *s2, size_t len);

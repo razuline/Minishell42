@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 14:47:21 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 14:55:13 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:35:47 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,12 @@ static void	wait_for_all_children(pid_t *pids, int num_cmds, t_shell *state)
 		wait_for_child(pids[i], state);
 		i++;
 	}
+}
+
+/* Logique exécutée par un processus enfant dans un pipeline.
+ * Configure les entrées/sorties pour le pipe, puis exécute la commande. */
+void	run_pipeline_child(t_exec_context *ctx)
+{
+	setup_input_output(ctx->prev_fd, ctx->pipe_fd, ctx->is_last);
+	run_child_process(ctx->cmd, ctx->state);
 }

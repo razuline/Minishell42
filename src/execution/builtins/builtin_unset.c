@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:58:48 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 17:10:00 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:15:44 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	builtin_unset(char **argv, t_shell *state)
 	ret_code = 0;
 	while (argv[i])
 	{
-		if (!is_valid_char(argv[i]))
+		if (!is_valid_varname(argv[i]))
 		{
 			fprintf(stderr, "minishell: unset: `%s': not a valid identifier\n",
 					argv[i]);

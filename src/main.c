@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/09 17:37:24 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 14:53:35 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int ac, char **av, char **envp)
 		if (process_line(&shell_state) != 0)
 			break ;
 	}
-	rl_clear_history();
+	clear_history();
 	ft_free_array(shell_state.envp);
 	return (shell_state.exit_code);
 }

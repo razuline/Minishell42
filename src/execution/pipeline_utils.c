@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 14:56:12 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 14:58:07 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:34:24 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,26 @@ int	create_pipe_if_needed(int pipe_fd[2], int is_last)
 	return (0);
 }
 
-/* Compte le nombre de commandes dans une liste chaînée. */
-int	count_commands(t_command *cmds)
+/* Configure l'entrée et la sortie d'un processus dans un pipeline. */
+void	setup_input_output(int prev_fd, int pipe_fd[2], int is_last)
 {
-	int	count;
-
-	count = 0;
-	while (cmds)
+	if (prev_fd != -1)
 	{
-		count++;
-		cmds = cmds->next;
+		if (dup2(prev_fd, STDIN_FILENO) < 0)
+		{
+			perror("minishell: dup2");
+			exit(EXIT_FAILURE);
+		}
+		close(prev_fd);
 	}
-	return (count);
+	if (!is_last)
+	{
+		close(pipe_fd[0]);
+		if (dup2(pipe_fd[1], STDOUT_FILENO) < 0)
+		{
+			perror("minishell: dup2");
+			exit(EXIT_FAILURE);
+		}
+		close(pipe_fd[1]);
+	}
 }

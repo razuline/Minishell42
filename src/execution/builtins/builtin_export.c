@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:58:00 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 17:17:36 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:06:43 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	handle_export_with_value(t_shell *state, char *arg)
 	*value = '\0';
 	key = arg;
 	value++;
-	if (!is_valid_char(key))
+	if (!is_valid_varname(key))
 	{
 		*(--value) = '=';
 		return (print_export_error(key));
@@ -77,7 +77,7 @@ static int	handle_export_with_value(t_shell *state, char *arg)
 /* Gère le cas où aucune valeur n'est assignée (ex: "VAR"). */
 static int	handle_export_without_value(t_shell *state, char *arg)
 {
-	if (!is_valid_char(arg))
+	if (!is_valid_varname(arg))
 		return (print_export_error(arg));
 	if (!find_env_var(state->envp, arg))
 		return (set_env_var(state, arg, NULL));

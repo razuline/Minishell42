@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/09 14:45:47 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:48:28 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	execute_single_command(t_command *cmd, t_shell *state);
 static int	execute_external_command(t_command *cmd, t_shell *state);
-static void	run_child_process(t_command *cmd, t_shell *state);
+static int	exec_cmd(t_command *cmd, t_shell *state);
 
 /* Point d'entrée de l'exécution : aiguille vers une commande simple
 		ou un pipeline. */
@@ -32,29 +32,9 @@ static int	execute_single_command(t_command *cmd, t_shell *state)
 	if (!cmd->argv || !cmd->argv[0])
 		return (0);
 	if (is_builtin(cmd->argv[0]))
-		return (execute_builtin(cmd, state));
+		return (execute_builtin(cmd->argv, state));
 	else
 		return (execute_external_command(cmd, state));
-}
-
-/* Aiguille vers la bonne fonction built-in et retourne son code de sortie. */
-int	execute_builtin(char **argv, t_shell *state)
-{
-	if (ft_strcmp(argv[0], "echo") == 0)
-		return (builtin_echo(argv));
-	if (ft_strcmp(argv[0], "cd") == 0)
-		return (builtin_cd(argv, state));
-	if (ft_strcmp(argv[0], "pwd") == 0)
-		return (builtin_pwd());
-	if (ft_strcmp(argv[0], "env") == 0)
-		return (builtin_env(state));
-	if (ft_strcmp(argv[0], "export") == 0)
-		return (builtin_export(argv, state));
-	if (ft_strcmp(argv[0], "unset") == 0)
-		return (builtin_unset(argv, state));
-	if (ft_strcmp(argv[0], "exit") == 0)
-		return (builtin_exit(argv, state));
-	return (1);
 }
 
 /* Prépare et exécute une commande externe dans un nouveau processus. */
@@ -66,12 +46,15 @@ static int	execute_external_command(t_command *cmd, t_shell *state)
 
 /* Logique exécutée dans le processus enfant (redirections,
 		recherche de chemin, execve). */
-static void	run_child_process(t_command *cmd, t_shell *state)
+void	run_child_process(t_command *cmd, t_shell *state)
 {
 	if (apply_redirections(cmd->redir) < 0)
 		exit(1);
 	if (!cmd->argv || !cmd->argv[0])
 		exit(0);
+	if (is_builtin(cmd->argv[0]))
+		exit(execute_builtin(cmd->argv, state));
+	get_absolute_path(cmd->argv, state);
 	if (is_directory(cmd->argv[0]))
 	{
 		fprintf(stderr, "minishell: %s: Is a directory\n", cmd->argv[0]);
@@ -86,14 +69,24 @@ static void	run_child_process(t_command *cmd, t_shell *state)
 	exit(1);
 }
 
-static int	parent_process(pid_t pid, t_shell *state)
+/* Gère le fork et l'attente pour une seule commande externe. */
+static int	exec_cmd(t_command *cmd, t_shell *state)
 {
-	int	status;
+	pid_t	pid;
+	int		status;
 
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("minishell: fork");
+		return (1);
+	}
+	if (pid == 0)
+		run_child_process(cmd, state);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-		state->exit_code = WEXITSTATUS(status);
-	else
-		state->exit_code = 1;
-	return (state->exit_code);
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (1);
 }

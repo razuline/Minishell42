@@ -1,30 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   parser_argv_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 13:04:53 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 17:44:53 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:28:07 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Alloue et initialise une nouvelle structure de commande (t_command). */
-t_command	*create_command(void)
-{
-	t_command	*new_cmd;
-
-	new_cmd = malloc(sizeof(t_command));
-	if (!new_cmd)
-		return (NULL);
-	new_cmd->argv = NULL;
-	new_cmd->redir = NULL;
-	new_cmd->next = NULL;
-	return (new_cmd);
-}
 
 /* Copie les pointeurs de l'ancien tableau vers le nouveau. */
 static void	copy_old_argv(char **new_argv, char **old_argv, int count)
@@ -78,20 +64,4 @@ char	**create_argv(char **old_argv, char *new_str)
 	new_argv[count + 1] = NULL;
 	free(old_argv);
 	return (new_argv);
-}
-
-/* Ajoute une structure de redirection à la liste d'une commande. */
-void	add_redir_to_cmd(t_command *cmd, t_redir *new_redir)
-{
-	t_redir	*curr;
-
-	if (cmd->redir == NULL)
-		cmd->redir = new_redir;
-	else
-	{
-		curr = cmd->redir;
-		while (curr->next != NULL)
-			curr = curr->next;
-		curr->next = new_redir;
-	}
 }
