@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 13:03:55 by erazumov          #+#    #+#              #
-#    Updated: 2025/08/10 16:13:16 by erazumov         ###   ########.fr        #
+#    Updated: 2025/08/10 16:23:09 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "$(RED)🗑️ Executables libft removed$(RESET)"
+	@echo "$(RED)🗑️  Executables libft removed$(RESET)"
 
 re: fclean all
 
