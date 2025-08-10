@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:50:08 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/06 19:55:58 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 19:28:35 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,20 @@ static int	ft_delimiter(char c)
 /* Bascule l'état des guillemets (dans/hors de ' ou "). */
 int	update_quote_state(char *word, int type, int i)
 {
-	if (word[i] == '\'' && type == DEFAULT)
-		type = SINGLE_QUOTE;
-	else if (word[i] == '"' && type == DEFAULT)
-		type = DOUBLE_QUOTE;
-	else if (word[i] == '\'' && type == SINGLE_QUOTE)
-		type = DEFAULT;
-	else if (word[i] == '"' && type == DOUBLE_QUOTE)
-		type = DEFAULT;
+	if (word[i] == '\'' && type != DOUBLE_QUOTE)
+	{
+		if (type == DEFAULT)
+			type = SINGLE_QUOTE;
+		else
+			type = DEFAULT;
+	}
+	else if (word[i] == '"' && type != SINGLE_QUOTE)
+	{
+		if (type == DEFAULT)
+			type = DOUBLE_QUOTE;
+		else
+			type = DEFAULT;
+	}
 	return (type);
 }
 
@@ -47,8 +53,8 @@ int	get_quote_type(char *word)
 /* Trouve la fin d'un mot, en ignorant les délimiteurs entre guillemets. */
 char	*find_word_end(char *word)
 {
-	int		i;
-	int		type;
+	int	i;
+	int	type;
 
 	if (!word)
 		return (NULL);
@@ -70,7 +76,6 @@ char	*remove_quotes_from_word(char *word)
 	int		i;
 	int		j;
 	int		quote_state;
-	int		tmp_state;
 	char	*dest;
 
 	if (!word)
@@ -83,9 +88,11 @@ char	*remove_quotes_from_word(char *word)
 	quote_state = DEFAULT;
 	while (word[i])
 	{
-		tmp_state = quote_state;
-		quote_state = update_quote_state(word, quote_state, i);
-		if (quote_state == tmp_state)
+		if (word[i] == '\'' && quote_state != DOUBLE_QUOTE)
+			quote_state = (quote_state == DEFAULT) * SINGLE_QUOTE;
+		else if (word[i] == '"' && quote_state != SINGLE_QUOTE)
+			quote_state = (quote_state == DEFAULT) * DOUBLE_QUOTE;
+		else
 			dest[j++] = word[i];
 		i++;
 	}

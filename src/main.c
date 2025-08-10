@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/10 14:53:35 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 19:50:16 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,7 @@ static int	process_line(t_shell *state)
 
 	line = readline("minishell> ");
 	if (line == NULL)
-	{
-		printf("exit\n");
 		return (1);
-	}
 	if (line[0] != '\0' && !is_whitespace(line))
 	{
 		add_history(line);

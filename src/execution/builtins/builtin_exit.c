@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:58:14 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 17:07:43 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/10 19:53:21 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	builtin_exit(char **argv, t_shell *state)
 {
 	int	exit_code;
 
-	printf("exit\n");
+	ft_putstr_fd("exit\n", 2);
 	if (!argv[1])
 		exit(state->exit_code);
 	if (!ft_str_is_numeric(argv[1]))
