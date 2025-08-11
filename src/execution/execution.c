@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/10 15:48:28 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 11:23:57 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static int	exec_cmd(t_command *cmd, t_shell *state)
 	pid_t	pid;
 	int		status;
 
+	setup_non_interactive_signals();
 	pid = fork();
 	if (pid < 0)
 	{
@@ -82,8 +83,12 @@ static int	exec_cmd(t_command *cmd, t_shell *state)
 		return (1);
 	}
 	if (pid == 0)
+	{
+		setup_child_signals();
 		run_child_process(cmd, state);
+	}
 	waitpid(pid, &status, 0);
+	setup_interactive_signals();
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))

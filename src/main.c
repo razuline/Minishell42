@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/10 19:50:16 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 11:34:00 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
+	setup_interactive_signals();
 	init_shell_state(&shell_state, envp);
 	while (1)
 	{
 		if (process_line(&shell_state) != 0)
 			break ;
 	}
-	clear_history();
+	rl_clear_history();
 	ft_free_array(shell_state.envp);
 	return (shell_state.exit_code);
 }
@@ -57,13 +58,19 @@ static void	parse_and_execute(t_shell *state, char *line)
 {
 	t_token		*tokens;
 	t_command	*commands;
+	int			exit_status;
 
 	tokens = lexer(line);
 	commands = NULL;
 	if (tokens && expand_token(tokens, state) == 0)
 		commands = parser(tokens);
 	if (commands != NULL)
-		state->exit_code = execute(commands, state);
+	{
+		exit_status = execute(commands, state);
+		printf("DEBUG (main): 'execute' a retourné %d. Stockage dans l'état.\n",
+			exit_status);
+		state->exit_code = exit_status;
+	}
 	free_tokens(tokens);
 	free_commands(commands);
 }

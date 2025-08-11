@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: preltien <preltien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/07 10:33:05 by preltien         ###   ########.fr       */
+/*   Updated: 2025/08/11 11:44:15 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,54 +20,68 @@ static char	*expand_str(const char *value, t_shell *state);
 		pour ceux de type WORD. */
 int	expand_token(t_token *head, t_shell *state)
 {
-    t_token *curr;
-    char *orig_value;
-    char *expanded_value;
+	t_token	*curr;
+	char	*orig_value;
+	char	*expanded_value;
 
-    if (!head)
-        return (0);
-    curr = head;
-    while (curr != NULL)
-    {
-        if (curr->type == WORD && curr->quote_type != SINGLE_QUOTE)
-        {
-            orig_value = curr->value;
-            expanded_value = expand_str(orig_value, state);
-            if (!expanded_value)
-                return (1);
-            curr->value = expanded_value;
-            free(orig_value);
-        }
-        curr = curr->next;
-    }
-    return (0);
+	if (!head)
+		return (0);
+	curr = head;
+	while (curr != NULL)
+	{
+		if (curr->type == WORD && curr->quote_type != SINGLE_QUOTE)
+		{
+			orig_value = curr->value;
+			expanded_value = expand_str(orig_value, state);
+			if (!expanded_value)
+				return (1);
+			curr->value = expanded_value;
+			free(orig_value);
+		}
+		curr = curr->next;
+	}
+	return (0);
 }
 
-/* (2ème passe) Gère un segment (caractère, $VAR, $?)
-		et l'ajoute au résultat. */
+/* Gère l'expansion de la variable $? (code de sortie). */
+static void	expand_exit_status(char *dest, size_t *j, t_shell *state)
+{
+	char	*exit_code_str;
+
+	exit_code_str = ft_itoa(state->exit_code);
+	*j = append_str_to_result(dest, exit_code_str, *j);
+	free(exit_code_str);
+}
+
+/* Gère l'expansion d'une variable d'environnement normale (ex: $USER). */
+static void	expand_regular_var(const char *src, char *dest, int *i, size_t *j,
+		t_shell *state)
+{
+	char	*var_name;
+	char	*var_value;
+
+	var_name = get_var_name(src, i);
+	var_value = get_env_value(var_name, state->envp);
+	*j = append_str_to_result(dest, var_value, *j);
+	free(var_name);
+	free(var_value);
+}
+
+/* Analyse un segment (caractère, $VAR, $?) et l'ajoute au résultat
+ * en appelant le bon helper. */
 static void	process_and_fill(const char *src, char *dest, int *i, size_t *j,
 		t_shell *state)
 {
-	char	*var_val;
-	char	*var_name_tmp;
-
 	if (src[*i] == '$' && src[*i + 1])
 	{
 		(*i)++;
 		if (src[*i] == '?')
 		{
 			(*i)++;
-			var_val = ft_itoa(state->exit_code);
-			*j = append_str_to_result(dest, var_val, *j);
-			free(var_val);
+			expand_exit_status(dest, j, state);
 		}
 		else if (ft_isalnum(src[*i]) || src[*i] == '_')
-		{
-			var_name_tmp = get_var_name(src, i);
-			var_val = getenv(var_name_tmp);
-			*j = append_str_to_result(dest, var_val, *j);
-			free(var_name_tmp);
-		}
+			expand_regular_var(src, dest, i, j, state);
 		else
 			dest[(*j)++] = '$';
 	}
@@ -75,7 +89,7 @@ static void	process_and_fill(const char *src, char *dest, int *i, size_t *j,
 		dest[(*j)++] = src[(*i)++];
 }
 
-/* Orchestre l'expansion d'une chaîne en deux passes (calcul puis remplissage). */
+/* Orchestre l'expansion d'une chaîne en deux passes (calcul remplissage). */
 static char	*expand_str(const char *value, t_shell *state)
 {
 	char	*result;

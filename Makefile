@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 17:31:34 by erazumov          #+#    #+#              #
-#    Updated: 2025/08/10 19:03:07 by erazumov         ###   ########.fr        #
+#    Updated: 2025/08/11 11:31:31 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ RM = rm -f
 # ============================================================================ #
 #                                   Flags                                      #
 # ============================================================================ #
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address -MMD -MP
+CFLAGS = -Wall -Wextra -Werror -g -MMD -MP
 
 # ============================================================================ #
 #                                 Dossiers                                     #
@@ -41,6 +41,7 @@ EXPANSION_FILES = expansion.c expansion_len_utils.c expansion_var_utils.c \
 EXEC_FILES = execution.c execution_utils.c pipeline.c pipeline_utils.c \
 			 process_utils.c redirections.c path.c env_utils.c env_set.c \
 			 env_unset.c
+SIGNALS_FILES = signals.c
 BUILTINS_FILES = builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c \
 				 builtin_export_utils.c builtin_exit.c builtin_pwd.c \
 				 builtin_unset.c
@@ -53,10 +54,11 @@ LEXER_SRC = $(addprefix $(SRC_DIR)/lexer/, $(LEXER_FILES))
 PARSER_SRC = $(addprefix $(SRC_DIR)/parser/, $(PARSER_FILES))
 EXPANSION_SRC = $(addprefix $(SRC_DIR)/expansion/, $(EXPANSION_FILES))
 EXEC_SRC = $(addprefix $(SRC_DIR)/execution/, $(EXEC_FILES))
+SIGNALS_SRC = $(addprefix $(SRC_DIR)/signals/, $(SIGNALS_FILES))
 BUILTINS_SRC = $(addprefix $(SRC_DIR)/execution/builtins/, $(BUILTINS_FILES))
 
 SRC = $(MAIN_SRC) $(LEXER_SRC) $(PARSER_SRC) $(EXPANSION_SRC) $(EXEC_SRC) \
-	  $(BUILTINS_SRC)
+	  $(SIGNALS_SRC) $(BUILTINS_SRC)
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 
@@ -65,8 +67,10 @@ DEPS = $(OBJS:.o=.d)
 # ============================================================================ #
 #                                Bibliothèques                                 #
 # ============================================================================ #
-INCLUDES = -I $(INCLUDE_DIR) -I $(LIBFT_DIR)/include
-LDFLAGS = -L $(LIBFT_DIR) -lft -lreadline
+READLINE_PATH = /opt/homebrew/opt/readline
+
+INCLUDES = -I $(INCLUDE_DIR) -I $(LIBFT_DIR)/include -I $(READLINE_PATH)/include
+LDFLAGS = -L $(LIBFT_DIR) -L $(READLINE_PATH)/lib -lft -lreadline
 LIBFT = $(LIBFT_DIR)/libft.a
 
 # ============================================================================ #

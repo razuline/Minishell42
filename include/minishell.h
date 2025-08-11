@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 16:10:37 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 11:33:09 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <stdio.h>
 # include <ctype.h>
 # include <errno.h>
 # include <fcntl.h>
@@ -22,7 +23,6 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
@@ -210,6 +210,14 @@ int						set_env_var(t_shell *state, const char *key,
 
 /* env_unset.c */
 int						unset_env_var(t_shell *state, const char *key);
+
+/* SIGNALS ------------------------------------------------------------------ */
+
+/* signals.c */
+void					signal_handler(int sig);
+void					setup_interactive_signals(void);
+void					setup_non_interactive_signals(void);
+void					setup_child_signals(void);
 
 /* BUILTINS ----------------------------------------------------------------- */
 
