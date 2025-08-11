@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/11 11:34:00 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 11:47:08 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static void	parse_and_execute(t_shell *state, char *line)
 	}
 	free_tokens(tokens);
 	free_commands(commands);
+	printf("--- FIN DE LA BOUCLE D'EXECUTION ---\n");
 }
 
 // Vérifie si une chaîne de caractères est composée d'espaces et de tabs

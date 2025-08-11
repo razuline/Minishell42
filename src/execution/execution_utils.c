@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 14:35:16 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 14:41:32 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 11:56:22 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,40 @@ int	execute_builtin(char **argv, t_shell *state)
 	if (ft_strcmp(argv[0], "exit") == 0)
 		return (builtin_exit(argv, state));
 	return (1);
+}
+
+/* Helper pour sauvegarder les descripteurs de fichiers standard
+ * (stdin et stdout). Retourne 0 en cas de succès, -1 en cas d'erreur. */
+int	save_original_fds(int *stdin_save, int *stdout_save)
+{
+	*stdin_save = dup(STDIN_FILENO);
+	if (*stdin_save == -1)
+	{
+		perror("minishell: dup");
+		return (-1);
+	}
+	*stdout_save = dup(STDOUT_FILENO);
+	if (*stdout_save == -1)
+	{
+		close(*stdin_save);
+		perror("minishell: dup");
+		return (-1);
+	}
+	return (0);
+}
+
+/* Helper pour restaurer les descripteurs de fichiers standard sauvegardés. */
+int	restore_original_fds(int stdin_save, int stdout_save)
+{
+	if (dup2(stdin_save, STDIN_FILENO) == -1 ||
+		dup2(stdout_save, STDOUT_FILENO) == -1)
+	{
+		perror("minishell: dup2");
+		close(stdin_save);
+		close(stdout_save);
+		return (-1);
+	}
+	close(stdin_save);
+	close(stdout_save);
+	return (0);
 }

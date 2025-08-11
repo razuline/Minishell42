@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/11 11:33:09 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 11:58:55 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+
 # include <stdio.h>
 # include <ctype.h>
 # include <errno.h>
@@ -174,6 +175,8 @@ void					run_child_process(t_command *cmd, t_shell *state);
 int						is_builtin(char *cmd);
 int						is_directory(const char *path);
 int						execute_builtin(char **argv, t_shell *state);
+int						save_original_fds(int *stdin_save, int *stdout_save);
+int						restore_original_fds(int stdin_save, int stdout_save);
 
 /* pipeline.c */
 int						execute_pipeline(t_command *cmds, t_shell *state);

@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/11 11:23:57 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 11:57:43 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,24 @@ int	execute(t_command *cmds, t_shell *state)
 /* Exécute une seule commande (qui n'est pas dans un pipeline). */
 static int	execute_single_command(t_command *cmd, t_shell *state)
 {
+	int	exit_code;
+	int	original_stdin;
+	int	original_stdout;
+
 	if (!cmd->argv || !cmd->argv[0])
 		return (0);
 	if (is_builtin(cmd->argv[0]))
-		return (execute_builtin(cmd->argv, state));
-	else
-		return (execute_external_command(cmd, state));
+	{
+		if (save_original_fds(&original_stdin, &original_stdout) != 0)
+			return (1);
+		if (apply_redirections(cmd->redir) < 0)
+			exit_code = 1;
+		else
+			exit_code = execute_builtin(cmd->argv, state);
+		restore_original_fds(original_stdin, original_stdout);
+		return (exit_code);
+	}
+	return (execute_external_command(cmd, state));
 }
 
 /* Prépare et exécute une commande externe dans un nouveau processus. */
