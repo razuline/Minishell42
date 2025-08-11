@@ -6,37 +6,41 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/11 11:47:08 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 12:07:52 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	process_line(t_shell *state);
-static void	parse_and_execute(t_shell *state, char *line);
-static int	is_whitespace(char *str);
-static void	init_shell_state(t_shell *state, char **envp);
-
-// Juste initialiser le shell et lancer la boucle qui appelle l'autre fonction
-int	main(int ac, char **av, char **envp)
+/* Parses and executes a given command line */
+static void	parse_and_execute(t_shell *state, char *line)
 {
-	t_shell		shell_state;
+	t_token		*tokens;
+	t_command	*commands;
 
-	(void)ac;
-	(void)av;
-	setup_interactive_signals();
-	init_shell_state(&shell_state, envp);
-	while (1)
-	{
-		if (process_line(&shell_state) != 0)
-			break ;
-	}
-	rl_clear_history();
-	ft_free_array(shell_state.envp);
-	return (shell_state.exit_code);
+	tokens = lexer(line);
+	commands = NULL;
+	if (tokens && expand_token(tokens, state) == 0)
+		commands = parser(tokens);
+	if (commands != NULL)
+		state->exit_code = execute(commands, state);
+	free_tokens(tokens);
+	free_commands(commands);
 }
 
-// La lire, l'analyser, l'exécuter, et la nettoyer
+/* Checks if a string consists only of whitespace characters */
+static int	is_whitespace(char *str)
+{
+	while (*str)
+	{
+		if (*str != ' ' && *str != '\t')
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+/* Reads, parses, executes, and cleans up a single line of input */
 static int	process_line(t_shell *state)
 {
 	char	*line;
@@ -53,42 +57,7 @@ static int	process_line(t_shell *state)
 	return (0);
 }
 
-// Analyse et exécute une ligne de commande donnée
-static void	parse_and_execute(t_shell *state, char *line)
-{
-	t_token		*tokens;
-	t_command	*commands;
-	int			exit_status;
-
-	tokens = lexer(line);
-	commands = NULL;
-	if (tokens && expand_token(tokens, state) == 0)
-		commands = parser(tokens);
-	if (commands != NULL)
-	{
-		exit_status = execute(commands, state);
-		printf("DEBUG (main): 'execute' a retourné %d. Stockage dans l'état.\n",
-			exit_status);
-		state->exit_code = exit_status;
-	}
-	free_tokens(tokens);
-	free_commands(commands);
-	printf("--- FIN DE LA BOUCLE D'EXECUTION ---\n");
-}
-
-// Vérifie si une chaîne de caractères est composée d'espaces et de tabs
-static int	is_whitespace(char *str)
-{
-	while (*str)
-	{
-		if (*str != ' ' && *str != '\t')
-			return (0);
-		str++;
-	}
-	return (1);
-}
-
-// Initialise la structure principale du shell (t_shell)
+/* Initialises the main shell structure (t_shell) */
 static void	init_shell_state(t_shell *state, char **envp)
 {
 	state->envp = create_env_copy(envp);
@@ -98,4 +67,23 @@ static void	init_shell_state(t_shell *state, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	state->exit_code = 0;
+}
+
+/* Initialises the shell and starts the main loop */
+int	main(int ac, char **av, char **envp)
+{
+	t_shell	shell_state;
+
+	(void)ac;
+	(void)av;
+	setup_interactive_signals();
+	init_shell_state(&shell_state, envp);
+	while (1)
+	{
+		if (process_line(&shell_state) != 0)
+			break ;
+	}
+	rl_clear_history();
+	ft_free_array(shell_state.envp);
+	return (shell_state.exit_code);
 }

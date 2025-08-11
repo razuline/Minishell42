@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/06 19:57:23 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 12:26:49 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Alloue un nouveau token et l'ajoute à la fin de la liste. */
+/* Allocates a new token and adds it to the end of the list */
 t_token	*create_token(t_token_lst *lst, char *word, int type, int quote_info)
 {
 	t_token	*new_token;
@@ -42,7 +42,7 @@ t_token	*create_token(t_token_lst *lst, char *word, int type, int quote_info)
 	return (new_token);
 }
 
-/* Retourne le nom d'un type de token (pour le debug). */
+/* Returns the name of a token type (for debugging) */
 char	*get_type_name(int type)
 {
 	if (type == WORD)
@@ -61,7 +61,7 @@ char	*get_type_name(int type)
 		return ("UNKNOWN");
 }
 
-/* Affiche une liste de tokens (pour le debug). */
+/* Prints a list of tokens (for debugging) */
 void	print_tokens(t_token *head)
 {
 	t_token	*curr;
@@ -69,14 +69,14 @@ void	print_tokens(t_token *head)
 	curr = head;
 	while (curr != NULL)
 	{
-		printf("[TYPE: %s, VALEUR: \"%s\"] -> \n", get_type_name(curr->type),
-			curr->value);
+		printf("[TYPE: %s, VALUE: \"%s\"] -> \n", get_type_name(curr->type),
+				curr->value);
 		curr = curr->next;
 	}
 	printf("NULL\n");
 }
 
-/* Libère la mémoire d'une liste de tokens. */
+/* Frees the memory of a token list */
 void	free_tokens(t_token *head)
 {
 	t_token	*curr;

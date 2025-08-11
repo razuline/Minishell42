@@ -6,18 +6,19 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:50:08 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 19:28:35 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 12:29:39 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Checks if a character is a word delimiter */
 static int	ft_delimiter(char c)
 {
 	return (ft_isspace(c) || c == '|' || c == '<' || c == '>');
 }
 
-/* Bascule l'état des guillemets (dans/hors de ' ou "). */
+/* Toggles the quote state (in/out of ' or ") */
 int	update_quote_state(char *word, int type, int i)
 {
 	if (word[i] == '\'' && type != DOUBLE_QUOTE)
@@ -37,7 +38,7 @@ int	update_quote_state(char *word, int type, int i)
 	return (type);
 }
 
-/* Vérifie si un mot est entièrement entre guillemets. */
+/* Checks if a word is entirely enclosed in quotes */
 int	get_quote_type(char *word)
 {
 	int	len;
@@ -50,7 +51,7 @@ int	get_quote_type(char *word)
 	return (DEFAULT);
 }
 
-/* Trouve la fin d'un mot, en ignorant les délimiteurs entre guillemets. */
+/* Finds the end of a word, ignoring delimiters inside quotes */
 char	*find_word_end(char *word)
 {
 	int	i;
@@ -70,7 +71,7 @@ char	*find_word_end(char *word)
 	return (word + i);
 }
 
-/* Nettoie une chaîne de ses guillemets (ex: "salut" -> salut). */
+/* Removes delimiter quotes from a string (e.g., "hello" -> hello) */
 char	*remove_quotes_from_word(char *word)
 {
 	int		i;

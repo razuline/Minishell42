@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 11:04:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/11 11:29:56 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 12:11:02 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 volatile sig_atomic_t	g_received_signal = 0;
 
-/* C'est le handler pour le mode interactif.
- * Il s'exécute quand l'utilisateur fait Ctrl-C au niveau du prompt.*/
+/* This is the handler for interactive mode.
+ * It executes when the user presses Ctrl-C at the prompt. */
 void	signal_handler(int sig)
 {
 	g_received_signal = sig;
@@ -28,8 +28,8 @@ void	signal_handler(int sig)
 	}
 }
 
-/* Règle les signaux pour le mode INTERACTIF (quand le shell attend
- * une commande). C'est le mode par défaut. */
+/* Sets up signals for INTERACTIVE mode (when the shell is at the prompt).
+ * This is the default mode. */
 void	setup_interactive_signals(void)
 {
 	struct sigaction	sa;
@@ -42,8 +42,8 @@ void	setup_interactive_signals(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
-/* Règle les signaux pour le mode NON-INTERACTIF (quand une commande tourne).
- * Le shell parent ignorera les signaux pour laisser l'enfant les gérer. */
+/* Sets up signals for NON-INTERACTIVE mode (when a command is running).
+ * The parent shell will ignore signals to let the child handle them. */
 void	setup_non_interactive_signals(void)
 {
 	struct sigaction	sa;
@@ -55,8 +55,8 @@ void	setup_non_interactive_signals(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
-/* Rétablit le comportement par défaut des signaux.
- * Doit être appelé par le processus ENFANT juste après le fork. */
+/* Resets signals to their default behavior.
+ * This must be called by the CHILD process right after forking. */
 void	setup_child_signals(void)
 {
 	struct sigaction	sa;

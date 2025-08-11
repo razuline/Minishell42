@@ -6,34 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:43:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 19:29:17 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 12:24:44 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	word_token(t_token_lst *lst, char *start, char *end);
-
-/* Isole un mot et lance sa tokenisation. */
-int	handle_word(t_token_lst *lst, char **c)
-{
-	int		result;
-	char	*wd_start;
-	char	*wd_end;
-
-	wd_start = *c;
-	wd_end = find_word_end(wd_start);
-	if (wd_start == wd_end)
-	{
-		*c = wd_end;
-		return (0);
-	}
-	result = word_token(lst, wd_start, wd_end);
-	*c = wd_end;
-	return (result);
-}
-
-/* Extrait, nettoie et crée un token de type WORD. */
+/* Extracts, cleans, and creates a WORD token */
 static int	word_token(t_token_lst *lst, char *start, char *end)
 {
 	int		len;
@@ -63,7 +42,26 @@ static int	word_token(t_token_lst *lst, char *start, char *end)
 	return (0);
 }
 
-/* Crée un token pour les opérateurs simples ('|', '<', '>'). */
+/* Isolates a word and starts its tokenisation */
+int	handle_word(t_token_lst *lst, char **c)
+{
+	int		result;
+	char	*wd_start;
+	char	*wd_end;
+
+	wd_start = *c;
+	wd_end = find_word_end(wd_start);
+	if (wd_start == wd_end)
+	{
+		*c = wd_end;
+		return (0);
+	}
+	result = word_token(lst, wd_start, wd_end);
+	*c = wd_end;
+	return (result);
+}
+
+/* Creates a token for single operators ('|', '<', '>') */
 int	handle_single_op(t_token_lst *lst, char **c)
 {
 	if (**c == '|')
@@ -87,7 +85,7 @@ int	handle_single_op(t_token_lst *lst, char **c)
 	return (0);
 }
 
-/* Crée un token pour les opérateurs doubles ('<<', '>>'). */
+/* Creates a token for double operators ('<<', '>>') */
 int	handle_double_op(t_token_lst *lst, char **c)
 {
 	if (**c == '<' && *(*c + 1) == '<')

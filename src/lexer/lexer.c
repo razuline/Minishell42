@@ -6,28 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/06 19:51:30 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 12:12:31 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	lexer_loop(t_token_lst *lst, char *line);
-
-/* Convertit la ligne de commande brute en une liste de tokens. */
-t_token	*lexer(char *line)
-{
-	t_token_lst	lst;
-
-	if (!line)
-		return (NULL);
-	lst.head = NULL;
-	lst.tail = NULL;
-	lexer_loop(&lst, line);
-	return (lst.head);
-}
-
-/* Parcourt la ligne et appelle les handlers pour chaque segment. */
+/* Iterates through the line and calls handlers for each segment */
 static void	lexer_loop(t_token_lst *lst, char *line)
 {
 	char	*cursor;
@@ -46,4 +31,17 @@ static void	lexer_loop(t_token_lst *lst, char *line)
 		else
 			handle_word(lst, &cursor);
 	}
+}
+
+/* Converts the raw command line into a list of tokens */
+t_token	*lexer(char *line)
+{
+	t_token_lst	lst;
+
+	if (!line)
+		return (NULL);
+	lst.head = NULL;
+	lst.tail = NULL;
+	lexer_loop(&lst, line);
+	return (lst.head);
 }
