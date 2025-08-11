@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 17:31:34 by erazumov          #+#    #+#              #
-#    Updated: 2025/08/11 11:31:31 by erazumov         ###   ########.fr        #
+#    Updated: 2025/08/11 19:18:19 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SIGNALS_FILES = signals.c
 BUILTINS_FILES = builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c \
 				 builtin_export_utils.c builtin_exit.c builtin_pwd.c \
 				 builtin_unset.c
+UTILS_FILES = title.c
 
 # ============================================================================ #
 #                  Construction des chemins et des objets                      #
@@ -56,9 +57,10 @@ EXPANSION_SRC = $(addprefix $(SRC_DIR)/expansion/, $(EXPANSION_FILES))
 EXEC_SRC = $(addprefix $(SRC_DIR)/execution/, $(EXEC_FILES))
 SIGNALS_SRC = $(addprefix $(SRC_DIR)/signals/, $(SIGNALS_FILES))
 BUILTINS_SRC = $(addprefix $(SRC_DIR)/execution/builtins/, $(BUILTINS_FILES))
+UTILS_SRC = $(addprefix $(SRC_DIR)/utils/, $(UTILS_FILES))
 
 SRC = $(MAIN_SRC) $(LEXER_SRC) $(PARSER_SRC) $(EXPANSION_SRC) $(EXEC_SRC) \
-	  $(SIGNALS_SRC) $(BUILTINS_SRC)
+	  $(SIGNALS_SRC) $(BUILTINS_SRC) $(UTILS_SRC)
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 

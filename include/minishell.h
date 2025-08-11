@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/11 11:58:55 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/11 19:20:54 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 
 # include <stdio.h>
+
 # include <ctype.h>
 # include <errno.h>
 # include <fcntl.h>
@@ -247,5 +248,9 @@ int						builtin_pwd(void);
 
 /* builtin_unset.c */
 int						builtin_unset(char **argv, t_shell *state);
+
+/* UTILS -------------------------------------------------------------------- */
+
+void					display_title(void);
 
 #endif
