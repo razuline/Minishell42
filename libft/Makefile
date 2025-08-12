@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 13:03:55 by erazumov          #+#    #+#              #
-#    Updated: 2025/08/10 16:23:09 by erazumov         ###   ########.fr        #
+#    Updated: 2025/08/12 12:23:51 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,9 @@ PRINTF_SRC = ft_printf/ft_printf.c ft_printf/ft_formats.c \
 		ft_printf/ft_printstr.c ft_printf/ft_printnbr.c \
 		ft_printf/ft_printchar.c ft_printf/ft_printhex.c ft_printf/ft_printptr.c \
 		ft_printf/ft_print_u.c
+GNL_SRC = gnl/get_next_line.c gnl/get_next_line_utils.c
 
-SRC = $(LIBFT_SRC) $(PRINTF_SRC)
+SRC = $(LIBFT_SRC) $(PRINTF_SRC) $(GNL_SRC)
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
 # Colors

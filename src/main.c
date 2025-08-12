@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/11 19:18:44 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:28:54 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static void	parse_and_execute(t_shell *state, char *line)
 		state->exit_code = execute(commands, state);
 	free_tokens(tokens);
 	free_commands(commands);
+
+	write(1, "--- Fin de boucle, STDOUT fonctionne ---\n", 40);
 }
 
 /* Checks if a string consists only of whitespace characters */
@@ -45,12 +47,24 @@ static int	process_line(t_shell *state)
 {
 	char	*line;
 
-	line = readline("minishell> ");
+	if (isatty(STDIN_FILENO))
+		line = readline("minishell> ");
+	else
+	{
+		line = get_next_line(STDIN_FILENO);
+		if (line)
+		{
+			int len = ft_strlen(line);
+			if (len > 0 && line[len - 1] == '\n')
+				line[len - 1] = '\0';
+		}
+	}
 	if (line == NULL)
 		return (1);
 	if (line[0] != '\0' && !is_whitespace(line))
 	{
-		add_history(line);
+		if (isatty(STDIN_FILENO))
+			add_history(line);
 		parse_and_execute(state, line);
 	}
 	free(line);
@@ -74,6 +88,11 @@ int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell_state;
 
+	if (isatty(STDIN_FILENO))
+		printf("INFO: Minishell tourne en mode INTERACTIF.\n");
+	else
+		printf("INFO: Minishell tourne en mode NON-INTERACTIF (pipe).\n");
+	
 	(void)ac;
 	(void)av;
 	display_title();

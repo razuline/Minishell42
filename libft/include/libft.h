@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:10:42 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 16:14:49 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:20:31 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@
 # include <string.h>
 # include <unistd.h>
 
-/* Mandatory Part */
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
 
+/* Mandatory Part */
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);
@@ -52,7 +55,6 @@ char				*ft_strdup(const char *src);
 void				ft_free_array(char **array);
 
 /* Additional Functions */
-
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *s2);
@@ -67,7 +69,6 @@ void				ft_putnbr_fd(int nb, int fd);
 int					ft_atoi_strict(const char *str, int *error);
 
 /* Bonus Functons */
-
 typedef struct s_list
 {
 	void			*content;
@@ -86,7 +87,6 @@ void				ft_lstdelone(t_list *lst, void (*del)(void *));
 int					ft_lstsize(t_list *lst);
 
 /* FT_PRINTF */
-
 int					ft_printf(const char *format, ...);
 int					ft_formats(va_list args, const char format);
 
@@ -97,5 +97,14 @@ int					ft_printnbr(int n);
 int					ft_print_u(unsigned int n);
 int					ft_printhex(unsigned int nbr, const char format);
 char				*ft_itoa(int num);
+
+/* GNL */
+char				*get_next_line(int fd);
+
+char				*ft_if_error(char *remainder);
+char				*ft_read(int fd, char *remainder);
+char				*ft_get_line(char *remainder);
+char				*ft_cut_line(char *remainder);
+char				*ft_str_join(char *remainder, char *buff);
 
 #endif
