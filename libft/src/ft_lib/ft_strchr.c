@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:17:49 by erazumov          #+#    #+#             */
-/*   Updated: 2024/11/26 15:30:46 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:13:34 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	*ft_strchr(const char *s, int c)
 {
 	char	ch;
 
+	if (!s)
+		return (NULL);
 	ch = c;
 	while (*s)
 	{

@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/12 12:28:54 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:21:04 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ static void	parse_and_execute(t_shell *state, char *line)
 		state->exit_code = execute(commands, state);
 	free_tokens(tokens);
 	free_commands(commands);
-
-	write(1, "--- Fin de boucle, STDOUT fonctionne ---\n", 40);
 }
 
 /* Checks if a string consists only of whitespace characters */
@@ -88,14 +86,11 @@ int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell_state;
 
-	if (isatty(STDIN_FILENO))
-		printf("INFO: Minishell tourne en mode INTERACTIF.\n");
-	else
-		printf("INFO: Minishell tourne en mode NON-INTERACTIF (pipe).\n");
 	
 	(void)ac;
 	(void)av;
-	display_title();
+	if (isatty(STDIN_FILENO))
+		display_title();
 	setup_interactive_signals();
 	init_shell_state(&shell_state, envp);
 	while (1)

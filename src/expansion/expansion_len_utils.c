@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:21:15 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/06 20:38:09 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:41:06 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void		update_len_for_segment(const char *value, int *i, size_t *len,
 					t_shell *state);
-static size_t	get_len_var(const char *input, int *i_ptr);
+static size_t	get_len_var(const char *input, int *i_ptr, t_shell *state);
 static size_t	get_len_exit_status(t_shell *state);
 
 /* (1ère passe) Calcule la longueur finale de la chaîne après expansion. */
@@ -45,7 +45,7 @@ static void	update_len_for_segment(const char *value, int *i, size_t *len,
 			*len += get_len_exit_status(state);
 		}
 		else if (ft_isalnum(value[*i]) || value[*i] == '_')
-			*len += get_len_var(value, i);
+			*len += get_len_var(value, i, state);
 		else
 			(*len)++;
 	}
@@ -57,7 +57,7 @@ static void	update_len_for_segment(const char *value, int *i, size_t *len,
 }
 
 /* Calcule la longueur de la valeur d'une variable d'environnement. */
-static size_t	get_len_var(const char *input, int *i_ptr)
+static size_t	get_len_var(const char *input, int *i_ptr, t_shell *state)
 {
 	char	*var_name;
 	char	*value;
@@ -76,11 +76,12 @@ static size_t	get_len_var(const char *input, int *i_ptr)
 	*i_ptr += name_len;
 	if (!var_name)
 		return (0);
-	value = getenv(var_name);
+	value = get_env_value(var_name, state->envp);
 	free(var_name);
 	if (!value)
 		return (0);
 	len = ft_strlen(value);
+	free(value);
 	return (len);
 }
 

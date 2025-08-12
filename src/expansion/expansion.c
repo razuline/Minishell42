@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/11 11:44:15 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:42:16 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	expand_regular_var(const char *src, char *dest, int *i, size_t *j,
 {
 	char	*var_name;
 	char	*var_value;
-
+	
 	var_name = get_var_name(src, i);
 	var_value = get_env_value(var_name, state->envp);
 	*j = append_str_to_result(dest, var_value, *j);

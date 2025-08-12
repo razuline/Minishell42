@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:07:39 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/11 20:56:44 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:28:56 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,19 @@
 void	display_title(void)
 {
 	ft_putstr_fd(RED, 1);
-	ft_putstr_fd("                                          \n", 1);
-	ft_putstr_fd("▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖ ▗▖▗▄▄▄▖▗▖   ▗▖   \n", 1);
-	ft_putstr_fd("▐▛▚▞▜▌  █  ▐▛▚▖▐▌  █  ▐▌ ▐▌▐▌   ▐▌   ▐▌   \n", 1);
-	ft_putstr_fd("▐▌  ▐▌  █  ▐▌ ▝▜▌  █  ▐▛▀▜▌▐▛▀▀▘▐▌   ▐▌   \n", 1);
-	ft_putstr_fd("▐▌  ▐▌▗▄█▄▖▐▌  ▐▌▗▄█▄▖▐▌ ▐▌▐▙▄▄▖▐▙▄▄▖▐▙▄▄▖\n", 1);
-	ft_putstr_fd("                                          \n", 1);
+	ft_putstr_fd("                                           \n", 1);
+	ft_putstr_fd("   *    (       ) (       )     (    (     \n", 1);
+	ft_putstr_fd(" (  `   )\\ ) ( /( )\\ ) ( /(     )\\ ) )\\ )  \n", 1);
+	ft_putstr_fd(" )\\))( (()/( )\\()|()/( )\\())(  (()/((()/(  \n", 1);
+	ft_putstr_fd("((_)()\\ /(_)|(_)\\ /(_)|(_)\\ )\\  /(_))/(_)) \n", 1);
+	ft_putstr_fd("(_()((_|_))  _((_|_))  _((_|(_)(_)) (_))   \n", 1);
+	ft_putstr_fd("|  \\/  |_ _|| \\| |_ _|| || | __| |  | |    \n", 1);
+	ft_putstr_fd("| |\\/| || | | .` || | | __ | _|| |__| |__  \n", 1);
+	ft_putstr_fd("|_|  |_|___||_|\\_|___||_||_|___|____|____|\n", 1);
+	ft_putstr_fd("                                           \n", 1);
 	ft_putstr_fd(YELLOW, 1);
 	printf("Abandon all hope, ye who enter here...\n");
-	ft_putstr_fd("                                          \n", 1);
+	ft_putstr_fd("                                           \n", 1);
 	printf("Welcome, %s!\n", getenv("USER"));
 	ft_putstr_fd(RESET, 1);
 	ft_putstr_fd("\n", 1);
