@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/12 16:21:04 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:31:30 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,7 @@ static int	process_line(t_shell *state)
 {
 	char	*line;
 
-	if (isatty(STDIN_FILENO))
-		line = readline("minishell> ");
-	else
-	{
-		line = get_next_line(STDIN_FILENO);
-		if (line)
-		{
-			int len = ft_strlen(line);
-			if (len > 0 && line[len - 1] == '\n')
-				line[len - 1] = '\0';
-		}
-	}
+	line = read_line_input();
 	if (line == NULL)
 		return (1);
 	if (line[0] != '\0' && !is_whitespace(line))
@@ -86,7 +75,6 @@ int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell_state;
 
-	
 	(void)ac;
 	(void)av;
 	if (isatty(STDIN_FILENO))

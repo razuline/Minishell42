@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:07:39 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/12 16:28:56 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:43:29 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@
 #define MAGENTA "\001\033[1;95m\002"
 #define CYAN "\001\033[1;96m\002"
 #define WHITE "\001\033[0;97m\002"
-#define RESET   "\033[0m"
-#define BOLD    "\033[1m"
+#define RESET "\033[0m"
+#define BOLD "\033[1m"
 
+/* Displays the stylized "Minihell" title banner. */
 void	display_title(void)
 {
 	ft_putstr_fd(RED, 1);
+	ft_putstr_fd(BOLD, 1);
 	ft_putstr_fd("                                           \n", 1);
 	ft_putstr_fd("   *    (       ) (       )     (    (     \n", 1);
 	ft_putstr_fd(" (  `   )\\ ) ( /( )\\ ) ( /(     )\\ ) )\\ )  \n", 1);
