@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:04:18 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 15:10:16 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 18:08:42 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Crée un processus enfant et lance sa logique d'exécution. */
+/* Forks the current process and executes the child's logic. */
 int	fork_and_handle_child(t_exec_context *ctx)
 {
 	pid_t	pid;
@@ -28,7 +28,7 @@ int	fork_and_handle_child(t_exec_context *ctx)
 	return (pid);
 }
 
-/* Attend la fin d'un processus enfant et met à jour le code de sortie. */
+/* Waits for a specific child process to terminate and updates the exit code. */
 void	wait_for_child(pid_t pid, t_shell *state)
 {
 	int	status;

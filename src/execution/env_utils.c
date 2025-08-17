@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:39:55 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/10 15:56:13 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 18:13:13 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Calcule le nombre de chaînes dans un tableau d'environnement. */
+/* Counts the number of strings in an environment array. */
 int	get_env_len(char **envp)
 {
 	int	i;
@@ -25,7 +25,7 @@ int	get_env_len(char **envp)
 	return (i);
 }
 
-/* Crée une copie profonde et allouée de l'environnement (envp). */
+/* Creates a deep, allocated copy of the environment (envp). */
 char	**create_env_copy(char **envp)
 {
 	char	**new_envp;
@@ -53,7 +53,7 @@ char	**create_env_copy(char **envp)
 	return (new_envp);
 }
 
-/* Trouve une variable d'environnement et retourne son pointeur. */
+/* Finds an environment variable by its key. */
 char	**find_env_var(char **envp, const char *key)
 {
 	int		i;
@@ -72,8 +72,7 @@ char	**find_env_var(char **envp, const char *key)
 	return (NULL);
 }
 
-/* Trouve une variable d'environnement par son nom et retourne une copie
-		de sa valeur. */
+/* Finds an environment variable by its key and returns a copy of its value. */
 char	*get_env_value(const char *name, char **envp)
 {
 	int		i;

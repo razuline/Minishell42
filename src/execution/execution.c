@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/11 12:21:49 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:57:15 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Handles fork and wait for a single external command */
+/* Handles fork(), waitpid(), and signal setup for a single external command */
 static int	exec_cmd(t_command *cmd, t_shell *state)
 {
 	pid_t	pid;

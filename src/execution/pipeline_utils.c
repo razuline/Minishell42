@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 14:56:12 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 15:34:24 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 18:10:03 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Prépare le contexte d'exécution pour une commande dans le pipeline. */
+/* Prepares the execution context for a command in the pipeline. */
 void	setup_pipe_context(t_exec_context *ctx, t_command *cmd, t_shell *state,
 		int prev_fd)
 {
@@ -24,7 +24,8 @@ void	setup_pipe_context(t_exec_context *ctx, t_command *cmd, t_shell *state,
 		exit(EXIT_FAILURE);
 }
 
-/* Ferme les descripteurs de fichier du pipe dans le processus parent. */
+/* Closes the necessary pipe file descriptors in the parent process
+ * after each fork. */
 void	close_pipe_fds(int *prev_fd, int pipe_fd[2], int is_last)
 {
 	if (*prev_fd != -1)
@@ -33,7 +34,7 @@ void	close_pipe_fds(int *prev_fd, int pipe_fd[2], int is_last)
 		close(pipe_fd[1]);
 }
 
-/* Crée un pipe sauf pour la dernière commande. */
+/* Creates a new pipe, unless the command is the last in the pipeline. */
 int	create_pipe_if_needed(int pipe_fd[2], int is_last)
 {
 	if (!is_last)
@@ -47,7 +48,8 @@ int	create_pipe_if_needed(int pipe_fd[2], int is_last)
 	return (0);
 }
 
-/* Configure l'entrée et la sortie d'un processus dans un pipeline. */
+/* Sets up the standard input and output for a process in a pipeline
+ * using dup2. */
 void	setup_input_output(int prev_fd, int pipe_fd[2], int is_last)
 {
 	if (prev_fd != -1)

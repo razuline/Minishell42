@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 14:35:16 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/17 17:44:26 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 18:07:50 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Vérifie si un nom de commande correspond à un built-in. */
+/* Checks if a command name corresponds to a built-in command. */
 int	is_builtin(char *cmd)
 {
 	if (!cmd)
@@ -34,7 +34,7 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-/* Vérifie si un chemin correspond à un répertoire. */
+/* Checks if a given path corresponds to a directory. */
 int	is_directory(const char *path)
 {
 	struct stat	path_stat;
@@ -44,7 +44,7 @@ int	is_directory(const char *path)
 	return (S_ISDIR(path_stat.st_mode));
 }
 
-/* Aiguille vers la bonne fonction built-in et retourne son code de sortie. */
+/* Dispatches to the correct built-in function and returns its exit code. */
 int	execute_builtin(char **argv, t_shell *state)
 {
 	if (ft_strcmp(argv[0], "echo") == 0)
@@ -64,8 +64,7 @@ int	execute_builtin(char **argv, t_shell *state)
 	return (1);
 }
 
-/* Helper pour sauvegarder les descripteurs de fichiers standard
- * (stdin et stdout). Retourne 0 en cas de succès, -1 en cas d'erreur. */
+/* Helper to save the standard file descriptors (stdin and stdout). */
 int	save_original_fds(int *stdin_save, int *stdout_save)
 {
 	*stdin_save = dup(STDIN_FILENO);
@@ -84,7 +83,7 @@ int	save_original_fds(int *stdin_save, int *stdout_save)
 	return (0);
 }
 
-/* Helper pour restaurer les descripteurs de fichiers standard sauvegardés. */
+/* Helper to restore the saved standard file descriptors. */
 int	restore_original_fds(int stdin_save, int stdout_save)
 {
 	if (dup2(stdin_save, STDIN_FILENO) == -1
