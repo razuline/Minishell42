@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:42:33 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/09 15:10:38 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:43:56 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	apply_redirections(t_redir *redir_list)
 				return (-1);
 		}
 		else if (redir_list->type == REDIRECT_OUT
-				|| redir_list->type == APPEND_OUT)
+			|| redir_list->type == APPEND_OUT)
 		{
 			if (redirect_output(redir_list->file, redir_list->type) < 0)
 				return (-1);
@@ -76,8 +76,8 @@ static void	read_heredoc_input(int write_fd, const char *delimiter)
 		if (!line)
 		{
 			fprintf(stderr, "minishell: warning: here-document delimited by "
-							"end-of-file(wanted `%s`)\n",
-					delimiter);
+				"end-of-file(wanted `%s`)\n",
+				delimiter);
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)

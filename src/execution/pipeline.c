@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 14:47:21 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 15:35:47 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:44:44 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	launch_all_children(t_command *cmds, pid_t *pids, t_shell *state)
 /* Attend la fin de tous les processus enfants du pipeline. */
 static void	wait_for_all_children(pid_t *pids, int num_cmds, t_shell *state)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < num_cmds)

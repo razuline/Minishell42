@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 17:31:34 by erazumov          #+#    #+#              #
-#    Updated: 2025/08/15 14:27:07 by erazumov         ###   ########.fr        #
+#    Updated: 2025/08/17 17:52:50 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ RM = rm -f
 # ============================================================================ #
 #                                   Flags                                      #
 # ============================================================================ #
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address -MMD -MP
+CFLAGS = -Wall -Wextra -Werror -g -MMD -MP
 
 # ============================================================================ #
 #                                 Dossiers                                     #
@@ -87,7 +87,7 @@ $(LIBFT):
 
 $(NAME): $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
-	@echo "\033[0;32m✅ Minishell est prêt !\033[0m"
+	@echo "\033[0;32m✅ Minishell is ready!\033[0m"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
@@ -103,10 +103,11 @@ clean:
 fclean: clean
 	@$(RM) $(NAME)
 	@make fclean -s -C $(LIBFT_DIR)
+	@echo "\033[0;31m🗑️  Executables minishell removed\033[0m"
 
 re: fclean all
 
 norm:
-	@norminette $(SRC_DIR) include
+	@norminette $(SRC_DIR) $(LIBFT_DIR) include/ | grep -v "OK" || true
 
 .PHONY: all clean fclean re norm

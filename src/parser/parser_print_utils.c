@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:28:18 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 16:47:10 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:22:11 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	print_redirections(t_redir *redir_lst)
 	while (curr != NULL)
 	{
 		printf("    -> TYPE: %s, FILE: \"%s\"\n", get_type_name(curr->type),
-				curr->file);
+			curr->file);
 		curr = curr->next;
 	}
 }

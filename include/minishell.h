@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/15 14:28:28 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:41:35 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
-
 # include <stdio.h>
-
 # include <ctype.h>
 # include <errno.h>
 # include <fcntl.h>
@@ -79,6 +77,12 @@ typedef struct s_exec_context
 	int					is_last;
 }						t_exec_context;
 
+typedef struct s_indices
+{
+	int					i;
+	size_t				j;
+}						t_indices;
+
 // ************************************************************************** //
 //                                Enumerations                                //
 // ************************************************************************** //
@@ -139,8 +143,8 @@ void					free_tokens(t_token *head);
 int						expand_token(t_token *head, t_shell *state);
 
 /* expansion_len_utils.c */
-size_t	calculate_expanded_len(const char *value,
-								t_shell *state);
+size_t					calculate_expanded_len(const char *value,
+							t_shell *state);
 
 /* expansion_var_utils.c */
 char					*get_var_name(const char *input, int *i_ptr);

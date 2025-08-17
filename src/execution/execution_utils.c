@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 14:35:16 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/11 11:56:22 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:44:26 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ int	save_original_fds(int *stdin_save, int *stdout_save)
 /* Helper pour restaurer les descripteurs de fichiers standard sauvegardés. */
 int	restore_original_fds(int stdin_save, int stdout_save)
 {
-	if (dup2(stdin_save, STDIN_FILENO) == -1 ||
-		dup2(stdout_save, STDOUT_FILENO) == -1)
+	if (dup2(stdin_save, STDIN_FILENO) == -1
+		|| dup2(stdout_save, STDOUT_FILENO) == -1)
 	{
 		perror("minishell: dup2");
 		close(stdin_save);

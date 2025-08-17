@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:58:14 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 19:53:21 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:42:15 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	builtin_exit(char **argv, t_shell *state)
 	if (!ft_str_is_numeric(argv[1]))
 	{
 		fprintf(stderr, "minishell: exit: %s: numeric argument required\n",
-				argv[1]);
+			argv[1]);
 		exit(255);
 	}
 	if (argv[2])

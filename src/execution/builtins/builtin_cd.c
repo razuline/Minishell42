@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:00:00 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/09 17:05:14 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:42:38 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	builtin_cd(char **argv, t_shell *state)
 		if (chdir(argv[1]) != 0)
 		{
 			fprintf(stderr, "minishell: cd: %s: %s\n", argv[1],
-					strerror(errno));
+				strerror(errno));
 			ret_code = 1;
 		}
 		else

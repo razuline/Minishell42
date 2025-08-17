@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:55:09 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 17:42:07 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:08:01 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ t_command	*parser(t_token *token_lst)
 	curr_token = token_lst;
 	while (curr_token != NULL)
 	{
-		while (curr_token && ft_isspace(curr_token->value[0]))
-			curr_token = curr_token->next;
 		if (!curr_token)
 			break ;
 		if (dispatch_token(&curr_cmd, &curr_token) != 0)

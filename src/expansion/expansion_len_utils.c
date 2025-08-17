@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:21:15 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/12 16:41:06 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:24:30 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static size_t	get_len_var(const char *input, int *i_ptr, t_shell *state)
 	start_pos = *i_ptr;
 	name_len = 0;
 	while (input[start_pos + name_len] && (ft_isalnum(input[start_pos
-				+ name_len]) || input[start_pos + name_len] == '_'))
+					+ name_len]) || input[start_pos + name_len] == '_'))
 		name_len++;
 	if (name_len == 0)
 		return (0);

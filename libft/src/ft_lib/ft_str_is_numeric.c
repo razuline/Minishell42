@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:12:50 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 16:14:07 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/17 17:47:03 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_str_is_numeric(char *str)
 	i = 0;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
-	if (str[i] == '\0') // La chaîne ne contient qu'un signe
+	if (str[i] == '\0')
 		return (0);
 	while (str[i])
 	{
