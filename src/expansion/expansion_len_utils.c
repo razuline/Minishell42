@@ -6,36 +6,11 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:21:15 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/18 10:43:55 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 16:34:05 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* (First pass helper) Analyses a segment ($VAR, $?, char) and updates
- * the total length. */
-static void	update_len_for_segment(const char *value, int *i, size_t *len,
-		t_shell *state)
-{
-	if (value[*i] == '$' && value[*i + 1] != '\0')
-	{
-		(*i)++;
-		if (value[*i] == '?')
-		{
-			(*i)++;
-			*len += get_len_exit_status(state);
-		}
-		else if (ft_isalnum(value[*i]) || value[*i] == '_')
-			*len += get_len_var(value, i, state);
-		else
-			(*len)++;
-	}
-	else
-	{
-		(*len)++;
-		(*i)++;
-	}
-}
 
 /* (First pass helper) Calculates the length of an env variable's value. */
 static size_t	get_len_var(const char *input, int *i_ptr, t_shell *state)
@@ -78,6 +53,31 @@ static size_t	get_len_exit_status(t_shell *state)
 	len = ft_strlen(exit_code_str);
 	free(exit_code_str);
 	return (len);
+}
+
+/* (First pass helper) Analyses a segment ($VAR, $?, char) and updates
+ * the total length. */
+static void	update_len_for_segment(const char *value, int *i, size_t *len,
+		t_shell *state)
+{
+	if (value[*i] == '$' && value[*i + 1] != '\0')
+	{
+		(*i)++;
+		if (value[*i] == '?')
+		{
+			(*i)++;
+			*len += get_len_exit_status(state);
+		}
+		else if (ft_isalnum(value[*i]) || value[*i] == '_')
+			*len += get_len_var(value, i, state);
+		else
+			(*len)++;
+	}
+	else
+	{
+		(*len)++;
+		(*i)++;
+	}
 }
 
 /* (First pass) Calculates the final length of the string after expansion.

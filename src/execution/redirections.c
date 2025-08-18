@@ -6,33 +6,11 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:42:33 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/17 18:04:55 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 16:35:35 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Handles a here-document redirection (<<) using a pipe. */
-static int	handle_heredoc(const char *delimiter)
-{
-	int	pipefd[2];
-
-	if (pipe(pipefd) == -1)
-	{
-		perror("minishell: pipe");
-		return (-1);
-	}
-	read_heredoc_input(pipefd[1], delimiter);
-	close(pipefd[1]);
-	if (dup2(pipefd[0], STDIN_FILENO) < 0)
-	{
-		perror("minishell: dup2");
-		close(pipefd[0]);
-		return (-1);
-	}
-	close(pipefd[0]);
-	return (0);
-}
 
 /* Reads user input for the here-document and writes it to the pipe. */
 static void	read_heredoc_input(int write_fd, const char *delimiter)
@@ -58,6 +36,28 @@ static void	read_heredoc_input(int write_fd, const char *delimiter)
 		write(write_fd, "\n", 1);
 		free(line);
 	}
+}
+
+/* Handles a here-document redirection (<<) using a pipe. */
+static int	handle_heredoc(const char *delimiter)
+{
+	int	pipefd[2];
+
+	if (pipe(pipefd) == -1)
+	{
+		perror("minishell: pipe");
+		return (-1);
+	}
+	read_heredoc_input(pipefd[1], delimiter);
+	close(pipefd[1]);
+	if (dup2(pipefd[0], STDIN_FILENO) < 0)
+	{
+		perror("minishell: dup2");
+		close(pipefd[0]);
+		return (-1);
+	}
+	close(pipefd[0]);
+	return (0);
 }
 
 /* Handles output redirections ('>' and '>>').

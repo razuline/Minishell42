@@ -6,24 +6,11 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:55:09 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/18 10:51:33 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 16:02:36 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Dispatches a token to the appropriate handler function based on its type. */
-static int	dispatch_token(t_command **cmd_ptr, t_token **tok_ptr)
-{
-	if ((*tok_ptr)->type == WORD)
-		return (process_token(*cmd_ptr, tok_ptr));
-	else if (is_redirection((*tok_ptr)->type))
-		return (process_redir(*cmd_ptr, tok_ptr));
-	else if ((*tok_ptr)->type == PIPE)
-		return (process_pipe(cmd_ptr, tok_ptr));
-	printf("minishell: syntax error\n");
-	return (1);
-}
 
 /* Handles a WORD token by adding its value to the command's
  * argument vector (argv). */
@@ -82,6 +69,19 @@ static int	process_redir(t_command *cmd, t_token **tok_ptr)
 	add_redir_to_cmd(cmd, new_redir);
 	*tok_ptr = (*tok_ptr)->next->next;
 	return (0);
+}
+
+/* Dispatches a token to the appropriate handler function based on its type. */
+static int	dispatch_token(t_command **cmd_ptr, t_token **tok_ptr)
+{
+	if ((*tok_ptr)->type == WORD)
+		return (process_token(*cmd_ptr, tok_ptr));
+	else if (is_redirection((*tok_ptr)->type))
+		return (process_redir(*cmd_ptr, tok_ptr));
+	else if ((*tok_ptr)->type == PIPE)
+		return (process_pipe(cmd_ptr, tok_ptr));
+	printf("minishell: syntax error\n");
+	return (1);
 }
 
 /* Parser entry point. Transforms a list of tokens into a list of
