@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/17 17:08:50 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:01:29 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Parses and executes a given command line */
+/* Parses and executes a given command line. */
 static void	parse_and_execute(t_shell *state, char *line)
 {
 	t_token		*tokens;
@@ -28,7 +28,7 @@ static void	parse_and_execute(t_shell *state, char *line)
 	free_commands(commands);
 }
 
-/* Checks if a string consists only of whitespace characters */
+/* Checks if a string consists only of whitespace characters. */
 static int	is_whitespace(char *str)
 {
 	while (*str)
@@ -40,7 +40,7 @@ static int	is_whitespace(char *str)
 	return (1);
 }
 
-/* Reads, parses, executes, and cleans up a single line of input */
+/* Reads, parses, executes, and cleans up a single line of input. */
 static int	process_line(t_shell *state)
 {
 	char	*line;
@@ -58,7 +58,7 @@ static int	process_line(t_shell *state)
 	return (0);
 }
 
-/* Initialises the main shell structure (t_shell) */
+/* Initialises the main shell structure (t_shell). */
 static void	init_shell_state(t_shell *state, char **envp)
 {
 	state->envp = create_env_copy(envp);
@@ -70,7 +70,7 @@ static void	init_shell_state(t_shell *state, char **envp)
 	state->exit_code = 0;
 }
 
-/* Initialises the shell and starts the main loop */
+/* Initialises the shell and starts the main loop. */
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell_state;

@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 14:23:17 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/15 14:29:20 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:03:26 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*read_interactive_line(void)
 	return (line);
 }
 
-/* Reads a line of input in non-interactive mode using get_next_line. */
+/* Reads a line of input in non-interactive mode using get_next_line(). */
 static char	*read_non_interactive_line(void)
 {
 	char	*line;

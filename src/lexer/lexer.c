@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:14:07 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/11 12:12:31 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:03:08 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Iterates through the line and calls handlers for each segment */
+/* Iterates through the line and calls handlers for each segment. */
 static void	lexer_loop(t_token_lst *lst, char *line)
 {
 	char	*cursor;
@@ -33,7 +33,7 @@ static void	lexer_loop(t_token_lst *lst, char *line)
 	}
 }
 
-/* Converts the raw command line into a list of tokens */
+/* Converts the raw command line into a list of tokens. */
 t_token	*lexer(char *line)
 {
 	t_token_lst	lst;

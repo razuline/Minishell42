@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/17 17:22:35 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:02:27 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Allocates a new token and adds it to the end of the list */
+/* Allocates a new token and adds it to the end of the list. */
 t_token	*create_token(t_token_lst *lst, char *word, int type, int quote_info)
 {
 	t_token	*new_token;
@@ -42,7 +42,7 @@ t_token	*create_token(t_token_lst *lst, char *word, int type, int quote_info)
 	return (new_token);
 }
 
-/* Returns the name of a token type (for debugging) */
+/* Returns the name of a token type (for debugging). */
 char	*get_type_name(int type)
 {
 	if (type == WORD)
@@ -61,7 +61,7 @@ char	*get_type_name(int type)
 		return ("UNKNOWN");
 }
 
-/* Prints a list of tokens (for debugging) */
+/* Prints a list of tokens (for debugging). */
 void	print_tokens(t_token *head)
 {
 	t_token	*curr;
@@ -76,7 +76,7 @@ void	print_tokens(t_token *head)
 	printf("NULL\n");
 }
 
-/* Frees the memory of a token list */
+/* Frees the memory of a token list. */
 void	free_tokens(t_token *head)
 {
 	t_token	*curr;

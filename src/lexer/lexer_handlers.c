@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:43:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/11 12:24:44 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:02:07 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Extracts, cleans, and creates a WORD token */
+/* Extracts, cleans, and creates a WORD token. */
 static int	word_token(t_token_lst *lst, char *start, char *end)
 {
 	int		len;
@@ -42,7 +42,7 @@ static int	word_token(t_token_lst *lst, char *start, char *end)
 	return (0);
 }
 
-/* Isolates a word and starts its tokenisation */
+/* Isolates a word and starts its tokenisation. */
 int	handle_word(t_token_lst *lst, char **c)
 {
 	int		result;
@@ -61,7 +61,7 @@ int	handle_word(t_token_lst *lst, char **c)
 	return (result);
 }
 
-/* Creates a token for single operators ('|', '<', '>') */
+/* Creates a token for single operators ('|', '<', '>'). */
 int	handle_single_op(t_token_lst *lst, char **c)
 {
 	if (**c == '|')
@@ -85,7 +85,7 @@ int	handle_single_op(t_token_lst *lst, char **c)
 	return (0);
 }
 
-/* Creates a token for double operators ('<<', '>>') */
+/* Creates a token for double operators ('<<', '>>'). */
 int	handle_double_op(t_token_lst *lst, char **c)
 {
 	if (**c == '<' && *(*c + 1) == '<')
