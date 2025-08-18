@@ -6,13 +6,14 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:58:14 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/17 17:42:15 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:27:12 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Termine le shell avec un code de sortie. */
+/* Built-in command: exit.
+ * Terminates the shell with a given exit code. */
 int	builtin_exit(char **argv, t_shell *state)
 {
 	int	exit_code;

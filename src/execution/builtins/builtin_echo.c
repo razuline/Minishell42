@@ -6,13 +6,15 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:57:28 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/17 17:08:41 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:16:02 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Affiche les arguments passés à la commande, avec gestion de l'option -n. */
+/* Built-in command: echo.
+ * Prints the given arguments to standard output. Handles the -n option
+ * to suppress the trailing newline. */
 int	builtin_echo(char **argv)
 {
 	int	i;

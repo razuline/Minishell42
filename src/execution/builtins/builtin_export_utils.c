@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:07:39 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 16:09:01 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:26:07 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Un simple tri à bulles pour trier le tableau de chaînes. */
+/* A simple bubble sort for an array of strings. */
 static void	bubble_sort_array(char **array, int count)
 {
 	int		i;
@@ -37,7 +37,8 @@ static void	bubble_sort_array(char **array, int count)
 	}
 }
 
-/* Affiche l'environnement au format "export KEY="VALUE"". */
+/* Prints the environment in the format "export KEY="VALUE"".
+ * This is used when 'export' is called with no arguments. */
 void	print_env_sorted(t_shell *state)
 {
 	char	**env_copy;

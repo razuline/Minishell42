@@ -6,13 +6,14 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:57:44 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 17:19:46 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:16:28 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Affiche les variables d'environnement qui ont une valeur. */
+/* Built-in command: env.
+ * Prints the environment variables that have a value (contain an '='). */
 int	builtin_env(t_shell *state)
 {
 	int	i;

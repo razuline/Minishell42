@@ -6,13 +6,14 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:58:48 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/17 17:25:11 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:27:55 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Supprime une ou plusieurs variables de l'environnement. */
+/* Built-in command: unset.
+ * Deletes one or more variables from the environment. */
 int	builtin_unset(char **argv, t_shell *state)
 {
 	int	i;

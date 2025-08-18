@@ -6,13 +6,14 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:58:30 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/09 17:08:04 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:27:32 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Affiche le chemin du répertoire courant. */
+/* Built-in command: pwd.
+ * Prints the current working directory path to standard output. */
 int	builtin_pwd(void)
 {
 	char	cwd[4096];
