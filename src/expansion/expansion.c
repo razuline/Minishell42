@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/18 10:40:54 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:59:22 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void	expand_regular_var(const char *src, char *dest, t_indices *indices,
 	free(var_value);
 }
 
-/* (Second pass) Analyses a segment (char, $VAR, $?) and appends
- * the expanded result to the destination string by calling the correct helper. */
+/* (Second pass) Analyses a segment (char, $VAR, $?) and appends the expanded
+ * result to the destination string by calling the correct helper. */
 static void	process_and_fill(const char *src, char *dest, t_indices *indices,
 		t_shell *state)
 {

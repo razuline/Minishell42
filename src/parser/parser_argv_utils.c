@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 13:04:53 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 15:28:07 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:52:51 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Copie les pointeurs de l'ancien tableau vers le nouveau. */
+/* Copies the pointers from the old argv array to the new one. */
 static void	copy_old_argv(char **new_argv, char **old_argv, int count)
 {
 	int	i;
@@ -25,7 +25,7 @@ static void	copy_old_argv(char **new_argv, char **old_argv, int count)
 	}
 }
 
-/* Compte le nombre d'éléments dans un tableau argv. */
+/* Counts the number of elements in a NULL-terminated string array (argv). */
 static int	count_argv_elements(char **argv)
 {
 	int	count;
@@ -39,8 +39,9 @@ static int	count_argv_elements(char **argv)
 	return (count);
 }
 
-/* Ajoute une nouvelle chaîne à un tableau d'arguments (argv),
-	en le réallouant. */
+/* Adds a new string to an argument vector (argv) by reallocating it.
+ * This function creates a new, larger array, copies the old elements,
+ * adds the new element, and frees the old array. */
 char	**create_argv(char **old_argv, char *new_str)
 {
 	int		count;

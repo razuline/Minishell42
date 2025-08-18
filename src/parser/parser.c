@@ -6,44 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:55:09 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/17 17:08:01 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:51:33 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	dispatch_token(t_command **cmd_ptr, t_token **tok_ptr);
-static int	process_token(t_command *cmd, t_token **tok_ptr);
-static int	process_pipe(t_command **cmd_ptr, t_token **tok_ptr);
-static int	process_redir(t_command *cmd, t_token **curr_tok);
-
-/* Point d'entrée du parseur,
-	transforme la liste de tokens en liste de commandes. */
-t_command	*parser(t_token *token_lst)
-{
-	t_command	*cmd_lst_head;
-	t_command	*curr_cmd;
-	t_token		*curr_token;
-
-	if (!token_lst)
-		return (NULL);
-	cmd_lst_head = create_command();
-	curr_cmd = cmd_lst_head;
-	curr_token = token_lst;
-	while (curr_token != NULL)
-	{
-		if (!curr_token)
-			break ;
-		if (dispatch_token(&curr_cmd, &curr_token) != 0)
-		{
-			free_commands(cmd_lst_head);
-			return (NULL);
-		}
-	}
-	return (cmd_lst_head);
-}
-
-/* Aiguille un token vers la fonction de traitement appropriée. */
+/* Dispatches a token to the appropriate handler function based on its type. */
 static int	dispatch_token(t_command **cmd_ptr, t_token **tok_ptr)
 {
 	if ((*tok_ptr)->type == WORD)
@@ -56,7 +25,8 @@ static int	dispatch_token(t_command **cmd_ptr, t_token **tok_ptr)
 	return (1);
 }
 
-/* Ajoute la valeur d'un token WORD aux arguments (argv) de la commande. */
+/* Handles a WORD token by adding its value to the command's
+ * argument vector (argv). */
 static int	process_token(t_command *cmd, t_token **tok_ptr)
 {
 	cmd->argv = create_argv(cmd->argv, (*tok_ptr)->value);
@@ -66,7 +36,7 @@ static int	process_token(t_command *cmd, t_token **tok_ptr)
 	return (0);
 }
 
-/* Gère un token PIPE en créant une nouvelle commande dans la liste. */
+/* Handles a PIPE token by creating and linking a new command structure. */
 static int	process_pipe(t_command **cmd_ptr, t_token **tok_ptr)
 {
 	t_command	*new_cmd;
@@ -85,7 +55,8 @@ static int	process_pipe(t_command **cmd_ptr, t_token **tok_ptr)
 	return (0);
 }
 
-/* Gère un token de redirection en créant une structure de redirection. */
+/* Handles a redirection token by creating a redirection structure.
+ * Expects the next token to be a WORD representing the filename. */
 static int	process_redir(t_command *cmd, t_token **tok_ptr)
 {
 	t_token	*token_file;
@@ -111,4 +82,30 @@ static int	process_redir(t_command *cmd, t_token **tok_ptr)
 	add_redir_to_cmd(cmd, new_redir);
 	*tok_ptr = (*tok_ptr)->next->next;
 	return (0);
+}
+
+/* Parser entry point. Transforms a list of tokens into a list of
+ * command structures. */
+t_command	*parser(t_token *token_lst)
+{
+	t_command	*cmd_lst_head;
+	t_command	*curr_cmd;
+	t_token		*curr_token;
+
+	if (!token_lst)
+		return (NULL);
+	cmd_lst_head = create_command();
+	curr_cmd = cmd_lst_head;
+	curr_token = token_lst;
+	while (curr_token != NULL)
+	{
+		if (!curr_token)
+			break ;
+		if (dispatch_token(&curr_cmd, &curr_token) != 0)
+		{
+			free_commands(cmd_lst_head);
+			return (NULL);
+		}
+	}
+	return (cmd_lst_head);
 }

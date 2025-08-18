@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:22:40 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 15:29:44 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:54:50 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Alloue et initialise une nouvelle structure de commande (t_command). */
+/* Allocates and initializes a new command structure (t_command). */
 t_command	*create_command(void)
 {
 	t_command	*new_cmd;
@@ -26,7 +26,7 @@ t_command	*create_command(void)
 	return (new_cmd);
 }
 
-/* Ajoute une structure de redirection à la liste d'une commande. */
+/* Appends a redirection structure to a command's redirection list. */
 void	add_redir_to_cmd(t_command *cmd, t_redir *new_redir)
 {
 	t_redir	*curr;
@@ -42,7 +42,7 @@ void	add_redir_to_cmd(t_command *cmd, t_redir *new_redir)
 	}
 }
 
-/* Compte le nombre de commandes dans une liste chaînée. */
+/* Counts the number of commands in a linked list. */
 int	count_commands(t_command *cmds)
 {
 	int	count;
@@ -56,7 +56,8 @@ int	count_commands(t_command *cmds)
 	return (count);
 }
 
-/* Vérifie si une liste de commandes contient un pipe (plus d'une commande). */
+/* Checks if a command list contains a pipe (i.e., has more
+ * than one command). */
 int	has_pipe(t_command *cmds)
 {
 	return (cmds && cmds->next != NULL);
