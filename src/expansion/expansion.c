@@ -6,13 +6,13 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 16:25:54 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/17 17:39:35 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:40:54 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Gère l'expansion de la variable $? (code de sortie). */
+/* (Second pass helper) Handles the expansion of the $? variable. */
 static void	expand_exit_status(char *dest, size_t *j, t_shell *state)
 {
 	char	*exit_code_str;
@@ -22,7 +22,7 @@ static void	expand_exit_status(char *dest, size_t *j, t_shell *state)
 	free(exit_code_str);
 }
 
-/* Gère l'expansion d'une variable d'environnement normale (ex: $USER). */
+/* (Second pass helper) Handles the expansion of a regular env variable. */
 static void	expand_regular_var(const char *src, char *dest, t_indices *indices,
 		t_shell *state)
 {
@@ -36,8 +36,8 @@ static void	expand_regular_var(const char *src, char *dest, t_indices *indices,
 	free(var_value);
 }
 
-/* Analyse un segment (caractère, $VAR, $?) et l'ajoute au résultat
- * en appelant le bon helper. */
+/* (Second pass) Analyses a segment (char, $VAR, $?) and appends
+ * the expanded result to the destination string by calling the correct helper. */
 static void	process_and_fill(const char *src, char *dest, t_indices *indices,
 		t_shell *state)
 {
@@ -58,7 +58,8 @@ static void	process_and_fill(const char *src, char *dest, t_indices *indices,
 		dest[indices->j++] = src[indices->i++];
 }
 
-/* Orchestre l'expansion d'une chaîne en deux passes (calcul remplissage). */
+/* Orchestrates the expansion of a string using a two-pass approach.
+ * First pass calculates the final length, second pass fills the new string. */
 static char	*expand_str(const char *value, t_shell *state)
 {
 	char		*result;
@@ -79,8 +80,8 @@ static char	*expand_str(const char *value, t_shell *state)
 	return (result);
 }
 
-/* Parcours les tokens et expand les variables ($VAR, $?)
-		pour ceux de type WORD. */
+/* Iterates through tokens and expands variables ($VAR, $?) for those
+ * of type WORD that are not inside single quotes. */
 int	expand_token(t_token *head, t_shell *state)
 {
 	t_token	*curr;

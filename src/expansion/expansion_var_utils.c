@@ -6,15 +6,21 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:19:48 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/10 16:05:55 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:46:11 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_valid_char(char c);
+/* Checks if a character is a valid character for a variable name
+ * (alphanumeric or underscore). */
+static int	is_valid_char(char c)
+{
+	return (ft_isalnum(c) || c == '_');
+}
 
-/* Extrait un nom de variable valide (ex: "USER" depuis "$USER_PATH"). */
+/* Extracts a valid variable name from an input string starting at a
+ * given position (e.g., extracts "USER" from "$USER_PATH"). */
 char	*get_var_name(const char *input, int *i_ptr)
 {
 	int		len;
@@ -32,9 +38,9 @@ char	*get_var_name(const char *input, int *i_ptr)
 	return (var_name);
 }
 
-/* Vérifie si une chaîne est un nom de variable valide pour le shell.
-		(Doit commencer par une lettre ou '_', puis peut contenir des lettres,
-		chiffres ou '_'). */
+/* Checks if an entire string is a valid shell identifier.
+ * An identifier must start with a letter or underscore, and may then
+ * contain letters, numbers, or underscores. */
 int	is_valid_varname(char *name)
 {
 	int	i;
@@ -49,11 +55,4 @@ int	is_valid_varname(char *name)
 		i++;
 	}
 	return (1);
-}
-
-/* Vérifie si un caractère est valide dans un nom de variable
-		(alphanumérique ou '_'). */
-static int	is_valid_char(char c)
-{
-	return (ft_isalnum(c) || c == '_');
 }

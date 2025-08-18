@@ -6,33 +6,14 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:21:15 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/17 17:24:30 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/18 10:43:55 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void		update_len_for_segment(const char *value, int *i, size_t *len,
-					t_shell *state);
-static size_t	get_len_var(const char *input, int *i_ptr, t_shell *state);
-static size_t	get_len_exit_status(t_shell *state);
-
-/* (1ère passe) Calcule la longueur finale de la chaîne après expansion. */
-size_t	calculate_expanded_len(const char *value, t_shell *state)
-{
-	int		i;
-	size_t	len;
-
-	i = 0;
-	len = 0;
-	while (value[i])
-	{
-		update_len_for_segment(value, &i, &len, state);
-	}
-	return (len);
-}
-
-/* Analyse un segment ($VAR, $?, char) et met à jour la longueur totale. */
+/* (First pass helper) Analyses a segment ($VAR, $?, char) and updates
+ * the total length. */
 static void	update_len_for_segment(const char *value, int *i, size_t *len,
 		t_shell *state)
 {
@@ -56,7 +37,7 @@ static void	update_len_for_segment(const char *value, int *i, size_t *len,
 	}
 }
 
-/* Calcule la longueur de la valeur d'une variable d'environnement. */
+/* (First pass helper) Calculates the length of an env variable's value. */
 static size_t	get_len_var(const char *input, int *i_ptr, t_shell *state)
 {
 	char	*var_name;
@@ -85,7 +66,7 @@ static size_t	get_len_var(const char *input, int *i_ptr, t_shell *state)
 	return (len);
 }
 
-/* Calcule la longueur du code de sortie ($?) converti en chaîne. */
+/* (First pass helper) Calculates the length of the exit status ($?). */
 static size_t	get_len_exit_status(t_shell *state)
 {
 	char	*exit_code_str;
@@ -96,5 +77,21 @@ static size_t	get_len_exit_status(t_shell *state)
 		return (0);
 	len = ft_strlen(exit_code_str);
 	free(exit_code_str);
+	return (len);
+}
+
+/* (First pass) Calculates the final length of the string after expansion.
+ * This is done to allocate the exact amount of memory needed in one go. */
+size_t	calculate_expanded_len(const char *value, t_shell *state)
+{
+	int		i;
+	size_t	len;
+
+	i = 0;
+	len = 0;
+	while (value[i])
+	{
+		update_len_for_segment(value, &i, &len, state);
+	}
 	return (len);
 }
