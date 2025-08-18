@@ -35,6 +35,68 @@
 
     Implémentation des commandes internes : cd, echo, pwd, export, unset, env, exit.
 
+	Commandes :
+	
+	✳️​​ echo
+
+	Rôle : Affiche du texte à l'écran.
+
+	Fonctionnement : Ta version de builtin_echo gère le cas de base ainsi que l'option -n pour supprimer le saut de ligne final. Elle parcourt les arguments, les affiche séparés par un espace, et décide d'ajouter ou non un \n à la fin. C'est une implémentation simple et efficace.
+
+	✳️​ cd
+
+	Rôle : Change le répertoire de travail actuel.
+
+	Fonctionnement : C'est une commande plus complexe que tu as bien gérée.
+
+	cd sans argument t'emmène au répertoire HOME en allant chercher la variable d'environnement correspondante.
+
+	cd [chemin] tente de se déplacer vers le chemin spécifié en utilisant l'appel système chdir.
+
+	Mise à jour de l'environnement : Très important, après un cd réussi, ta fonction update_pwd_vars met à jour les variables PWD (nouveau répertoire) et OLDPWD (ancien répertoire), ce qui est crucial pour la navigation.
+
+	✳️​ pwd
+
+	Rôle : Affiche le chemin du répertoire de travail actuel (Print Working Directory).
+
+	Fonctionnement : C'est la plus simple des built-ins. Elle utilise l'appel système getcwd (get current working directory) pour obtenir le chemin et l'affiche à l'écran.
+
+	✳️​ export
+	
+	Rôle : Crée ou modifie des variables d'environnement.
+
+	Fonctionnement : C'est l'une des built-ins les plus complexes.
+
+	export sans argument : Tu as implémenté une fonctionnalité très propre. Le code trie par ordre alphabétique et affiche toutes les variables d'environnement avec le préfixe export et des guillemets autour de la valeur, comme le fait bash.
+
+	export VAR=valeur : Ajoute ou modifie la variable VAR.
+
+	export VAR : Crée une variable sans valeur, qui sera affichée par export mais pas par env.
+
+	Validation : Tu vérifies bien que le nom de la variable est valide (is_valid_varname) avant de l'ajouter.
+
+	✳️​ unset
+
+	Rôle : Supprime une variable d'environnement.
+
+	Fonctionnement : La fonction parcourt les arguments fournis, vérifie que chaque nom de variable est valide, puis appelle unset_env_var pour la retirer de l'environnement copié par ton shell. C'est le complément logique de export.
+
+	✳️​ env
+
+	Rôle : Affiche les variables d'environnement.
+
+	Fonctionnement : Ta fonction builtin_env parcourt simplement le tableau state->envp et affiche chaque chaîne qui contient un =, c'est-à-dire les variables qui ont une valeur.
+
+	✳️​ exit
+
+	Rôle : Termine le processus du shell.
+
+	Fonctionnement :
+
+	exit sans argument quitte avec le code de sortie de la dernière commande exécutée.
+
+	exit [n] quitte avec le code de sortie n (modulo 256).
+
     Ne pas les lancer avec execve, mais les exécuter directement dans le process parent.
 
 ✅ 6. Redirections / Pipes
