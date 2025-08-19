@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:42:33 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/18 16:35:35 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/19 15:41:10 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ static void	read_heredoc_input(int write_fd, const char *delimiter)
 		line = readline("> ");
 		if (!line)
 		{
-			fprintf(stderr, "minishell: warning: here-document delimited by "
-				"end-of-file(wanted `%s`)\n",
-				delimiter);
+			ft_putstr_fd("minishell: warning: here-document delimited by ", 2);
+			ft_putstr_fd("end-of-file (wanted `", 2);
+			ft_putstr_fd((char *)delimiter, 2);
+			ft_putstr_fd("`)\n", 2);
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)
@@ -74,7 +75,11 @@ static int	redirect_output(const char *file, int type)
 	fd = open(file, flags, 0644);
 	if (fd < 0)
 	{
-		fprintf(stderr, "minishell: %s: %s\n", file, strerror(errno));
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd((char *)file, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
 		return (-1);
 	}
 	if (dup2(fd, STDOUT_FILENO) < 0)
@@ -96,7 +101,11 @@ static int	redirect_input(const char *file)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		fprintf(stderr, "minishell: %s: %s\n", file, strerror(errno));
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd((char *)file, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
 		return (-1);
 	}
 	if (dup2(fd, STDIN_FILENO) < 0)

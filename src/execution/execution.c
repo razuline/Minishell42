@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/17 17:57:15 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/19 15:31:07 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ static int	execute_single_command(t_command *cmd, t_shell *state)
 
 	if (!cmd->argv || !cmd->argv[0])
 		return (0);
+	if (ft_strcmp(cmd->argv[0], "exit") == 0)
+		return (execute_builtin(cmd->argv, state));
 	if (is_builtin(cmd->argv[0]))
 	{
 		if (save_original_fds(&original_stdin, &original_stdout) != 0)

@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/18 11:01:29 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/19 15:24:13 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,17 @@ static void	parse_and_execute(t_shell *state, char *line)
 	if (tokens && expand_token(tokens, state) == 0)
 		commands = parser(tokens);
 	if (commands != NULL)
-		state->exit_code = execute(commands, state);
+	{
+		if (commands->argv && commands->argv[0]
+			&& ft_strcmp(commands->argv[0], "exit") == 0)
+		{
+			free_tokens(tokens);
+			execute_builtin(commands->argv, state);
+			free_commands(commands);
+		}
+		else
+			state->exit_code = execute(commands, state);
+	}
 	free_tokens(tokens);
 	free_commands(commands);
 }

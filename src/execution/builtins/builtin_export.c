@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:58:00 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/18 10:24:31 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/19 15:37:34 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 /* Prints a standardised error message for invalid identifiers. */
 static int	print_export_error(char *arg)
 {
-	fprintf(stderr, "minishell: export: `%s': not a valid identifier\n", arg);
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
 	return (1);
 }
 
