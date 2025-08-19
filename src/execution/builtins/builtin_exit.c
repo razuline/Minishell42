@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:58:14 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/19 15:30:04 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/19 20:54:55 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,16 @@ int	builtin_exit(char **argv, t_shell *state)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	ft_free_array(state->envp);
-	clear_history();
 	if (!argv[1])
-		exit(state->exit_code);
-	if (!ft_str_is_numeric(argv[1]))
+		exit_code = state->exit_code;
+	else if (!ft_str_is_numeric(argv[1]))
 	{
-		ft_putstr_fd("minishell: exit: %s: numeric argument required\n", 2);
-		exit(255);
+		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+		exit_code = 255;
 	}
-	exit_code = ft_atoi(argv[1]);
-	exit(exit_code % 256);
+	else
+		exit_code = ft_atoi(argv[1]);
+	state->exit_code = exit_code % 256;
+	state->should_exit = true;
+	return (state->exit_code);
 }

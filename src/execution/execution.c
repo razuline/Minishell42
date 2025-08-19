@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:33:07 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/19 15:31:07 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/19 20:50:47 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ int	execute(t_command *cmds, t_shell *state)
 		return (execute_single_command(cmds, state));
 }
 
-/* Logic executed in the child process (redirections, path finding, execve) */
+/* Logic executed by the child process.
+ * Applies redirections, handles built-ins within pipes, finds the path,
+ * and calls execve. Exits with an appropriate status code on failure. */
 void	run_child_process(t_command *cmd, t_shell *state)
 {
 	if (apply_redirections(cmd->redir) < 0)

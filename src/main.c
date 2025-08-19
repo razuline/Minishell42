@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/19 15:24:13 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/19 20:17:39 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static void	parse_and_execute(t_shell *state, char *line)
 		commands = parser(tokens);
 	if (commands != NULL)
 	{
-		if (commands->argv && commands->argv[0]
-			&& ft_strcmp(commands->argv[0], "exit") == 0)
+		if (commands->argv && commands->argv[0] && ft_strcmp(commands->argv[0],
+				"exit") == 0)
 		{
 			free_tokens(tokens);
 			execute_builtin(commands->argv, state);
@@ -57,7 +57,10 @@ static int	process_line(t_shell *state)
 
 	line = read_line_input();
 	if (line == NULL)
-		return (1);
+	{
+		state->should_exit = true;
+		return (0);
+	}
 	if (line[0] != '\0' && !is_whitespace(line))
 	{
 		if (isatty(STDIN_FILENO))
@@ -78,6 +81,7 @@ static void	init_shell_state(t_shell *state, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	state->exit_code = 0;
+	state->should_exit = false;
 }
 
 /* Initialises the shell and starts the main loop. */
@@ -91,10 +95,9 @@ int	main(int ac, char **av, char **envp)
 		display_title();
 	setup_interactive_signals();
 	init_shell_state(&shell_state, envp);
-	while (1)
+	while (shell_state.should_exit == false)
 	{
-		if (process_line(&shell_state) != 0)
-			break ;
+		process_line(&shell_state);
 	}
 	rl_clear_history();
 	ft_free_array(shell_state.envp);

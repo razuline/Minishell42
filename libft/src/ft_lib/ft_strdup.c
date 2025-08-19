@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:20:23 by erazumov          #+#    #+#             */
-/*   Updated: 2024/11/26 15:44:58 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:42:39 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ char	*ft_strdup(const char *src)
 	int		i;
 	char	*dest;
 
+	if (!src)
+		return (NULL);
 	i = 0;
 	dest = malloc(sizeof(char) * ft_strlen(src) + 1);
 	if (dest == NULL)

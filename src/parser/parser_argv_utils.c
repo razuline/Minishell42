@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 13:04:53 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/18 10:52:51 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:40:59 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	**create_argv(char **old_argv, char *new_str)
 		return (NULL);
 	}
 	copy_old_argv(new_argv, old_argv, count);
-	new_argv[count] = strdup(new_str);
+	new_argv[count] = ft_strdup(new_str);
 	if (!new_argv[count])
 	{
 		printf("[ERROR] create_argv: strdup failed for '%s'\n", new_str);

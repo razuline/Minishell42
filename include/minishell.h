@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/17 17:41:35 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/19 20:18:19 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_shell
 {
 	char				**envp;
 	int					exit_code;
+	bool				should_exit;
 }						t_shell;
 
 typedef struct s_exec_context
