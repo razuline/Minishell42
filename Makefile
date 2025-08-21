@@ -6,7 +6,7 @@
 #    By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 17:31:34 by erazumov          #+#    #+#              #
-#    Updated: 2025/08/19 20:18:28 by erazumov         ###   ########.fr        #
+#    Updated: 2025/08/20 13:26:17 by erazumov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,7 @@ INCLUDE_DIR = include
 # ============================================================================ #
 CORE_FILES = input.c
 LEXER_FILES = lexer.c lexer_handlers.c lexer_token_utils.c lexer_word_utils.c
-PARSER_FILES = parser.c parser_argv_utils.c parser_list_utils.c \
-			   parser_free_utils.c parser_print_utils.c
+PARSER_FILES = parser.c parser_list_utils.c parser_free_utils.c debug_utils.c
 EXPANSION_FILES = expansion.c expansion_len_utils.c expansion_var_utils.c \
 				  expansion_append_utils.c
 EXEC_FILES = execution.c execution_utils.c pipeline.c pipeline_utils.c \

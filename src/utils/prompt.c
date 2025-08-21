@@ -6,15 +6,15 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 13:57:01 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/15 14:35:31 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/20 13:27:45 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#define BOLD_WHITE "\033[1;37m"
-#define BOLD_RED "\033[1;31m"
-#define RESET "\033[0m"
+#define BOLD_WHITE	"\001\033[1;37m\002"
+#define BOLD_RED	"\001\033[1;31m\002"
+#define RESET		"\001\033[0m\002"
 
 /* Builds the dynamic prompt string. */
 char	*build_prompt(void)

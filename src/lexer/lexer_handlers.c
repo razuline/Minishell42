@@ -6,39 +6,31 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:43:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/18 11:02:07 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/20 13:08:24 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Extracts, cleans, and creates a WORD token. */
+/* Creates a WORD token using the optimised method.
+ * Performs only a single memory allocation. */
 static int	word_token(t_token_lst *lst, char *start, char *end)
 {
-	int		len;
-	char	*extracted;
-	char	*cleaned;
+	char	*final_word;
 	int		quote_type;
+	int		len;
+	char	orig_char;
 
 	len = end - start;
-	extracted = ft_substr(start, 0, len);
-	if (!extracted)
+	final_word = extract_and_clean_word(start, len);
+	if (!final_word)
 		return (1);
-	quote_type = get_quote_type(extracted);
-	cleaned = remove_quotes_from_word(extracted);
-	if (!cleaned)
-	{
-		free(extracted);
+	orig_char = *end;
+	*end = '\0';
+	quote_type = get_quote_type(start);
+	*end = orig_char;
+	if (create_token(lst, final_word, WORD, quote_type) == NULL)
 		return (1);
-	}
-	if (create_token(lst, cleaned, WORD, quote_type) == NULL)
-	{
-		free(extracted);
-		free(cleaned);
-		return (1);
-	}
-	free(extracted);
-	free(cleaned);
 	return (0);
 }
 

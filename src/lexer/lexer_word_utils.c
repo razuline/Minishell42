@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:50:08 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/18 11:02:53 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/20 13:07:53 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,30 +71,29 @@ char	*find_word_end(char *word)
 	return (word + i);
 }
 
-/* Removes delimiter quotes from a string (e.g., "hello" -> hello). */
-char	*remove_quotes_from_word(char *word)
+/* Allocates and returns a new string by copying the word while
+ * removing the outer quotes in a single pass (e.g., "hello" -> hello). */
+char	*extract_and_clean_word(const char *start, int len)
 {
+	char	*dest;
 	int		i;
 	int		j;
 	int		quote_state;
-	char	*dest;
 
-	if (!word)
-		return (NULL);
-	dest = malloc(ft_strlen(word) + 1);
+	dest = malloc(sizeof(char) * (len + 1));
 	if (!dest)
 		return (NULL);
 	i = 0;
 	j = 0;
 	quote_state = DEFAULT;
-	while (word[i])
+	while (i < len)
 	{
-		if (word[i] == '\'' && quote_state != DOUBLE_QUOTE)
+		if (start[i] == '\'' && quote_state != DOUBLE_QUOTE)
 			quote_state = (quote_state == DEFAULT) * SINGLE_QUOTE;
-		else if (word[i] == '"' && quote_state != SINGLE_QUOTE)
+		else if (start[i] == '"' && quote_state != SINGLE_QUOTE)
 			quote_state = (quote_state == DEFAULT) * DOUBLE_QUOTE;
 		else
-			dest[j++] = word[i];
+			dest[j++] = start[i];
 		i++;
 	}
 	dest[j] = '\0';

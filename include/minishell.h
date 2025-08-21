@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:03 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/19 20:18:19 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/20 13:26:38 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int						handle_double_op(t_token_lst *lst, char **c);
 int						update_quote_state(char *word, int type, int i);
 int						get_quote_type(char *word);
 char					*find_word_end(char *word);
-char					*remove_quotes_from_word(char *word);
+char					*extract_and_clean_word(const char *start, int len);
 
 /* lexer_token_utils.c */
 t_token					*create_token(t_token_lst *lst, char *word, int type,
@@ -160,9 +160,6 @@ size_t					append_str_to_result(char *dest, const char *src,
 /* parser.c */
 t_command				*parser(t_token *head);
 
-/* parser_argv_utils.c */
-char					**create_argv(char **old_argv, char *new_str);
-
 /* parser_list_utils.c */
 t_command				*create_command(void);
 void					add_redir_to_cmd(t_command *cmd, t_redir *new_redir);
@@ -172,7 +169,7 @@ int						has_pipe(t_command *cmds);
 /* parser_free_utils.c */
 void					free_commands(t_command *cmd_head);
 
-/* parser_print_utils.c */
+/* debug_utils.c */
 int						is_redirection(int type);
 void					print_commands(t_command *cmd_head);
 

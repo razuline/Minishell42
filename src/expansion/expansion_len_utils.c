@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:21:15 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/18 16:34:05 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/20 13:11:31 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,8 @@ static size_t	get_len_var(const char *input, int *i_ptr, t_shell *state)
 	char	*var_name;
 	char	*value;
 	size_t	len;
-	int		start_pos;
-	int		name_len;
 
-	start_pos = *i_ptr;
-	name_len = 0;
-	while (input[start_pos + name_len] && (ft_isalnum(input[start_pos
-					+ name_len]) || input[start_pos + name_len] == '_'))
-		name_len++;
-	if (name_len == 0)
-		return (0);
-	var_name = ft_substr(input, start_pos, name_len);
-	*i_ptr += name_len;
+	var_name = get_var_name(input, i_ptr);
 	if (!var_name)
 		return (0);
 	value = get_env_value(var_name, state->envp);
