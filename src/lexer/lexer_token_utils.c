@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:19:24 by erazumov          #+#    #+#             */
-/*   Updated: 2025/08/20 13:06:56 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/21 19:14:47 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	print_tokens(t_token *head)
 	while (curr != NULL)
 	{
 		printf("[TYPE: %s, VALUE: \"%s\"] -> \n", get_type_name(curr->type),
-				curr->value);
+			curr->value);
 		curr = curr->next;
 	}
 	printf("NULL\n");

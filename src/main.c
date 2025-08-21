@@ -6,7 +6,7 @@
 /*   By: erazumov <erazumov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:51:14 by preltien          #+#    #+#             */
-/*   Updated: 2025/08/21 18:53:08 by erazumov         ###   ########.fr       */
+/*   Updated: 2025/08/21 19:14:03 by erazumov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		process_line(&shell_state);
 	}
-	printf("\n\033[1;33m--- DEBUG: Starting final cleanup! ---\033[0m\n");
 	ft_free_array(shell_state.envp);
 	rl_clear_history();
-	printf("\033[1;33m--- DEBUG: Final cleanup finished! ---\033[0m\n");
 	return (shell_state.exit_code);
 }
